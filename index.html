@@ -220,7 +220,6 @@
             box-shadow: 0 4px 20px var(--shadow-color);
         }
 
-        /* FIKSIRANE VISINE ZA POTPUNU PORAVNATOST */
         .player-header {
             text-align: center;
             border-bottom: 1px solid var(--border-color);
@@ -248,7 +247,7 @@
             color: var(--text-main);
             margin-bottom: 4px;
             line-height: 1.2;
-            height: 32px; /* fiksirana visina za tačno 2 reda teksta */
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -264,7 +263,7 @@
             justify-content: center;
             flex-wrap: wrap;
             gap: 3px;
-            height: 36px; /* fiksirana visina za detalje */
+            height: 36px;
             line-height: 1.2;
             text-align: center;
         }
@@ -281,17 +280,15 @@
             vertical-align: middle;
         }
 
+        /* GLAVNE STATISTIKE - RED SA 6 UOKVIRENIH OČENA */
         .main-stats {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 2px;
-            background: var(--input-bg);
-            border-radius: 6px;
-            padding: 5px;
+            gap: 3px;
+            background: transparent;
             margin-bottom: 15px;
             text-align: center;
-            border: 1px solid var(--border-color);
-            height: 38px;
+            height: 42px;
             box-sizing: border-box;
             align-items: center;
         }
@@ -299,12 +296,19 @@
         .stat-box-main {
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3px 1px;
+            border-radius: 4px;
+            height: 100%;
+            box-sizing: border-box;
         }
 
         .stat-box-main .lbl {
-            font-size: 9px;
+            font-size: 8px;
             color: var(--text-dim);
             font-weight: bold;
+            margin-bottom: 1px;
         }
 
         .stat-box-main .val {
@@ -360,6 +364,7 @@
             text-align: center;
         }
 
+        /* STILOVI ZA UOKVIRENE OCENE (I U TABELI I U GLAVNIM OCENAMA) */
         .better {
             background: rgba(0, 255, 136, 0.15);
             color: var(--accent-green);
@@ -385,8 +390,9 @@
         }
 
         .equal {
-            background: var(--border-color);
+            background: var(--input-bg);
             color: var(--text-main);
+            border: 1px solid var(--border-color);
         }
     </style>
 </head>
@@ -646,12 +652,15 @@
 
                 const val1 = parseFloat(val1Raw) || 0;
                 const val2 = parseFloat(val2Raw) || 0;
-                let colorClass = val1 > val2 ? 'color: var(--accent-green);' : (val1 < val2 ? 'color: var(--accent-red);' : '');
+                
+                let cls = 'equal';
+                if (val1 > val2) cls = 'better';
+                else if (val1 < val2) cls = 'worse';
 
                 html += `
-                    <div class="stat-box-main">
+                    <div class="stat-box-main ${cls}">
                         <span class="lbl">${key}</span>
-                        <span class="val" style="${colorClass}">${val1Raw}</span>
+                        <span class="val">${val1Raw}</span>
                     </div>
                 `;
             });
