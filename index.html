@@ -38,7 +38,8 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             margin: 0;
-            padding: 10px;
+            padding: 8px;
+            box-sizing: border-box;
             transition: background-color 0.3s, color 0.3s;
         }
 
@@ -48,13 +49,13 @@
             align-items: center;
             position: relative;
             max-width: 900px;
-            margin: 0 auto 10px auto;
+            margin: 0 auto 8px auto;
         }
 
         h2 {
             margin: 0;
             color: var(--text-main);
-            font-size: 20px;
+            font-size: 18px;
             text-transform: uppercase;
             letter-spacing: 1px;
             text-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
@@ -66,32 +67,33 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             box-shadow: 0 2px 5px var(--shadow-color);
         }
 
         .tabs {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
 
         .tab-btn {
             background: var(--card-bg);
             color: var(--text-dim);
             border: 1px solid var(--border-color);
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
+            font-size: 12px;
         }
 
         .tab-btn.active {
@@ -103,9 +105,9 @@
 
         .controls {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             max-width: 900px;
             margin-left: auto;
             margin-right: auto;
@@ -115,7 +117,7 @@
             width: 48%;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
 
         .search-box {
@@ -125,7 +127,7 @@
 
         .search-input {
             width: 100%;
-            padding: 10px 36px 10px 10px;
+            padding: 8px 30px 8px 8px;
             background: var(--card-bg);
             color: var(--text-main);
             border: 1px solid var(--border-color);
@@ -133,8 +135,7 @@
             font-weight: 600;
             box-sizing: border-box;
             outline: none;
-            font-size: 13px;
-            letter-spacing: 0.5px;
+            font-size: 12px;
         }
 
         .search-input::placeholder {
@@ -148,24 +149,24 @@
 
         .search-icon {
             position: absolute;
-            right: 10px;
+            right: 8px;
             top: 50%;
             transform: translateY(-50%);
             color: var(--text-dim);
             pointer-events: none;
-            font-size: 14px;
+            font-size: 12px;
         }
 
         .dropdown-select {
             width: 100%;
-            padding: 8px;
+            padding: 6px;
             background: var(--input-bg);
             color: var(--text-main);
             border: 1px solid var(--border-color);
             border-radius: 6px;
             font-weight: bold;
             outline: none;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .dropdown-list {
@@ -176,7 +177,7 @@
             background: var(--input-bg);
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            max-height: 200px;
+            max-height: 180px;
             overflow-y: auto;
             z-index: 100;
             display: none;
@@ -184,9 +185,9 @@
         }
 
         .dropdown-item {
-            padding: 8px 10px;
+            padding: 6px 8px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
@@ -203,10 +204,11 @@
             opacity: 0.8;
         }
 
+        /* GLAVNA MREŽA - 2 KOLONE KOJE UVEK OSTAJU JEDNA PORED DRUGE */
         .compare-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 6px;
             max-width: 900px;
             margin: 0 auto;
             align-items: start;
@@ -215,17 +217,19 @@
         .player-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 10px;
-            box-shadow: 0 4px 20px var(--shadow-color);
+            border-radius: 10px;
+            padding: 6px;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            box-sizing: border-box;
+            min-width: 0; /* Sprečava da kartica gura sadržaj spolja */
         }
 
         .player-header {
             text-align: center;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
-            margin-bottom: 10px;
-            height: 260px;
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+            height: 220px;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -234,44 +238,46 @@
         }
 
         .player-img {
-            width: 110px;
-            height: 125px;
+            width: 85px;
+            height: 95px;
             object-fit: contain;
-            margin: 0 auto 6px auto;
+            margin: 0 auto 4px auto;
             display: block;
         }
 
         .player-name {
-            font-size: 13px;
+            font-size: 11px;
             font-weight: bold;
             color: var(--text-main);
-            margin-bottom: 4px;
-            line-height: 1.2;
-            height: 32px;
+            margin-bottom: 3px;
+            line-height: 1.1;
+            height: 26px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
+            overflow: hidden;
         }
 
         .player-meta {
-            font-size: 11px;
+            font-size: 9px;
             color: var(--text-dim);
             font-weight: 600;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 3px;
-            height: 36px;
-            line-height: 1.2;
+            gap: 2px;
+            height: 32px;
+            line-height: 1.1;
             text-align: center;
+            overflow: hidden;
         }
 
         .shard-inline {
             display: inline-flex;
             align-items: center;
-            gap: 3px;
+            gap: 2px;
             color: #38bdf8;
             font-weight: 700;
         }
@@ -280,29 +286,28 @@
             vertical-align: middle;
         }
 
-        /* GLAVNE STATISTIKE UOKVIRENE KAO OSTALE SEKCIJE */
         .stat-group {
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             background: var(--input-bg);
-            padding: 6px;
-            border-radius: 6px;
+            padding: 4px;
+            border-radius: 5px;
             border: 1px solid var(--border-color);
         }
 
         .group-title {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: bold;
             color: var(--accent-green);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             padding-left: 2px;
         }
 
         .main-stats-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 3px;
+            gap: 2px;
             text-align: center;
         }
 
@@ -310,8 +315,8 @@
             display: flex;
             flex-direction: column;
             background: var(--row-bg);
-            padding: 4px 2px;
-            border-radius: 4px;
+            padding: 3px 1px;
+            border-radius: 3px;
             border: 1px solid var(--border-color);
             box-sizing: border-box;
             justify-content: center;
@@ -319,14 +324,14 @@
         }
 
         .stat-box-main .lbl {
-            font-size: 8px;
+            font-size: 7px;
             color: var(--text-dim);
             font-weight: bold;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
 
         .stat-box-main .val {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
         }
 
@@ -335,11 +340,11 @@
             justify-content: space-between;
             align-items: center;
             background: var(--row-bg);
-            padding: 4px 6px;
-            border-radius: 4px;
-            margin-bottom: 3px;
-            font-size: 11px;
-            height: 24px;
+            padding: 3px 5px;
+            border-radius: 3px;
+            margin-bottom: 2px;
+            font-size: 10px;
+            height: 22px;
             box-sizing: border-box;
         }
 
@@ -350,14 +355,19 @@
         .stat-row .name {
             color: var(--text-main);
             font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right: 2px;
         }
 
         .stat-row .val-box {
-            padding: 2px 6px;
-            border-radius: 4px;
+            padding: 1px 4px;
+            border-radius: 3px;
             font-weight: bold;
-            min-width: 25px;
+            min-width: 20px;
             text-align: center;
+            flex-shrink: 0;
         }
 
         .better {
@@ -409,7 +419,7 @@
     <div class="controls">
         <div class="player-selector-group">
             <div class="search-box">
-                <input type="text" id="p1Input" class="search-input" placeholder="Search Player 1..." oninput="filterPlayers(1)" onfocus="showList(1)">
+                <input type="text" id="p1Input" class="search-input" placeholder="Player 1..." oninput="filterPlayers(1)" onfocus="showList(1)">
                 <span class="search-icon">&#128269;</span>
                 <div id="p1List" class="dropdown-list"></div>
             </div>
@@ -418,7 +428,7 @@
 
         <div class="player-selector-group">
             <div class="search-box">
-                <input type="text" id="p2Input" class="search-input" placeholder="Search Player 2..." oninput="filterPlayers(2)" onfocus="showList(2)">
+                <input type="text" id="p2Input" class="search-input" placeholder="Player 2..." oninput="filterPlayers(2)" onfocus="showList(2)">
                 <span class="search-icon">&#128269;</span>
                 <div id="p2List" class="dropdown-list"></div>
             </div>
@@ -629,18 +639,17 @@
             let shardHTML = '';
             if (shardCost !== '-' && shardCost !== '') {
                 const formattedCost = typeof shardCost === 'number' ? shardCost.toLocaleString() : shardCost;
-                shardHTML = ` | Shard cost: <span class="shard-inline"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>${formattedCost}</span>`;
+                shardHTML = ` | Shard cost: <span class="shard-inline"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>${formattedCost}</span>`;
             }
 
             let html = `
                 <div class="player-header">
                     ${imgHTML}
                     <div class="player-name">${ovr} | ${name} (${pos !== '-' ? pos : ''})</div>
-                    <div class="player-meta">WF: ${wf} ★ | SM: ${sm} ★${altPosHTML}${shardHTML}</div>
+                    <div class="player-meta">WF: ${wf}★ | SM: ${sm}★${altPosHTML}${shardHTML}</div>
                 </div>
             `;
 
-            // GLAVNE STATISTIKE U OKVIRU (KAO OSTALE SEKCIJE)
             html += `
                 <div class="stat-group">
                     <div class="group-title">Overview</div>
