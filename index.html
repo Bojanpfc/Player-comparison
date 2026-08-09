@@ -220,32 +220,34 @@
             box-shadow: 0 4px 20px var(--shadow-color);
         }
 
+        /* FIKSIRANA VISINA ZAGLAVLJA - DVA KARTONA ĆE DITIĆI SVE TAČNO U RAVAN */
         .player-header {
             text-align: center;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 8px;
             margin-bottom: 10px;
-            min-height: 220px;
+            height: 250px; /* fiksna visina */
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
+            box-sizing: border-box;
         }
 
         .player-img {
             width: 110px;
-            height: auto;
-            max-height: 140px;
+            height: 130px;
             object-fit: contain;
             margin: 0 auto 8px auto;
             display: block;
         }
 
         .player-name {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             color: var(--text-main);
             margin-bottom: 4px;
+            line-height: 1.2;
         }
 
         .player-meta {
@@ -257,7 +259,8 @@
             justify-content: center;
             flex-wrap: wrap;
             gap: 4px;
-            min-height: 34px;
+            min-height: 38px;
+            line-height: 1.3;
         }
 
         .shard-inline {
@@ -430,13 +433,14 @@
         let selectedP1Idx = 0;
         let selectedP2Idx = 1;
 
+        // GRUPE - SVAKA STATISTIKA IMA JEDAN PRECIZAN HEADER
         const statGroups = [
-            { name: "Pace", keys: ["Acceleration", "Sprint Speed", "Sprint speed"] },
-            { name: "Defending", keys: ["Marking", "Standing Tackle", "Standing tackle", "Sliding Tackle", "Sliding tackle", "Awareness", "Heading", "Interceptions"] },
+            { name: "Pace", keys: ["Acceleration", "Sprint speed"] },
+            { name: "Defending", keys: ["Marking", "Standing tackle", "Sliding tackle", "Awareness", "Heading", "Interceptions"] },
             { name: "Physical", keys: ["Strength", "Aggression", "Jumping", "Stamina"] },
-            { name: "Passing", keys: ["Short Passing", "Short passing", "Long Passing", "Long passing", "Vision", "Crossing", "Curve", "Free Kick", "Freekick"] },
-            { name: "Dribbling", keys: ["Dribbling", "Agility", "Balance", "Reactions", "Ball Control", "Ball control"] },
-            { name: "Shooting", keys: ["Finishing", "Shot Power", "Shot power", "Long Shots", "Long shots", "Positioning", "Volleys", "Penalties"] }
+            { name: "Passing", keys: ["Short passing", "Long passing", "Vision", "Crossing", "Curve", "Free kick"] },
+            { name: "Dribbling", keys: ["Dribbling", "Agility", "Balance", "Reactions", "Ball control"] },
+            { name: "Shooting", keys: ["Finishing", "Shot power", "Long shots", "Positioning", "Volleys", "Penalties"] }
         ];
 
         function toggleTheme() {
@@ -457,8 +461,7 @@
 
         function getProp(obj, keys) {
             for (let k of keys) {
-                if (obj[k] !== undefined && obj[k] !== '') return obj[k];
-                let foundKey = Object.keys(obj).find(key => key.toLowerCase() === k.toLowerCase());
+                let foundKey = Object.keys(obj).find(key => key.toLowerCase().trim() === k.toLowerCase().trim());
                 if (foundKey && obj[foundKey] !== undefined && obj[foundKey] !== '') return obj[foundKey];
             }
             return '-';
@@ -626,7 +629,7 @@
             let html = `
                 <div class="player-header">
                     ${imgHTML}
-                    <div class="player-name">${ovr} | ${name} (${pos !== '-' ? pos : 'CB'})</div>
+                    <div class="player-name">${ovr} | ${name} (${pos !== '-' ? pos : ''})</div>
                     <div class="player-meta">WF: ${wf} ★ | SM: ${sm} ★${altPosHTML}${shardHTML}</div>
                 </div>
             `;
@@ -653,6 +656,7 @@
                 let groupRowsHTML = '';
 
                 group.keys.forEach(key => {
+                    // PRONAĐI PRVI MATCH DA IZBEGNEMO DUPLIKATE IZ TABELE
                     const matchedHeader = headers.find(h => h && h.trim().toLowerCase() === key.toLowerCase());
 
                     if (matchedHeader) {
@@ -678,7 +682,7 @@
 
                             groupRowsHTML += `
                                 <div class="stat-row">
-                                    <span class="name">${matchedHeader}</span>
+                                    <span class="name">${key}</span>
                                     <span class="val-box ${cls}">${hasVal1 ? val1 : '-'}</span>
                                 </div>
                             `;
