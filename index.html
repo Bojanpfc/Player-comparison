@@ -204,7 +204,6 @@
             opacity: 0.8;
         }
 
-        /* GLAVNA MREŽA - 2 KOLONE KOJE UVEK OSTAJU JEDNA PORED DRUGE */
         .compare-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -221,57 +220,66 @@
             padding: 6px;
             box-shadow: 0 4px 15px var(--shadow-color);
             box-sizing: border-box;
-            min-width: 0; /* Sprečava da kartica gura sadržaj spolja */
+            min-width: 0;
         }
 
+        /* NOVI RASPORED HEADER-A */
         .player-header {
-            text-align: center;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 6px;
             margin-bottom: 8px;
-            height: 220px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
+            gap: 4px;
             box-sizing: border-box;
         }
 
+        .player-top-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .player-img {
-            width: 85px;
-            height: 95px;
+            width: 65px;
+            height: 75px;
             object-fit: contain;
-            margin: 0 auto 4px auto;
-            display: block;
+            flex-shrink: 0;
+        }
+
+        .player-details-right {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            font-size: 10px;
+            color: var(--text-dim);
+            font-weight: 600;
+            flex-grow: 1;
+        }
+
+        .meta-line {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .player-bottom-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2px;
+            padding-top: 2px;
+            border-top: 1px dashed var(--border-color);
         }
 
         .player-name {
             font-size: 11px;
             font-weight: bold;
             color: var(--text-main);
-            margin-bottom: 3px;
             line-height: 1.1;
-            height: 26px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
+            white-space: nowrap;
             overflow: hidden;
-        }
-
-        .player-meta {
-            font-size: 9px;
-            color: var(--text-dim);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 2px;
-            height: 32px;
-            line-height: 1.1;
-            text-align: center;
-            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .shard-inline {
@@ -280,6 +288,8 @@
             gap: 2px;
             color: #38bdf8;
             font-weight: 700;
+            font-size: 9px;
+            white-space: nowrap;
         }
 
         .shard-inline svg {
@@ -634,19 +644,28 @@
             const shardCost = getProp(player, ['Shard cost', 'Shard Cost', 'ShardCost', 'Shards']);
 
             let imgHTML = imgUrl !== '-' ? `<img src="${imgUrl}" class="player-img" alt="${name}" />` : '';
-            let altPosHTML = (altPos !== '-' && altPos !== '') ? ` | Alt: ${altPos}` : '';
+            let altPosText = (altPos !== '-' && altPos !== '') ? `Alt: ${altPos}` : '';
             
             let shardHTML = '';
             if (shardCost !== '-' && shardCost !== '') {
                 const formattedCost = typeof shardCost === 'number' ? shardCost.toLocaleString() : shardCost;
-                shardHTML = ` | Shard cost: <span class="shard-inline"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>${formattedCost}</span>`;
+                shardHTML = `<span class="shard-inline"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>${formattedCost}</span>`;
             }
 
             let html = `
                 <div class="player-header">
-                    ${imgHTML}
-                    <div class="player-name">${ovr} | ${name} (${pos !== '-' ? pos : ''})</div>
-                    <div class="player-meta">WF: ${wf}★ | SM: ${sm}★${altPosHTML}${shardHTML}</div>
+                    <div class="player-top-row">
+                        ${imgHTML}
+                        <div class="player-details-right">
+                            <div class="meta-line">WF: ${wf}★</div>
+                            <div class="meta-line">SM: ${sm}★</div>
+                            ${altPosText ? `<div class="meta-line">${altPosText}</div>` : ''}
+                        </div>
+                    </div>
+                    <div class="player-bottom-row">
+                        <div class="player-name">${ovr} | ${name} (${pos !== '-' ? pos : ''})</div>
+                        ${shardHTML}
+                    </div>
                 </div>
             `;
 
