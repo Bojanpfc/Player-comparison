@@ -220,13 +220,13 @@
             box-shadow: 0 4px 20px var(--shadow-color);
         }
 
-        /* FIKSIRANA VISINA ZAGLAVLJA - DVA KARTONA ĆE DITIĆI SVE TAČNO U RAVAN */
+        /* FIKSIRANE VISINE ZA POTPUNU PORAVNATOST */
         .player-header {
             text-align: center;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 8px;
             margin-bottom: 10px;
-            height: 250px; /* fiksna visina */
+            height: 260px;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -236,18 +236,23 @@
 
         .player-img {
             width: 110px;
-            height: 130px;
+            height: 125px;
             object-fit: contain;
-            margin: 0 auto 8px auto;
+            margin: 0 auto 6px auto;
             display: block;
         }
 
         .player-name {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             color: var(--text-main);
             margin-bottom: 4px;
             line-height: 1.2;
+            height: 32px; /* fiksirana visina za tačno 2 reda teksta */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
 
         .player-meta {
@@ -258,9 +263,10 @@
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 4px;
-            min-height: 38px;
-            line-height: 1.3;
+            gap: 3px;
+            height: 36px; /* fiksirana visina za detalje */
+            line-height: 1.2;
+            text-align: center;
         }
 
         .shard-inline {
@@ -433,7 +439,6 @@
         let selectedP1Idx = 0;
         let selectedP2Idx = 1;
 
-        // GRUPE - SVAKA STATISTIKA IMA JEDAN PRECIZAN HEADER
         const statGroups = [
             { name: "Pace", keys: ["Acceleration", "Sprint speed"] },
             { name: "Defending", keys: ["Marking", "Standing tackle", "Sliding tackle", "Awareness", "Heading", "Interceptions"] },
@@ -656,7 +661,6 @@
                 let groupRowsHTML = '';
 
                 group.keys.forEach(key => {
-                    // PRONAĐI PRVI MATCH DA IZBEGNEMO DUPLIKATE IZ TABELE
                     const matchedHeader = headers.find(h => h && h.trim().toLowerCase() === key.toLowerCase());
 
                     if (matchedHeader) {
