@@ -280,42 +280,7 @@
             vertical-align: middle;
         }
 
-        /* GLAVNE STATISTIKE - RED SA 6 UOKVIRENIH OČENA */
-        .main-stats {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 3px;
-            background: transparent;
-            margin-bottom: 15px;
-            text-align: center;
-            height: 42px;
-            box-sizing: border-box;
-            align-items: center;
-        }
-
-        .stat-box-main {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 3px 1px;
-            border-radius: 4px;
-            height: 100%;
-            box-sizing: border-box;
-        }
-
-        .stat-box-main .lbl {
-            font-size: 8px;
-            color: var(--text-dim);
-            font-weight: bold;
-            margin-bottom: 1px;
-        }
-
-        .stat-box-main .val {
-            font-size: 11px;
-            font-weight: bold;
-        }
-
+        /* GLAVNE STATISTIKE UOKVIRENE KAO OSTALE SEKCIJE */
         .stat-group {
             margin-bottom: 12px;
             background: var(--input-bg);
@@ -332,6 +297,37 @@
             letter-spacing: 0.5px;
             margin-bottom: 5px;
             padding-left: 2px;
+        }
+
+        .main-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 3px;
+            text-align: center;
+        }
+
+        .stat-box-main {
+            display: flex;
+            flex-direction: column;
+            background: var(--row-bg);
+            padding: 4px 2px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .stat-box-main .lbl {
+            font-size: 8px;
+            color: var(--text-dim);
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .stat-box-main .val {
+            font-size: 11px;
+            font-weight: bold;
         }
 
         .stat-row {
@@ -364,7 +360,6 @@
             text-align: center;
         }
 
-        /* STILOVI ZA UOKVIRENE OCENE (I U TABELI I U GLAVNIM OCENAMA) */
         .better {
             background: rgba(0, 255, 136, 0.15);
             color: var(--accent-green);
@@ -390,7 +385,7 @@
         }
 
         .equal {
-            background: var(--input-bg);
+            background: var(--border-color);
             color: var(--text-main);
             border: 1px solid var(--border-color);
         }
@@ -645,26 +640,33 @@
                 </div>
             `;
 
-            html += `<div class="main-stats">`;
+            // GLAVNE STATISTIKE U OKVIRU (KAO OSTALE SEKCIJE)
+            html += `
+                <div class="stat-group">
+                    <div class="group-title">Overview</div>
+                    <div class="main-stats-grid">
+            `;
+
             ['PAC', 'SHO', 'PAS', 'DRI', 'DEF', 'PHY'].forEach(key => {
                 const val1Raw = getProp(player, [key]);
                 const val2Raw = getProp(opponent, [key]);
 
                 const val1 = parseFloat(val1Raw) || 0;
                 const val2 = parseFloat(val2Raw) || 0;
-                
-                let cls = 'equal';
-                if (val1 > val2) cls = 'better';
-                else if (val1 < val2) cls = 'worse';
+                let colorStyle = val1 > val2 ? 'color: var(--accent-green); font-weight: bold;' : (val1 < val2 ? 'color: var(--accent-red); font-weight: bold;' : '');
 
                 html += `
-                    <div class="stat-box-main ${cls}">
+                    <div class="stat-box-main">
                         <span class="lbl">${key}</span>
-                        <span class="val">${val1Raw}</span>
+                        <span class="val" style="${colorStyle}">${val1Raw}</span>
                     </div>
                 `;
             });
-            html += `</div>`;
+
+            html += `
+                    </div>
+                </div>
+            `;
 
             statGroups.forEach(group => {
                 let groupRowsHTML = '';
