@@ -223,7 +223,6 @@
             min-width: 0;
         }
 
-        /* NOVI RASPORED HEADER-A */
         .player-header {
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 6px;
@@ -460,13 +459,14 @@
         let selectedP1Idx = 0;
         let selectedP2Idx = 1;
 
+        // Poređano tačno istim redosledom kao Overview: PAC, SHO, PAS, DRI, DEF, PHY
         const statGroups = [
             { name: "Pace", keys: ["Acceleration", "Sprint speed"] },
-            { name: "Defending", keys: ["Marking", "Standing tackle", "Sliding tackle", "Awareness", "Heading", "Interceptions"] },
-            { name: "Physical", keys: ["Strength", "Aggression", "Jumping", "Stamina"] },
+            { name: "Shooting", keys: ["Finishing", "Shot power", "Long shots", "Positioning", "Volleys", "Penalties"] },
             { name: "Passing", keys: ["Short passing", "Long passing", "Vision", "Crossing", "Curve", "Free kick"] },
             { name: "Dribbling", keys: ["Dribbling", "Agility", "Balance", "Reactions", "Ball control"] },
-            { name: "Shooting", keys: ["Finishing", "Shot power", "Long shots", "Positioning", "Volleys", "Penalties"] }
+            { name: "Defending", keys: ["Marking", "Standing tackle", "Sliding tackle", "Awareness", "Heading", "Interceptions"] },
+            { name: "Physical", keys: ["Strength", "Aggression", "Jumping", "Stamina"] }
         ];
 
         function toggleTheme() {
