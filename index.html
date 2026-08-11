@@ -353,10 +353,8 @@
         .stat-box-main {
             display: flex;
             flex-direction: column;
-            background: var(--row-bg);
             padding: 3px 1px;
             border-radius: 3px;
-            border: 1px solid var(--border-color);
             box-sizing: border-box;
             justify-content: center;
             align-items: center;
@@ -372,6 +370,8 @@
         .stat-box-main .val {
             font-size: 10px;
             font-weight: bold;
+            padding: 1px 3px;
+            border-radius: 2px;
         }
 
         .stat-row {
@@ -410,31 +410,30 @@
         }
 
         /* 
-           BELE TEKSTOVE DRŽIMO NA ZELENOJ I CRVENOJ POZADINI 
-           U OBEMA TEMAMA ZA MAKSIMALNU PREGLEDNOST 
+           BLAŽE I PRIJATNIJE NIJANSE ZA OČI (I ZA OVERVIEW I ZA OSTALE STATSE)
         */
         .better {
-            background: rgba(0, 255, 136, 0.25);
+            background: rgba(46, 204, 113, 0.18);
             color: #ffffff !important;
-            border: 1px solid var(--accent-green);
+            border: 1px solid rgba(46, 204, 113, 0.4);
         }
 
         .worse {
-            background: rgba(255, 51, 102, 0.25);
+            background: rgba(231, 76, 60, 0.18);
             color: #ffffff !important;
-            border: 1px solid var(--accent-red);
+            border: 1px solid rgba(231, 76, 60, 0.4);
         }
 
         [data-theme="light"] .better {
-            background: #15803d;
-            color: #ffffff !important;
-            border: 1px solid #166534;
+            background: rgba(22, 163, 74, 0.22);
+            color: #0f172a !important;
+            border: 1px solid rgba(22, 163, 74, 0.45);
         }
 
         [data-theme="light"] .worse {
-            background: #b91c1c;
-            color: #ffffff !important;
-            border: 1px solid #991b1b;
+            background: rgba(220, 38, 38, 0.22);
+            color: #0f172a !important;
+            border: 1px solid rgba(220, 38, 38, 0.45);
         }
 
         .equal {
@@ -727,12 +726,15 @@
 
                 const val1 = parseFloat(val1Raw) || 0;
                 const val2 = parseFloat(val2Raw) || 0;
-                let colorStyle = val1 > val2 ? 'color: #ffffff; font-weight: bold;' : (val1 < val2 ? 'color: #ffffff; font-weight: bold;' : '');
+                
+                let cls = '';
+                if (val1 > val2) cls = 'better';
+                else if (val1 < val2) cls = 'worse';
 
                 html += `
                     <div class="stat-box-main">
                         <span class="lbl">${key}</span>
-                        <span class="val" style="${colorStyle}">${val1Raw}</span>
+                        <span class="val ${cls}">${val1Raw}</span>
                     </div>
                 `;
             });
