@@ -346,32 +346,35 @@
         .main-stats-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
-            gap: 2px;
+            gap: 1px;
             text-align: center;
         }
 
         .stat-box-main {
             display: flex;
             flex-direction: column;
-            padding: 3px 1px;
+            padding: 2px 0px;
             border-radius: 3px;
             box-sizing: border-box;
             justify-content: center;
             align-items: center;
+            min-width: 0;
         }
 
         .stat-box-main .lbl {
-            font-size: 7px;
+            font-size: 6.5px;
             color: var(--text-dim);
             font-weight: bold;
             margin-bottom: 1px;
+            white-space: nowrap;
         }
 
         .stat-box-main .val {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: bold;
-            padding: 1px 3px;
+            padding: 1px 2px;
             border-radius: 2px;
+            white-space: nowrap;
         }
 
         .stat-row {
