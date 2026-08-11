@@ -41,6 +41,35 @@
             padding: 8px;
             box-sizing: border-box;
             transition: background-color 0.3s, color 0.3s;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Pozadinski sivi logo – ovde kasnije možeš ubaciti img tag ili background sliku */
+        .bg-logo-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            opacity: 0.04; /* Jako diskretno, neupadljivo */
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 0;
+        }
+
+        .bg-logo-container svg {
+            width: 100%;
+            height: 100%;
+            fill: var(--text-main);
+        }
+
+        .app-content {
+            position: relative;
+            z-index: 1;
         }
 
         .header-container {
@@ -412,50 +441,55 @@
 </head>
 <body>
 
-    <div class="header-container">
-        <h2>Player Comparison</h2>
-        <button class="theme-toggle" onclick="toggleTheme()">
-            <span id="themeIcon">☀️</span> <span id="themeText">Light</span>
-        </button>
+    <!-- Mesto za sivi logo u pozadini -->
+    <div class="bg-logo-container">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
     </div>
 
-    <div class="tabs">
-        <button class="tab-btn" id="btn-DEF" onclick="switchTab('DEF', this)">DEF</button>
-        <button class="tab-btn" id="btn-MID" onclick="switchTab('MID', this)">MID</button>
-        <button class="tab-btn" id="btn-ATT" onclick="switchTab('ATT', this)">ATT</button>
-    </div>
-
-    <div class="controls">
-        <div class="player-selector-group">
-            <div class="search-box">
-                <input type="text" id="p1Input" class="search-input" placeholder="Player 1..." oninput="filterPlayers(1)" onfocus="showList(1)">
-                <span class="search-icon">&#128269;</span>
-                <div id="p1List" class="dropdown-list"></div>
-            </div>
-            <select id="p1Select" class="dropdown-select" onchange="onSelectChange(1)"></select>
+    <div class="app-content">
+        <div class="header-container">
+            <h2>Player Comparison</h2>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <span id="themeIcon">☀️</span> <span id="themeText">Light</span>
+            </button>
         </div>
 
-        <div class="player-selector-group">
-            <div class="search-box">
-                <input type="text" id="p2Input" class="search-input" placeholder="Player 2..." oninput="filterPlayers(2)" onfocus="showList(2)">
-                <span class="search-icon">&#128269;</span>
-                <div id="p2List" class="dropdown-list"></div>
-            </div>
-            <select id="p2Select" class="dropdown-select" onchange="onSelectChange(2)"></select>
+        <div class="tabs">
+            <button class="tab-btn" id="btn-DEF" onclick="switchTab('DEF', this)">DEF</button>
+            <button class="tab-btn" id="btn-MID" onclick="switchTab('MID', this)">MID</button>
+            <button class="tab-btn" id="btn-ATT" onclick="switchTab('ATT', this)">ATT</button>
         </div>
-    </div>
 
-    <div class="compare-grid">
-        <div class="player-card" id="card1"></div>
-        <div class="player-card" id="card2"></div>
+        <div class="controls">
+            <div class="player-selector-group">
+                <div class="search-box">
+                    <input type="text" id="p1Input" class="search-input" placeholder="Player 1..." oninput="filterPlayers(1)" onfocus="showList(1)">
+                    <span class="search-icon">&#128269;</span>
+                    <div id="p1List" class="dropdown-list"></div>
+                </div>
+                <select id="p1Select" class="dropdown-select" onchange="onSelectChange(1)"></select>
+            </div>
+
+            <div class="player-selector-group">
+                <div class="search-box">
+                    <input type="text" id="p2Input" class="search-input" placeholder="Player 2..." oninput="filterPlayers(2)" onfocus="showList(2)">
+                    <span class="search-icon">&#128269;</span>
+                    <div id="p2List" class="dropdown-list"></div>
+                </div>
+                <select id="p2Select" class="dropdown-select" onchange="onSelectChange(2)"></select>
+            </div>
+        </div>
+
+        <div class="compare-grid">
+            <div class="player-card" id="card1"></div>
+            <div class="player-card" id="card2"></div>
+        </div>
     </div>
 
     <script>
         const SHEET_ID = '14GJlmnduoo0s8-p5olA1qzmX6a0ylmoVBTshTxeEA3A';
         
-        // Učitavanje sačuvanog taba iz localStorage-a (podrazumevano 'DEF' ako ne postoji)
         let currentTab = localStorage.getItem('fc_comparison_tab') || 'DEF';
-        
         let playersData = [];
         let headers = [];
 
@@ -497,7 +531,7 @@
 
         async function switchTab(tabName, btn) {
             currentTab = tabName;
-            localStorage.setItem('fc_comparison_tab', tabName); // Pamćenje taba
+            localStorage.setItem('fc_comparison_tab', tabName);
 
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             if (btn) {
@@ -650,7 +684,7 @@
             const altPos = getProp(player, ['Alt Pos', 'Alt Position', 'Alternative Position', 'AltPos']);
             const wf = getProp(player, ['WF', 'Weak Foot']);
             const sm = getProp(player, ['SM', 'Skill Moves']);
-            const height = getProp(player, ['Height', 'Visina', 'Ht']); // Podrška za različite nazive visine
+            const height = getProp(player, ['Height', 'Visina', 'Ht']);
             const imgUrl = getProp(player, ['Image', 'Img']);
             const shardCost = getProp(player, ['Shard cost', 'Shard Cost', 'ShardCost', 'Shards']);
 
@@ -671,7 +705,7 @@
                         <div class="player-details-right">
                             <div class="meta-line">WF: ${wf}★</div>
                             <div class="meta-line">SM: ${sm}★</div>
-                            ${heightText ? `<div class="meta-line">Ht: ${heightText}</div>` : ''}
+                            ${heightText ? `<div class="meta-line">Height: ${heightText}</div>` : ''}
                             ${altPosText ? `<div class="meta-line">${altPosText}</div>` : ''}
                         </div>
                     </div>
@@ -759,7 +793,6 @@
             return html;
         }
 
-        // Inicijalno učitavanje – postavlja sačuvani tab pri pokretanju/refresh-u
         switchTab(currentTab, null);
     </script>
 </body>
