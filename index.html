@@ -45,7 +45,7 @@
             min-height: 100vh;
         }
 
-        /* Pozadinski sivi logo – ovde kasnije možeš ubaciti img tag ili background sliku */
+        /* Pozadinski sivi logo – čeka tvoj logo */
         .bg-logo-container {
             position: fixed;
             top: 50%;
@@ -53,7 +53,7 @@
             transform: translate(-50%, -50%);
             width: 300px;
             height: 300px;
-            opacity: 0.04; /* Jako diskretno, neupadljivo */
+            opacity: 0.04;
             pointer-events: none;
             display: flex;
             justify-content: center;
@@ -79,6 +79,7 @@
             position: relative;
             max-width: 900px;
             margin: 0 auto 8px auto;
+            height: 35px;
         }
 
         h2 {
@@ -88,22 +89,24 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             text-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+            text-align: center;
         }
 
+        /* Skraćeno dugme za temu – samo ikonica */
         .theme-toggle {
             position: absolute;
             right: 0;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 5px 10px;
-            border-radius: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             cursor: pointer;
-            font-size: 11px;
-            font-weight: bold;
+            font-size: 14px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
             box-shadow: 0 2px 5px var(--shadow-color);
         }
 
@@ -441,7 +444,6 @@
 </head>
 <body>
 
-    <!-- Mesto za sivi logo u pozadini -->
     <div class="bg-logo-container">
         <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
     </div>
@@ -449,9 +451,7 @@
     <div class="app-content">
         <div class="header-container">
             <h2>Player Comparison</h2>
-            <button class="theme-toggle" onclick="toggleTheme()">
-                <span id="themeIcon">☀️</span> <span id="themeText">Light</span>
-            </button>
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
         </div>
 
         <div class="tabs">
@@ -507,17 +507,14 @@
 
         function toggleTheme() {
             const currentTheme = document.documentElement.getAttribute('data-theme');
-            const icon = document.getElementById('themeIcon');
-            const text = document.getElementById('themeText');
+            const iconBtn = document.getElementById('themeIcon');
 
             if (currentTheme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'dark');
-                icon.textContent = '☀️';
-                text.textContent = 'Light';
+                iconBtn.textContent = '☀️';
             } else {
                 document.documentElement.setAttribute('data-theme', 'light');
-                icon.textContent = '🌙';
-                text.textContent = 'Dark';
+                iconBtn.textContent = '🌙';
             }
         }
 
