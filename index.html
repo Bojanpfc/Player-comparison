@@ -420,9 +420,9 @@
     </div>
 
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('DEF', this)">DEF</button>
-        <button class="tab-btn" onclick="switchTab('MID', this)">MID</button>
-        <button class="tab-btn" onclick="switchTab('ATT', this)">ATT</button>
+        <button class="tab-btn" id="btn-DEF" onclick="switchTab('DEF', this)">DEF</button>
+        <button class="tab-btn" id="btn-MID" onclick="switchTab('MID', this)">MID</button>
+        <button class="tab-btn" id="btn-ATT" onclick="switchTab('ATT', this)">ATT</button>
     </div>
 
     <div class="controls">
@@ -452,14 +452,16 @@
 
     <script>
         const SHEET_ID = '14GJlmnduoo0s8-p5olA1qzmX6a0ylmoVBTshTxeEA3A';
-        let currentTab = 'DEF';
+        
+        // Učitavanje sačuvanog taba iz localStorage-a (podrazumevano 'DEF' ako ne postoji)
+        let currentTab = localStorage.getItem('fc_comparison_tab') || 'DEF';
+        
         let playersData = [];
         let headers = [];
 
         let selectedP1Idx = 0;
         let selectedP2Idx = 1;
 
-        // Poređano tačno istim redosledom kao Overview: PAC, SHO, PAS, DRI, DEF, PHY
         const statGroups = [
             { name: "Pace", keys: ["Acceleration", "Sprint speed"] },
             { name: "Shooting", keys: ["Finishing", "Shot power", "Long shots", "Positioning", "Volleys", "Penalties"] },
@@ -495,8 +497,16 @@
 
         async function switchTab(tabName, btn) {
             currentTab = tabName;
+            localStorage.setItem('fc_comparison_tab', tabName); // Pamćenje taba
+
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            if (btn) {
+                btn.classList.add('active');
+            } else {
+                const targetBtn = document.getElementById(`btn-${tabName}`);
+                if (targetBtn) targetBtn.classList.add('active');
+            }
+
             selectedP1Idx = 0;
             selectedP2Idx = 1;
             await loadSheetData();
@@ -640,12 +650,14 @@
             const altPos = getProp(player, ['Alt Pos', 'Alt Position', 'Alternative Position', 'AltPos']);
             const wf = getProp(player, ['WF', 'Weak Foot']);
             const sm = getProp(player, ['SM', 'Skill Moves']);
+            const height = getProp(player, ['Height', 'Visina', 'Ht']); // Podrška za različite nazive visine
             const imgUrl = getProp(player, ['Image', 'Img']);
             const shardCost = getProp(player, ['Shard cost', 'Shard Cost', 'ShardCost', 'Shards']);
 
             let imgHTML = imgUrl !== '-' ? `<img src="${imgUrl}" class="player-img" alt="${name}" />` : '';
             let altPosText = (altPos !== '-' && altPos !== '') ? `Alt: ${altPos}` : '';
-            
+            let heightText = (height !== '-' && height !== '') ? `${height}` : '';
+
             let shardHTML = '';
             if (shardCost !== '-' && shardCost !== '') {
                 const formattedCost = typeof shardCost === 'number' ? shardCost.toLocaleString() : shardCost;
@@ -659,6 +671,7 @@
                         <div class="player-details-right">
                             <div class="meta-line">WF: ${wf}★</div>
                             <div class="meta-line">SM: ${sm}★</div>
+                            ${heightText ? `<div class="meta-line">Ht: ${heightText}</div>` : ''}
                             ${altPosText ? `<div class="meta-line">${altPosText}</div>` : ''}
                         </div>
                     </div>
@@ -746,7 +759,8 @@
             return html;
         }
 
-        loadSheetData();
+        // Inicijalno učitavanje – postavlja sačuvani tab pri pokretanju/refresh-u
+        switchTab(currentTab, null);
     </script>
 </body>
 </html>
