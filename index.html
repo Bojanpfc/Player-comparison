@@ -660,7 +660,6 @@
         
         let currentTab = localStorage.getItem('fc_comparison_tab') || 'DEF';
         let playersData = [];
-        let infoDataMap = {};
         let headers = [];
 
         let selectedP1Idx = 0;
@@ -731,8 +730,6 @@
                     return player;
                 });
 
-                await loadInfoSheet();
-
                 if (playersData.length > 0) {
                     if (selectedP1Idx >= playersData.length) selectedP1Idx = 0;
                     if (selectedP2Idx >= playersData.length) selectedP2Idx = playersData.length > 1 ? 1 : 0;
@@ -744,39 +741,6 @@
                 }
             } catch (err) {
                 console.error("Error loading data:", err);
-            }
-        }
-
-        async function loadInfoSheet() {
-            infoDataMap = {};
-            try {
-                let infoRes = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Info`);
-                let text = await infoRes.text();
-                
-                if (text.includes("error") || text.length < 50) {
-                    infoRes = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`);
-                    text = await infoRes.text();
-                }
-
-                const json = JSON.parse(text.substr(47).slice(0, -2));
-                const infoHeaders = json.table.cols.map(col => col ? col.label : '');
-                console.log("INFO TAB HEADERS:", infoHeaders); // DIJAGNOSTIKA
-                
-                json.table.rows.forEach(row => {
-                    let infoRow = {};
-                    row.c.forEach((cell, idx) => {
-                        if (infoHeaders[idx]) {
-                            infoRow[infoHeaders[idx]] = cell ? (cell.v !== null ? cell.v : '') : '';
-                        }
-                    });
-                    const nameKey = getProp(infoRow, ['Name', 'Ime']).trim().toLowerCase();
-                    if (nameKey && nameKey !== '-') {
-                        infoDataMap[nameKey] = infoRow;
-                    }
-                });
-                console.log("LOADED INFO DATA MAP:", infoDataMap); // DIJAGNOSTIKA
-            } catch (e) {
-                console.log("Error loading info sheet:", e);
             }
         }
 
@@ -914,7 +878,7 @@
                     <div class="player-bottom-row">
                         <div class="player-name-area">
                             <div class="player-name">${ovr} | ${name} (${pos !== '-' ? pos : ''})</div>
-                            <button class="pros-cons-btn" onclick="openModal('${name.replace(/'/g, "\\'")}')">Pros & Cons</button>
+                            <button class="pros-cons-btn" onclick="openModal('${selectedP1Idx === playersData.indexOf(player) ? 'p1' : 'p2'}', '${name.replace(/'/g, "\\'")}')">Pros & Cons</button>
                         </div>
                         ${shardHTML}
                     </div>
@@ -1001,12 +965,15 @@
             return html;
         }
 
-        function openModal(playerName) {
+        function openModal(cardType, playerName) {
             const modal = document.getElementById('infoModal');
             const titleEl = document.getElementById('modalPlayerTitle');
             const prosListEl = document.getElementById('modalProsList');
             const consListEl = document.getElementById('modalConsList');
             const worthValEl = document.getElementById('modalWorthVal');
+
+            const playerIdx = (cardType === 'p1') ? selectedP1Idx : selectedP2Idx;
+            const player = playersData[playerIdx];
 
             titleEl.textContent = playerName + ' - Review';
             prosListEl.innerHTML = '';
@@ -1014,17 +981,13 @@
             worthValEl.textContent = '-';
             worthValEl.className = '';
 
-            const key = playerName.trim().toLowerCase();
-            console.log("TRAŽIM IGRAČA U MAPI:", key, "Pronađeno:", infoDataMap[key]); // DIJAGNOSTIKA
-            const info = infoDataMap[key];
+            if (player) {
+                const prosVal = getProp(player, ['Pros', 'Prednosti']);
+                const consVal = getProp(player, ['Cons', 'Mane']);
+                const worthVal = getProp(player, ['Worth shard cost', 'Worth Shard Cost', 'Shard Cost', 'Worth']);
 
-            if (info) {
-                const prosKey = Object.keys(info).find(k => k.toLowerCase() === 'pros');
-                const consKey = Object.keys(info).find(k => k.toLowerCase() === 'cons');
-                const worthKey = Object.keys(info).find(k => k.toLowerCase().includes('worth') || k.toLowerCase().includes('shard'));
-
-                if (prosKey && info[prosKey]) {
-                    info[prosKey].toString().split(',').forEach(item => {
+                if (prosVal && prosVal !== '-') {
+                    prosVal.split(',').forEach(item => {
                         const trimmed = item.trim();
                         if (trimmed) {
                             const li = document.createElement('li');
@@ -1034,8 +997,8 @@
                     });
                 }
 
-                if (consKey && info[consKey]) {
-                    info[consKey].toString().split(',').forEach(item => {
+                if (consVal && consVal !== '-') {
+                    consVal.split(',').forEach(item => {
                         const trimmed = item.trim();
                         if (trimmed) {
                             const li = document.createElement('li');
@@ -1045,11 +1008,10 @@
                     });
                 }
 
-                if (worthKey && info[worthKey]) {
-                    const worthText = info[worthKey].toString();
-                    worthValEl.textContent = worthText;
-                    if (worthText.toLowerCase() === 'yes') worthValEl.className = 'worth-yes';
-                    else if (worthText.toLowerCase() === 'no') worthValEl.className = 'worth-no';
+                if (worthVal && worthVal !== '-') {
+                    worthValEl.textContent = worthVal;
+                    if (worthVal.toLowerCase() === 'yes') worthValEl.className = 'worth-yes';
+                    else if (worthVal.toLowerCase() === 'no') worthValEl.className = 'worth-no';
                 }
             }
 
