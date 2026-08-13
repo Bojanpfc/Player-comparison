@@ -760,6 +760,7 @@
 
                 const json = JSON.parse(text.substr(47).slice(0, -2));
                 const infoHeaders = json.table.cols.map(col => col ? col.label : '');
+                console.log("INFO TAB HEADERS:", infoHeaders); // DIJAGNOSTIKA
                 
                 json.table.rows.forEach(row => {
                     let infoRow = {};
@@ -773,6 +774,7 @@
                         infoDataMap[nameKey] = infoRow;
                     }
                 });
+                console.log("LOADED INFO DATA MAP:", infoDataMap); // DIJAGNOSTIKA
             } catch (e) {
                 console.log("Error loading info sheet:", e);
             }
@@ -1013,6 +1015,7 @@
             worthValEl.className = '';
 
             const key = playerName.trim().toLowerCase();
+            console.log("TRAŽIM IGRAČA U MAPI:", key, "Pronađeno:", infoDataMap[key]); // DIJAGNOSTIKA
             const info = infoDataMap[key];
 
             if (info) {
