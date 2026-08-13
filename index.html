@@ -1016,9 +1016,12 @@
             const info = infoDataMap[key];
 
             if (info) {
-                const prosText = getProp(info, ['Pros', 'Prednosti']);
-                if (prosText && prosText !== '-') {
-                    prosText.split(',').forEach(item => {
+                const prosKey = Object.keys(info).find(k => k.toLowerCase() === 'pros');
+                const consKey = Object.keys(info).find(k => k.toLowerCase() === 'cons');
+                const worthKey = Object.keys(info).find(k => k.toLowerCase().includes('worth') || k.toLowerCase().includes('shard'));
+
+                if (prosKey && info[prosKey]) {
+                    info[prosKey].toString().split(',').forEach(item => {
                         const trimmed = item.trim();
                         if (trimmed) {
                             const li = document.createElement('li');
@@ -1028,9 +1031,8 @@
                     });
                 }
 
-                const consText = getProp(info, ['Cons', 'Mane']);
-                if (consText && consText !== '-') {
-                    consText.split(',').forEach(item => {
+                if (consKey && info[consKey]) {
+                    info[consKey].toString().split(',').forEach(item => {
                         const trimmed = item.trim();
                         if (trimmed) {
                             const li = document.createElement('li');
@@ -1040,14 +1042,11 @@
                     });
                 }
 
-                const worthText = getProp(info, ['Worth shard cost', 'Worth', 'WorthShardCost']);
-                if (worthText && worthText !== '-') {
+                if (worthKey && info[worthKey]) {
+                    const worthText = info[worthKey].toString();
                     worthValEl.textContent = worthText;
-                    if (worthText.toLowerCase() === 'yes') {
-                        worthValEl.className = 'worth-yes';
-                    } else if (worthText.toLowerCase() === 'no') {
-                        worthValEl.className = 'worth-no';
-                    }
+                    if (worthText.toLowerCase() === 'yes') worthValEl.className = 'worth-yes';
+                    else if (worthText.toLowerCase() === 'no') worthValEl.className = 'worth-no';
                 }
             }
 
