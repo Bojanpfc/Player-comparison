@@ -10,7 +10,7 @@
             --card-bg: #121824;
             --accent-green: #00ff88;
             --accent-red: #ff3366;
-            --group-title-color: #b0c4de; /* Svetlija sivo-plavkasta nijansa za naslove grupa */
+            --group-title-color: #b0c4de;
             --border-glow: #1a233a;
             --text-dim: #8b9bb4;
             --text-main: #ffffff;
@@ -25,7 +25,7 @@
             --card-bg: #e2e8f0;
             --accent-green: #15803d;
             --accent-red: #b91c1c;
-            --group-title-color: #64748b; /* Svetlija siva za light mode */
+            --group-title-color: #64748b;
             --border-glow: #94a3b8;
             --text-dim: #475569;
             --text-main: #0f172a;
@@ -150,6 +150,7 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
+            position: relative;
         }
 
         .search-box {
@@ -189,9 +190,15 @@
             font-size: 12px;
         }
 
-        .dropdown-select {
+        /* Lepši custom dropdown umesto običnog select-a */
+        .custom-dropdown-container {
+            position: relative;
             width: 100%;
-            padding: 6px;
+        }
+
+        .custom-select-btn {
+            width: 100%;
+            padding: 7px 10px;
             background: var(--input-bg);
             color: var(--text-main);
             border: 1px solid var(--border-color);
@@ -199,6 +206,53 @@
             font-weight: bold;
             outline: none;
             font-size: 11px;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .custom-select-btn::after {
+            content: "▼";
+            font-size: 9px;
+            color: var(--text-dim);
+            margin-left: 5px;
+        }
+
+        .custom-dropdown-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 200;
+            display: none;
+            box-shadow: 0 8px 16px var(--shadow-color);
+            margin-top: 3px;
+        }
+
+        .custom-dropdown-item {
+            padding: 8px 10px;
+            cursor: pointer;
+            font-size: 11px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .custom-dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .custom-dropdown-item:hover {
+            background: var(--accent-green);
+            color: #fff;
         }
 
         .dropdown-list {
@@ -364,7 +418,7 @@
         .group-title {
             font-size: 9.5px;
             font-weight: bold;
-            color: var(--group-title-color); /* Svetlija siva boja za naslove */
+            color: var(--group-title-color);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 4px;
@@ -592,6 +646,17 @@
             color: var(--accent-red);
             font-weight: bold;
         }
+
+        /* Diskretni sivi tekst na dnu modala */
+        .modal-disclaimer {
+            margin-top: 10px;
+            font-size: 9.5px;
+            color: var(--text-dim);
+            text-align: center;
+            font-style: italic;
+            border-top: 1px solid var(--border-color);
+            padding-top: 6px;
+        }
     </style>
 </head>
 <body>
@@ -613,22 +678,30 @@
         </div>
 
         <div class="controls">
+            <!-- Player 1 Selector -->
             <div class="player-selector-group">
                 <div class="search-box">
                     <input type="text" id="p1Input" class="search-input" placeholder="Player 1..." oninput="filterPlayers(1)" onfocus="showList(1)">
                     <span class="search-icon">&#128269;</span>
                     <div id="p1List" class="dropdown-list"></div>
                 </div>
-                <select id="p1Select" class="dropdown-select" onchange="onSelectChange(1)"></select>
+                <div class="custom-dropdown-container">
+                    <button type="button" class="custom-select-btn" id="p1CustomBtn" onclick="toggleCustomDropdown(1)">Select player...</button>
+                    <div id="p1CustomList" class="custom-dropdown-list"></div>
+                </div>
             </div>
 
+            <!-- Player 2 Selector -->
             <div class="player-selector-group">
                 <div class="search-box">
                     <input type="text" id="p2Input" class="search-input" placeholder="Player 2..." oninput="filterPlayers(2)" onfocus="showList(2)">
                     <span class="search-icon">&#128269;</span>
                     <div id="p2List" class="dropdown-list"></div>
                 </div>
-                <select id="p2Select" class="dropdown-select" onchange="onSelectChange(2)"></select>
+                <div class="custom-dropdown-container">
+                    <button type="button" class="custom-select-btn" id="p2CustomBtn" onclick="toggleCustomDropdown(2)">Select player...</button>
+                    <div id="p2CustomList" class="custom-dropdown-list"></div>
+                </div>
             </div>
         </div>
 
@@ -653,6 +726,11 @@
             <div class="modal-worth-box">
                 <span>Worth the shard cost:</span>
                 <span id="modalWorthVal">-</span>
+            </div>
+
+            <!-- Sivi tekst na dnu modala -->
+            <div class="modal-disclaimer">
+                Based on personal opinion, subject to change.
             </div>
         </div>
     </div>
@@ -736,7 +814,7 @@
                     if (selectedP1Idx >= playersData.length) selectedP1Idx = 0;
                     if (selectedP2Idx >= playersData.length) selectedP2Idx = playersData.length > 1 ? 1 : 0;
                     
-                    populateNativeSelects();
+                    populateCustomDropdowns();
                     syncSelectors(1);
                     syncSelectors(2);
                     renderComparison();
@@ -746,46 +824,74 @@
             }
         }
 
-        function populateNativeSelects() {
-            const s1 = document.getElementById('p1Select');
-            const s2 = document.getElementById('p2Select');
-            s1.innerHTML = '';
-            s2.innerHTML = '';
+        function populateCustomDropdowns() {
+            const list1 = document.getElementById('p1CustomList');
+            const list2 = document.getElementById('p2CustomList');
+            list1.innerHTML = '';
+            list2.innerHTML = '';
 
             playersData.forEach((player, idx) => {
                 const name = getProp(player, ['Name', 'Ime']);
                 const ovr = getProp(player, ['Ovr', 'OVR']);
                 const optText = `${ovr} | ${name}`;
 
-                s1.options.add(new Option(optText, idx));
-                s2.options.add(new Option(optText, idx));
-            });
+                const item1 = document.createElement('div');
+                item1.className = 'custom-dropdown-item';
+                item1.textContent = optText;
+                item1.onclick = () => selectCustomPlayer(1, idx);
+                list1.appendChild(item1);
 
-            s1.value = selectedP1Idx;
-            s2.value = selectedP2Idx;
+                const item2 = document.createElement('div');
+                item2.className = 'custom-dropdown-item';
+                item2.textContent = optText;
+                item2.onclick = () => selectCustomPlayer(2, idx);
+                list2.appendChild(item2);
+            });
+            updateCustomButtonText(1);
+            updateCustomButtonText(2);
         }
 
-        function onSelectChange(slot) {
-            const selectEl = document.getElementById(`p${slot}Select`);
-            const idx = parseInt(selectEl.value, 10);
-            selectPlayer(slot, idx);
+        function toggleCustomDropdown(slot) {
+            const list = document.getElementById(`p${slot}CustomList`);
+            const otherSlot = slot === 1 ? 2 : 1;
+            document.getElementById(`p${otherSlot}CustomList`).style.display = 'none';
+            document.getElementById(`p${otherSlot}List`).style.display = 'none';
+
+            list.style.display = list.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function updateCustomButtonText(slot) {
+            const idx = slot === 1 ? selectedP1Idx : selectedP2Idx;
+            const btn = document.getElementById(`p${slot}CustomBtn`);
+            if (playersData[idx]) {
+                const name = getProp(playersData[idx], ['Name', 'Ime']);
+                const ovr = getProp(playersData[idx], ['Ovr', 'OVR']);
+                btn.textContent = `${ovr} | ${name}`;
+            }
+        }
+
+        function selectCustomPlayer(slot, idx) {
+            if (slot === 1) {
+                selectedP1Idx = idx;
+            } else {
+                selectedP2Idx = idx;
+            }
+            updateCustomButtonText(slot);
+            document.getElementById(`p${slot}CustomList`).style.display = 'none';
+            renderComparison();
         }
 
         function syncSelectors(slot) {
-            const idx = slot === 1 ? selectedP1Idx : selectedP2Idx;
             const input = document.getElementById(`p${slot}Input`);
-            const selectEl = document.getElementById(`p${slot}Select`);
-
             input.value = '';
-            if (playersData[idx]) {
-                selectEl.value = idx;
-            }
+            updateCustomButtonText(slot);
         }
 
         function filterPlayers(slot) {
             const query = document.getElementById(`p${slot}Input`).value.toLowerCase();
             const listDiv = document.getElementById(`p${slot}List`);
             listDiv.innerHTML = '';
+            document.getElementById(`p${slot}CustomList`).style.display = 'none';
 
             if (query.trim() === '') {
                 listDiv.style.display = 'none';
@@ -811,6 +917,7 @@
         }
 
         function showList(slot) {
+            document.getElementById(`p${slot}CustomList`).style.display = 'none';
             if (document.getElementById(`p${slot}Input`).value.trim() !== '') {
                 filterPlayers(slot);
             }
@@ -828,9 +935,11 @@
         }
 
         document.addEventListener('click', function(e) {
-            if (!e.target.closest('.search-box')) {
+            if (!e.target.closest('.search-box') && !e.target.closest('.custom-dropdown-container')) {
                 document.getElementById('p1List').style.display = 'none';
                 document.getElementById('p2List').style.display = 'none';
+                document.getElementById('p1CustomList').style.display = 'none';
+                document.getElementById('p2CustomList').style.display = 'none';
             }
         });
 
