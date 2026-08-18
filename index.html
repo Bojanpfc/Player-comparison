@@ -17,19 +17,19 @@
             font-family: sans-serif;
             margin: 0;
             padding: 20px;
+            display: block; /* Uklonjeno flex centriranje */
         }
         h1 { 
-            text-align: center; 
-            margin-top: 20px;
-            margin-bottom: 40px; 
+            text-align: left; /* Naslov na levo */
+            margin-top: 10px;
+            margin-bottom: 30px; 
             color: var(--accent-green);
-            font-size: 1.8rem;
+            font-size: 1.5rem;
         }
         .menu-grid {
             display: grid;
             gap: 15px;
-            max-width: 400px;
-            margin: 0 auto;
+            width: 100%; /* Uzima punu širinu */
         }
         .menu-card {
             background-color: var(--card-bg);
@@ -40,7 +40,8 @@
             border: 1px solid #1a233a;
             display: flex;
             align-items: center;
-            font-size: 1rem; /* Smanjen font */
+            justify-content: flex-start; /* Poravnanje sadržaja levo */
+            font-size: 1rem;
             font-weight: 500;
         }
         .menu-card span {
