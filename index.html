@@ -29,10 +29,11 @@
         .menu-grid {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
             width: 100%;
-            margin: 0 auto;
+            margin: 0;
+            padding-left: 0;
         }
         .menu-card {
             background-color: var(--card-bg);
@@ -57,7 +58,7 @@
         .submenu-container {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             width: 100%;
         }
         #eventsSubmenu {
@@ -66,6 +67,7 @@
             gap: 8px;
             margin-top: 8px;
             width: fit-content;
+            padding-left: 15px;
         }
         .submenu-item {
             color: #8b9bb4;
