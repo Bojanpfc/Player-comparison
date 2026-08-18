@@ -17,31 +17,32 @@
             font-family: sans-serif;
             margin: 0;
             padding: 20px;
-            display: block; /* Uklonjeno flex centriranje */
+            text-align: left !important;
         }
         h1 { 
-            text-align: left; /* Naslov na levo */
+            text-align: left; 
             margin-top: 10px;
-            margin-bottom: 30px; 
+            margin-bottom: 25px; 
             color: var(--accent-green);
-            font-size: 1.5rem;
+            font-size: 1.4rem;
         }
         .menu-grid {
-            display: grid;
-            gap: 15px;
-            width: 100%; /* Uzima punu širinu */
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 100%;
         }
         .menu-card {
             background-color: var(--card-bg);
-            padding: 15px 20px;
+            padding: 14px 18px;
             border-radius: 10px;
             text-decoration: none;
             color: var(--text-main);
             border: 1px solid #1a233a;
             display: flex;
             align-items: center;
-            justify-content: flex-start; /* Poravnanje sadržaja levo */
-            font-size: 1rem;
+            justify-content: flex-start;
+            font-size: 0.95rem;
             font-weight: 500;
         }
         .menu-card span {
