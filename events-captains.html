@@ -9,6 +9,7 @@
             --bg-color: #0b0e14;
             --card-bg: #121824;
             --accent-green: #00ff88;
+            --accent-blue: #3388ff;
             --text-main: #ffffff;
             --text-dim: #8b9bb4;
         }
@@ -16,61 +17,64 @@
             background-color: var(--bg-color); 
             color: var(--text-main); 
             font-family: sans-serif; 
-            padding: 20px; 
+            padding: 15px; 
             margin: 0;
         }
         h1 { 
             color: var(--accent-green); 
             text-align: center; 
-            font-size: 1.3rem; 
-            margin-bottom: 25px; 
+            font-size: 1.2rem; 
+            margin-bottom: 20px; 
         }
         .grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
-            gap: 15px; 
-            max-width: 600px;
+            grid-template-columns: repeat(2, 1fr); /* Dva igrača u redu na mobilnom, može i više na većim ekranima */
+            gap: 12px; 
+            max-width: 500px;
             margin: 0 auto;
+        }
+        @media (min-width: 500px) {
+            .grid {
+                grid-template-columns: repeat(3, 1fr); /* Tri u redu ako je malo veći ekran */
+            }
         }
         .player-card { 
             background: var(--card-bg); 
             border: 1px solid #1a233a; 
-            padding: 12px; 
-            border-radius: 10px; 
+            padding: 10px; 
+            border-radius: 8px; 
             text-align: center; 
         }
         .player-card img { 
             width: 100%; 
             height: auto;
-            border-radius: 6px; 
-            margin-bottom: 8px; 
+            border-radius: 5px; 
+            margin-bottom: 6px; 
         }
         .name { 
             font-weight: bold; 
-            font-size: 0.95rem; 
+            font-size: 0.9rem; 
             color: var(--text-main); 
             margin-bottom: 4px;
         }
-        .worth-text { 
-            color: var(--accent-green); 
+        .cost-text { 
+            color: var(--accent-blue); 
             font-size: 0.8rem; 
-            font-weight: 600; 
+            font-weight: bold; 
         }
     </style>
 </head>
 <body>
 
     <h1>Players worth taking in this event</h1>
-    <div class="grid" id="playerList">Loading players from all tabs...</div>
+    <div class="grid" id="playerList">Loading players...</div>
 
     <script>
         const SHEET_ID = '14GJlmnduoo0s8-p5olA1qzmX6a0ylmoVBTshTxeEA3A'; 
-        const tabs = ['Def', 'Mid', 'Att']; // Prolazimo kroz sva 3 taba
-        const container = document.getElementById('playerList');
-        container.innerHTML = '';
+        const tabs = ['Def', 'Mid', 'Att']; 
 
         async function loadAllPlayers() {
-            let foundAny = false;
+            let allPlayers = [];
 
             for (const tab of tabs) {
                 const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${tab}`;
@@ -81,9 +85,8 @@
                     const data = JSON.parse(text.substr(47).slice(0, -2));
                     
                     const cols = data.table.cols;
-                    let nameIdx = -1, eventIdx = -1, worthIdx = -1, imgIdx = -1;
+                    let nameIdx = -1, eventIdx = -1, worthIdx = -1, imgIdx = -1, costIdx = -1;
 
-                    // Pronalazimo tačne indekse kolona po njihovom imenu
                     cols.forEach((col, index) => {
                         if (!col || !col.label) return;
                         const label = col.label.trim().toLowerCase();
@@ -91,26 +94,26 @@
                         if (label === 'event') eventIdx = index;
                         if (label.includes('worth shard cost')) worthIdx = index;
                         if (label === 'image') imgIdx = index;
+                        if (label.includes('shard cost')) costIdx = index;
                     });
 
-                    // Ako smo našli potrebne kolone u ovom tabu, čitamo redove
                     if (nameIdx !== -1 && worthIdx !== -1) {
                         data.table.rows.forEach(row => {
                             const name = row.c[nameIdx]?.v;
-                            const event = eventIdx !== -1 ? (row.c[eventIdx]?.v || '') : 'Captains'; // Ako nema event kolone, podrazumevamo Captains
                             const worthCost = row.c[worthIdx]?.v;
                             const image = imgIdx !== -1 ? row.c[imgIdx]?.v : '';
+                            const rawCost = costIdx !== -1 ? (row.c[costIdx]?.v || 0) : 0;
 
-                            // Uslov: Event je Captains i Worth shard cost je Yes
                             if (name && worthCost && worthCost.toString().trim().toLowerCase() === 'yes') {
-                                foundAny = true;
-                                container.innerHTML += `
-                                    <div class="player-card">
-                                        <img src="${image}" alt="${name}">
-                                        <div class="name">${name}</div>
-                                        <div class="worth-text">Worth Shard Cost</div>
-                                    </div>
-                                `;
+                                // Čistimo cenu u broj radi sortiranja (uklanjamo tačke, zareze ako ih ima)
+                                let numericCost = parseFloat(rawCost.toString().replace(/[^0-9.]/g, '')) || 0;
+                                
+                                allPlayers.push({
+                                    name: name,
+                                    image: image,
+                                    costText: rawCost,
+                                    numericCost: numericCost
+                                });
                             }
                         });
                     }
@@ -119,13 +122,30 @@
                 }
             }
 
-            if (!foundAny) {
-                container.innerHTML = '<p style="text-align:center; color:#8b9bb4; grid-column:1/-1;">Nema igrača sa "Yes" u Worth shard cost koloni.</p>';
+            const container = document.getElementById('playerList');
+            container.innerHTML = '';
+
+            if (allPlayers.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#8b9bb4; grid-column:1/-1;">Nema igrača sa "Yes".</p>';
+                return;
             }
+
+            // SORTIRANJE: Od najjeftinijeg ka najskupljem
+            allPlayers.sort((a, b) => a.numericCost - b.numericCost);
+
+            // Prikazivanje na stranici
+            allPlayers.forEach(player => {
+                container.innerHTML += `
+                    <div class="player-card">
+                        <img src="${player.image}" alt="${player.name}">
+                        <div class="name">${player.name}</div>
+                        <div class="cost-text">&#x1F9E9; ${player.costText}</div>
+                    </div>
+                `;
+            });
         }
 
         loadAllPlayers();
     </script>
 </body>
 </html>
-
