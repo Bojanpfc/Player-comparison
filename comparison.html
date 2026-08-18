@@ -47,6 +47,23 @@
             min-height: 100vh;
         }
 
+        /* Back dugme */
+        .back-btn {
+            display: inline-block;
+            background: #1a233a;
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .back-btn:hover {
+            background: #23304f;
+        }
+
         .bg-logo-container {
             position: fixed;
             top: 50%;
@@ -190,7 +207,6 @@
             font-size: 12px;
         }
 
-        /* Lepši custom dropdown umesto običnog select-a */
         .custom-dropdown-container {
             position: relative;
             width: 100%;
@@ -524,7 +540,6 @@
             border: 1px solid var(--border-color);
         }
 
-        /* POPUP MODAL STILOVI */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -637,17 +652,9 @@
             font-weight: 600;
         }
 
-        .worth-yes {
-            color: var(--accent-green);
-            font-weight: bold;
-        }
+        .worth-yes { color: var(--accent-green); font-weight: bold; }
+        .worth-no { color: var(--accent-red); font-weight: bold; }
 
-        .worth-no {
-            color: var(--accent-red);
-            font-weight: bold;
-        }
-
-        /* Diskretni sivi tekst na dnu modala */
         .modal-disclaimer {
             margin-top: 10px;
             font-size: 9.5px;
@@ -666,6 +673,9 @@
     </div>
 
     <div class="app-content">
+        <!-- Back dugme -->
+        <a href="index.html" class="back-btn">&#8592; Back</a>
+
         <div class="header-container">
             <h2>Player Comparison</h2>
             <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
@@ -728,7 +738,6 @@
                 <span id="modalWorthVal">-</span>
             </div>
 
-            <!-- Sivi tekst na dnu modala -->
             <div class="modal-disclaimer">
                 Based on personal opinion, subject to change.
             </div>
@@ -742,8 +751,8 @@
         let playersData = [];
         let headers = [];
 
-        let selectedP1Idx = 0;
-        let selectedP2Idx = 1;
+        let selectedP1Idx = parseInt(localStorage.getItem('fc_comparison_p1')) || 0;
+        let selectedP2Idx = parseInt(localStorage.getItem('fc_comparison_p2')) || 1;
 
         const statGroups = [
             { name: "Pace", keys: ["Acceleration", "Sprint speed"] },
@@ -787,12 +796,10 @@
                 if (targetBtn) targetBtn.classList.add('active');
             }
 
-            selectedP1Idx = 0;
-            selectedP2Idx = 1;
-            await loadSheetData();
+            await loadSheetData(true); // true označava da menjamo tab, pa resetujemo na poslednja 2 ako nema sačuvanih za ovaj tab
         }
 
-        async function loadSheetData() {
+        async function loadSheetData(isTabSwitch = false) {
             try {
                 const JSON_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${currentTab}`;
                 const res = await fetch(JSON_URL);
@@ -811,8 +818,14 @@
                 });
 
                 if (playersData.length > 0) {
-                    if (selectedP1Idx >= playersData.length) selectedP1Idx = 0;
-                    if (selectedP2Idx >= playersData.length) selectedP2Idx = playersData.length > 1 ? 1 : 0;
+                    if (isTabSwitch || isNaN(selectedP1Idx) || selectedP1Idx >= playersData.length) {
+                        // Poslednja 2 dodata igrača (sa kraja niza/tabele)
+                        selectedP1Idx = playersData.length >= 2 ? playersData.length - 2 : 0;
+                        selectedP2Idx = playersData.length >= 1 ? playersData.length - 1 : 0;
+                        saveSelection();
+                    } else {
+                        if (selectedP2Idx >= playersData.length) selectedP2Idx = playersData.length > 1 ? 1 : 0;
+                    }
                     
                     populateCustomDropdowns();
                     syncSelectors(1);
@@ -822,6 +835,11 @@
             } catch (err) {
                 console.error("Error loading data:", err);
             }
+        }
+
+        function saveSelection() {
+            localStorage.setItem('fc_comparison_p1', selectedP1Idx);
+            localStorage.setItem('fc_comparison_p2', selectedP2Idx);
         }
 
         function populateCustomDropdowns() {
@@ -876,6 +894,7 @@
             } else {
                 selectedP2Idx = idx;
             }
+            saveSelection();
             updateCustomButtonText(slot);
             document.getElementById(`p${slot}CustomList`).style.display = 'none';
             renderComparison();
@@ -929,6 +948,7 @@
             } else {
                 selectedP2Idx = idx;
             }
+            saveSelection();
             syncSelectors(slot);
             document.getElementById(`p${slot}List`).style.display = 'none';
             renderComparison();
@@ -1145,6 +1165,7 @@
             }
         }
 
+        // Pokretanje inicijalnog taba (DEF po default-u)
         switchTab(currentTab, null);
     </script>
 </body>
