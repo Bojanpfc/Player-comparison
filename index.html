@@ -21,7 +21,7 @@
         h1 { 
             text-align: center !important;
             margin-top: 20px;
-            margin-bottom: 60px; /* Veći razmak */
+            margin-bottom: 60px;
             color: var(--accent-green);
             font-size: 1.5rem;
         }
@@ -61,6 +61,8 @@
             background: #161d2b;
             border-radius: 5px;
             border: 1px solid #1a233a;
+            display: flex;
+            align-items: center;
         }
         .submenu-item:hover {
             color: #ffffff;
@@ -82,8 +84,22 @@
         </div>
         
         <div id="eventsSubmenu">
-            <a href="events-champions.html" class="submenu-item">🏆 Champions</a>
+            <a href="events-champions.html" class="submenu-item">
+                <span>&#x25C6;&nbsp;&nbsp;</span> Champions
+            </a>
         </div>
+
+        <a href="activity-points.html" class="menu-card">
+            <span>&#x26A1;&nbsp;&nbsp;</span> Activity points explanation
+        </a>
+
+        <a href="vsa-school.html" class="menu-card">
+            <span>&#x1F3AF;&nbsp;&nbsp;</span> VSA school
+        </a>
+
+        <a href="lvl-rankings.html" class="menu-card">
+            <span>&#x1F4CA;&nbsp;&nbsp;</span> LvL rankings
+        </a>
     </div>
 
 </body>
