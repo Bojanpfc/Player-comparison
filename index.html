@@ -24,26 +24,35 @@
             min-height: 100vh;
         }
         .container {
-            text-align: center;
             width: 90%;
             max-width: 500px;
         }
-        h1 { margin-bottom: 40px; color: var(--accent-green); }
+        h1 { 
+            text-align: center; 
+            margin-bottom: 40px; 
+            color: var(--accent-green); 
+        }
         .menu-grid {
             display: grid;
             gap: 20px;
         }
         .menu-card {
             background-color: var(--card-bg);
-            padding: 30px;
+            padding: 25px 30px;
             border-radius: 15px;
             text-decoration: none;
             color: var(--text-main);
             border: 2px solid #1a233a;
             transition: 0.3s;
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
             font-size: 1.2rem;
             font-weight: bold;
+        }
+        .menu-card span {
+            margin-right: 15px;
+            font-size: 1.4rem;
         }
         .menu-card:hover {
             border-color: var(--accent-green);
@@ -57,11 +66,14 @@
         <h1>FC Mobile Hub</h1>
         
         <div class="menu-grid">
-            <a href="comparison.html" class="menu-card">📊 Player Comparison</a>
-            <a href="events.html" class="menu-card">🏆 In-Game Events</a>
+            <a href="comparison.html" class="menu-card">
+                <span>&#x2694;</span> Player Comparison
+            </a>
+            <a href="events.html" class="menu-card">
+                <span>&#x2605;</span> In-Game Events
+            </a>
         </div>
     </div>
 
 </body>
 </html>
-
