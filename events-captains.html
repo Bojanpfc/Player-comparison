@@ -36,18 +36,11 @@
         .back-btn:hover {
             background: #23304f;
         }
-        
-        h1 { 
-            color: var(--text-title); 
-            text-align: center; 
-            font-size: 1.1rem; 
-            margin-bottom: 15px; 
-        }
 
-        /* Champions logo - raširen preko celog ekrana (fit to screen width) */
+        /* Champions logo - na samom vrhu */
         .champions-logo-container {
             width: 100%;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
         .champions-logo-container img {
             width: 100%;
@@ -55,6 +48,14 @@
             border-radius: 6px;
             display: block;
             box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+        }
+        
+        /* Naslov ispod slike */
+        h1 { 
+            color: var(--text-title); 
+            text-align: center; 
+            font-size: 1.1rem; 
+            margin-bottom: 25px; 
         }
 
         .ovr-section { margin-bottom: 25px; max-width: 100%; }
@@ -95,12 +96,13 @@
 
     <a href="index.html" class="back-btn">&#8592; Back</a>
 
-    <h1>Worth taking with shards in this event</h1>
-    
-    <!-- Champions logo raširen preko celog ekrana -->
+    <!-- Champions logo na vrhu -->
     <div class="champions-logo-container">
         <img src="https://i.imgur.com/0jZB8F0.jpeg" alt="Champions Logo">
     </div>
+
+    <!-- Naslov ispod slike -->
+    <h1>Worth taking with shards in this event</h1>
 
     <div id="content">Učitavam podatke...</div>
 
