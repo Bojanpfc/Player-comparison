@@ -7,6 +7,7 @@
     <style>
         :root {
             --bg-color: #0b0e14;
+            --card-bg: #121824;
             --accent-green: #00ff88;
             --accent-purple: #c084fc;
             --text-main: #ffffff;
@@ -22,10 +23,14 @@
         }
         .back-link {
             display: inline-block;
-            color: var(--accent-green);
+            background-color: var(--card-bg);
+            color: var(--text-main);
             text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid #1a233a;
             margin-bottom: 20px;
-            font-weight: bold;
+            font-size: 0.9rem;
         }
         h1 { 
             text-align: center;
@@ -64,7 +69,7 @@
 <body>
 
     <div class="content-container">
-        <a href="index.html" class="back-link">← Back to Menu</a>
+        <a href="index.html" class="back-link">← Back</a>
         
         <h1>Activity points explanation</h1>
         
@@ -93,4 +98,3 @@
 
 </body>
 </html>
-
