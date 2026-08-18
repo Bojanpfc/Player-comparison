@@ -12,41 +12,71 @@
             --accent-blue: #3388ff;
             --text-main: #ffffff;
         }
-        body { background-color: var(--bg-color); color: var(--text-main); font-family: sans-serif; padding: 15px; margin: 0; }
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            font-family: sans-serif; 
+            padding: 15px; 
+            margin: 0; 
+        }
         
-        h1 { color: var(--accent-green); text-align: center; font-size: 1.4rem; margin-bottom: 20px; }
+        h1 { 
+            color: var(--accent-green); 
+            text-align: center; 
+            font-size: 1.3rem; 
+            margin-bottom: 25px; 
+        }
         
         /* Sekcija za OVR */
-        .ovr-section { margin-bottom: 30px; }
+        .ovr-section { 
+            margin-bottom: 30px; 
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
         .ovr-header { 
             background: #1a233a; 
-            padding: 8px 15px; 
+            padding: 10px 15px; 
             border-left: 4px solid var(--accent-green); 
             margin-bottom: 15px; 
             font-weight: bold;
             font-size: 1.1rem;
+            border-radius: 4px;
         }
 
-        /* Grid za kartice - 4 do 5 u redu */
+        /* Grid za veće kartice - 3 u redu */
         .grid { 
             display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 8px; 
-            justify-items: start;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 12px; 
         }
-        @media (min-width: 600px) { .grid { grid-template-columns: repeat(5, 1fr); } }
 
         .player-card { 
             background: var(--card-bg); 
-            padding: 6px; 
-            border-radius: 6px; 
+            border: 1px solid #1a233a;
+            padding: 10px; 
+            border-radius: 8px; 
             text-align: center; 
-            width: 100%;
-            max-width: 80px; 
         }
-        .player-card img { width: 100%; height: auto; border-radius: 4px; }
-        .name { font-size: 0.7rem; font-weight: bold; margin: 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .cost-text { color: var(--accent-blue); font-size: 0.65rem; }
+        .player-card img { 
+            width: 100%; 
+            height: auto; 
+            border-radius: 6px; 
+            margin-bottom: 6px;
+        }
+        .name { 
+            font-size: 0.85rem; 
+            font-weight: bold; 
+            margin-bottom: 4px; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+        .cost-text { 
+            color: var(--accent-blue); 
+            font-size: 0.75rem; 
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -92,20 +122,17 @@
                 });
             }
 
-            // Grupišemo po OVR
             const grouped = players.reduce((acc, p) => {
                 (acc[p.ovr] = acc[p.ovr] || []).push(p);
                 return acc;
             }, {});
 
-            // Sortiramo OVR opadajuće (122, pa 121...)
             const sortedOvr = Object.keys(grouped).sort((a, b) => b - a);
             
             const container = document.getElementById('content');
             container.innerHTML = '';
 
             sortedOvr.forEach(ovr => {
-                // Sortiramo igrače unutar OVR grupe po ceni
                 grouped[ovr].sort((a, b) => a.numericCost - b.numericCost);
 
                 let html = `<div class="ovr-section">
@@ -130,3 +157,4 @@
     </script>
 </body>
 </html>
+
