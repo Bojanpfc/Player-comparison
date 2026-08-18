@@ -61,37 +61,70 @@
 <body>
 
     <h1>Players worth taking in this event</h1>
-    <div class="grid" id="playerList">Loading players...</div>
+    <div class="grid" id="playerList">Loading players from all tabs...</div>
 
     <script>
         const SHEET_ID = '14GJlmnduoo0s8-p5olA1qzmX6a0ylmoVBTshTxeEA3A'; 
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Mid`;
+        const tabs = ['Def', 'Mid', 'Att']; // Prolazimo kroz sva 3 taba
+        const container = document.getElementById('playerList');
+        container.innerHTML = '';
 
-        fetch(url).then(res => res.text()).then(text => {
-            const data = JSON.parse(text.substr(47).slice(0, -2));
-            const container = document.getElementById('playerList');
-            container.innerHTML = '';
+        async function loadAllPlayers() {
+            let foundAny = false;
 
-            data.table.rows.forEach(row => {
-                const name = row.c[0]?.v;
-                const worthCost = row.c[3]?.v; // Kolona "Worth shard cost" (Yes/No)
-                const image = row.c[4]?.v;     // Link slike
+            for (const tab of tabs) {
+                const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${tab}`;
+                
+                try {
+                    const res = await fetch(url);
+                    const text = await res.text();
+                    const data = JSON.parse(text.substr(47).slice(0, -2));
+                    
+                    const cols = data.table.cols;
+                    let nameIdx = -1, eventIdx = -1, worthIdx = -1, imgIdx = -1;
 
-                if (worthCost && worthCost.toString().trim().toLowerCase() === 'yes') {
-                    container.innerHTML += `
-                        <div class="player-card">
-                            <img src="${image}" alt="${name}">
-                            <div class="name">${name}</div>
-                            <div class="worth-text">Worth Shard Cost</div>
-                        </div>
-                    `;
+                    // Pronalazimo tačne indekse kolona po njihovom imenu
+                    cols.forEach((col, index) => {
+                        if (!col || !col.label) return;
+                        const label = col.label.trim().toLowerCase();
+                        if (label === 'name') nameIdx = index;
+                        if (label === 'event') eventIdx = index;
+                        if (label.includes('worth shard cost')) worthIdx = index;
+                        if (label === 'image') imgIdx = index;
+                    });
+
+                    // Ako smo našli potrebne kolone u ovom tabu, čitamo redove
+                    if (nameIdx !== -1 && worthIdx !== -1) {
+                        data.table.rows.forEach(row => {
+                            const name = row.c[nameIdx]?.v;
+                            const event = eventIdx !== -1 ? (row.c[eventIdx]?.v || '') : 'Captains'; // Ako nema event kolone, podrazumevamo Captains
+                            const worthCost = row.c[worthIdx]?.v;
+                            const image = imgIdx !== -1 ? row.c[imgIdx]?.v : '';
+
+                            // Uslov: Event je Captains i Worth shard cost je Yes
+                            if (name && worthCost && worthCost.toString().trim().toLowerCase() === 'yes') {
+                                foundAny = true;
+                                container.innerHTML += `
+                                    <div class="player-card">
+                                        <img src="${image}" alt="${name}">
+                                        <div class="name">${name}</div>
+                                        <div class="worth-text">Worth Shard Cost</div>
+                                    </div>
+                                `;
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.log("Greška pri učitavanju taba: " + tab);
                 }
-            });
-
-            if (container.innerHTML === '') {
-                container.innerHTML = '<p style="text-align:center; color:#8b9bb4; grid-column:1/-1;">No players found with "Yes".</p>';
             }
-        });
+
+            if (!foundAny) {
+                container.innerHTML = '<p style="text-align:center; color:#8b9bb4; grid-column:1/-1;">Nema igrača sa "Yes" u Worth shard cost koloni.</p>';
+            }
+        }
+
+        loadAllPlayers();
     </script>
 </body>
 </html>
