@@ -10,69 +10,56 @@
             --card-bg: #121824;
             --accent-green: #00ff88;
             --text-main: #ffffff;
-            --text-dim: #8b9bb4;
         }
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
             font-family: sans-serif;
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-        .container {
-            width: 90%;
-            max-width: 500px;
+            padding: 20px;
         }
         h1 { 
             text-align: center; 
+            margin-top: 20px;
             margin-bottom: 40px; 
-            color: var(--accent-green); 
+            color: var(--accent-green);
+            font-size: 1.8rem;
         }
         .menu-grid {
             display: grid;
-            gap: 20px;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
         }
         .menu-card {
             background-color: var(--card-bg);
-            padding: 25px 30px;
-            border-radius: 15px;
+            padding: 15px 20px;
+            border-radius: 10px;
             text-decoration: none;
             color: var(--text-main);
-            border: 2px solid #1a233a;
-            transition: 0.3s;
+            border: 1px solid #1a233a;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            font-size: 1.2rem;
-            font-weight: bold;
+            font-size: 1rem; /* Smanjen font */
+            font-weight: 500;
         }
         .menu-card span {
-            margin-right: 15px;
-            font-size: 1.4rem;
-        }
-        .menu-card:hover {
-            border-color: var(--accent-green);
-            transform: scale(1.02);
+            margin-right: 12px;
+            font-size: 1.1rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>FC Mobile Hub</h1>
-        
-        <div class="menu-grid">
-            <a href="comparison.html" class="menu-card">
-                <span>&#x2694;</span> Player Comparison
-            </a>
-            <a href="events.html" class="menu-card">
-                <span>&#x2605;</span> In-Game Events
-            </a>
-        </div>
+    <h1>FC Mobile Hub</h1>
+    
+    <div class="menu-grid">
+        <a href="comparison.html" class="menu-card">
+            <span>&#x2694;</span> Player Comparison
+        </a>
+        <a href="events.html" class="menu-card">
+            <span>&#x2605;</span> In-Game Events
+        </a>
     </div>
 
 </body>
