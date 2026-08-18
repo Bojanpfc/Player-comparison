@@ -9,6 +9,7 @@
             --bg-color: #0b0e14;
             --card-bg: #121824;
             --accent-green: #00ff88;
+            --accent-purple: #c084fc;
             --text-main: #ffffff;
         }
         body {
@@ -20,49 +21,67 @@
         }
         h1 { 
             text-align: center !important;
-            margin-top: 20px;
-            margin-bottom: 60px;
+            margin-top: 25px;
+            margin-bottom: 50px;
             color: var(--accent-green);
             font-size: 1.5rem;
         }
         .menu-grid {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            align-items: center;
+            gap: 12px;
             width: 100%;
-            max-width: 400px;
             margin: 0 auto;
         }
         .menu-card {
             background-color: var(--card-bg);
-            padding: 15px;
+            padding: 12px 18px;
             border-radius: 10px;
             text-decoration: none;
             color: var(--text-main);
             border: 1px solid #1a233a;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            font-size: 1rem;
+            font-size: 0.9rem;
             cursor: pointer;
-            width: 100%;
             box-sizing: border-box;
+            width: fit-content;
+            min-width: 260px;
+        }
+        .menu-card span {
+            color: var(--accent-purple);
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+        .submenu-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
         }
         #eventsSubmenu {
             display: none;
             flex-direction: column;
             gap: 8px;
             margin-top: 8px;
-            padding-left: 20px;
+            width: fit-content;
         }
         .submenu-item {
             color: #8b9bb4;
             text-decoration: none;
-            padding: 10px;
+            padding: 8px 14px;
             background: #161d2b;
             border-radius: 5px;
             border: 1px solid #1a233a;
-            display: flex;
+            display: inline-flex;
             align-items: center;
+            font-size: 0.85rem;
+            min-width: 200px;
+        }
+        .submenu-item span {
+            color: var(--accent-purple);
+            margin-right: 8px;
         }
         .submenu-item:hover {
             color: #ffffff;
@@ -76,29 +95,31 @@
     
     <div class="menu-grid">
         <a href="comparison.html" class="menu-card">
-            <span>&#x2694;&nbsp;&nbsp;</span> Player Comparison
+            <span>&#x2694;</span> Player Comparison
         </a>
         
-        <div class="menu-card" onclick="document.getElementById('eventsSubmenu').style.display = (document.getElementById('eventsSubmenu').style.display === 'flex' ? 'none' : 'flex')">
-            <span>&#x2605;&nbsp;&nbsp;</span> In-Game Events
-        </div>
-        
-        <div id="eventsSubmenu">
-            <a href="events-champions.html" class="submenu-item">
-                <span>&#x25C6;&nbsp;&nbsp;</span> Champions
-            </a>
+        <div class="submenu-container">
+            <div class="menu-card" onclick="document.getElementById('eventsSubmenu').style.display = (document.getElementById('eventsSubmenu').style.display === 'flex' ? 'none' : 'flex')">
+                <span>&#x2605;</span> In-Game Events
+            </div>
+            
+            <div id="eventsSubmenu">
+                <a href="events-champions.html" class="submenu-item">
+                    <span>&#x25C6;</span> Champions
+                </a>
+            </div>
         </div>
 
         <a href="activity-points.html" class="menu-card">
-            <span>&#x26A1;&nbsp;&nbsp;</span> Activity points explanation
+            <span>&#x26A1;</span> Activity points explanation
         </a>
 
         <a href="vsa-school.html" class="menu-card">
-            <span>&#x1F3AF;&nbsp;&nbsp;</span> VSA school
+            <span>&#x1F3AF;</span> VSA school
         </a>
 
         <a href="lvl-rankings.html" class="menu-card">
-            <span>&#x1F4CA;&nbsp;&nbsp;</span> LvL rankings
+            <span>&#x1F4CA;</span> LvL rankings
         </a>
     </div>
 
