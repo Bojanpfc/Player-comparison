@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Captains Event</title>
+    <title>Captains Event v1.1</title>
     <style>
         :root {
             --bg-color: #0b0e14;
@@ -12,77 +12,46 @@
             --accent-blue: #3388ff;
             --text-main: #ffffff;
         }
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            font-family: sans-serif; 
-            padding: 15px; 
-            margin: 0; 
-        }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: sans-serif; padding: 10px; margin: 0; }
         
-        h1 { 
-            color: var(--accent-green); 
-            text-align: center; 
-            font-size: 1.3rem; 
-            margin-bottom: 25px; 
-        }
-        
-        .ovr-section { 
-            margin-bottom: 30px; 
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+        .ovr-section { margin-bottom: 25px; max-width: 100%; }
         .ovr-header { 
             background: #1a233a; 
-            padding: 10px 15px; 
+            padding: 10px; 
             border-left: 4px solid var(--accent-green); 
-            margin-bottom: 15px; 
+            margin-bottom: 10px; 
             font-weight: bold;
-            font-size: 1.1rem;
-            border-radius: 4px;
         }
 
-        /* Fiksiramo tačno 3 kolone sa jednakom širinom */
+        /* SILOM teramo 3 kolone da budu jednake */
         .grid { 
             display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 12px; 
+            grid-template-columns: repeat(3, 1fr) !important; 
+            gap: 8px !important; 
+            width: 100% !important;
         }
 
         .player-card { 
             background: var(--card-bg); 
             border: 1px solid #1a233a;
-            padding: 10px; 
-            border-radius: 8px; 
+            padding: 8px; 
+            border-radius: 6px; 
             text-align: center; 
-            box-sizing: border-box;
+            min-width: 0; /* Ovo sprečava da se kartice "skupljaju" */
         }
         .player-card img { 
-            width: 100%; 
+            width: 100% !important; 
             height: auto; 
-            border-radius: 6px; 
-            margin-bottom: 6px;
+            border-radius: 4px; 
+            display: block;
         }
-        .name { 
-            font-size: 0.85rem; 
-            font-weight: bold; 
-            margin-bottom: 4px; 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-        }
-        .cost-text { 
-            color: var(--accent-blue); 
-            font-size: 0.75rem; 
-            font-weight: bold;
-        }
+        .name { font-size: 0.75rem; font-weight: bold; margin: 5px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .cost-text { color: var(--accent-blue); font-size: 0.7rem; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <h1>Players worth taking</h1>
-    <div id="content">Loading...</div>
+    <div id="content">Učitavam podatke...</div>
 
     <script>
         const SHEET_ID = '14GJlmnduoo0s8-p5olA1qzmX6a0ylmoVBTshTxeEA3A'; 
@@ -90,16 +59,13 @@
 
         async function loadPlayers() {
             let players = [];
-
             for (const tab of tabs) {
-                const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${tab}`;
-                const res = await fetch(url);
+                const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${tab}&t=${Date.now()}`);
                 const text = await res.text();
                 const data = JSON.parse(text.substr(47).slice(0, -2));
                 
                 const cols = data.table.cols;
                 let nI = -1, wI = -1, iI = -1, cI = -1, ovrI = -1;
-
                 cols.forEach((col, idx) => {
                     const l = col.label?.trim().toLowerCase();
                     if (l === 'name') nI = idx;
@@ -122,37 +88,20 @@
                 });
             }
 
-            const grouped = players.reduce((acc, p) => {
-                (acc[p.ovr] = acc[p.ovr] || []).push(p);
-                return acc;
-            }, {});
-
+            const grouped = players.reduce((acc, p) => { (acc[p.ovr] = acc[p.ovr] || []).push(p); return acc; }, {});
             const sortedOvr = Object.keys(grouped).sort((a, b) => b - a);
-            
             const container = document.getElementById('content');
             container.innerHTML = '';
 
             sortedOvr.forEach(ovr => {
                 grouped[ovr].sort((a, b) => a.numericCost - b.numericCost);
-
-                let html = `<div class="ovr-section">
-                                <div class="ovr-header">${ovr} OVR</div>
-                                <div class="grid">`;
-                
+                let html = `<div class="ovr-section"><div class="ovr-header">${ovr} OVR</div><div class="grid">`;
                 grouped[ovr].forEach(p => {
-                    html += `
-                        <div class="player-card">
-                            <img src="${p.image}">
-                            <div class="name">${p.name}</div>
-                            <div class="cost-text">&#x1F9E9; ${p.cost}</div>
-                        </div>`;
+                    html += `<div class="player-card"><img src="${p.image}"><div class="name">${p.name}</div><div class="cost-text">&#x1F9E9; ${p.cost}</div></div>`;
                 });
-                
-                html += `</div></div>`;
-                container.innerHTML += html;
+                container.innerHTML += html + `</div></div>`;
             });
         }
-
         loadPlayers();
     </script>
 </body>
