@@ -7,11 +7,9 @@
     <style>
         :root {
             --bg-color: #0b0e14;
-            --card-bg: #121824;
             --accent-green: #00ff88;
             --accent-purple: #c084fc;
             --text-main: #ffffff;
-            --text-gray: #8b9bb4;
         }
         body {
             background-color: var(--bg-color);
@@ -21,16 +19,21 @@
             padding: 20px;
             line-height: 1.6;
         }
-        .back-link {
+        /* Back dugme */
+        .back-btn {
             display: inline-block;
-            background-color: var(--card-bg);
-            color: var(--text-main);
+            background: #1a233a;
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 4px;
             text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: 1px solid #1a233a;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .back-btn:hover {
+            background: #23304f;
         }
         h1 { 
             text-align: center;
@@ -69,7 +72,7 @@
 <body>
 
     <div class="content-container">
-        <a href="index.html" class="back-link">← Back</a>
+        <a href="index.html" class="back-btn">&larr; Back</a>
         
         <h1>Activity points explanation</h1>
         
