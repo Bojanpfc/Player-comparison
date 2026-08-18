@@ -19,19 +19,19 @@
             padding: 20px;
         }
         h1 { 
-            text-align: center !important; /* Ovo gura naslov na sredinu */
-            margin-top: 10px;
-            margin-bottom: 30px; 
+            text-align: center !important;
+            margin-top: 20px;
+            margin-bottom: 60px; /* Veći razmak */
             color: var(--accent-green);
             font-size: 1.5rem;
         }
         .menu-grid {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
             width: 100%;
             max-width: 400px;
-            margin: 0 auto; /* Centriramo ceo meni blok na ekranu */
+            margin: 0 auto;
         }
         .menu-card {
             background-color: var(--card-bg);
@@ -44,9 +44,11 @@
             align-items: center;
             font-size: 1rem;
             cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
         }
         #eventsSubmenu {
-            display: none; /* Skriveno po defaultu */
+            display: none;
             flex-direction: column;
             gap: 8px;
             margin-top: 8px;
@@ -58,6 +60,7 @@
             padding: 10px;
             background: #161d2b;
             border-radius: 5px;
+            border: 1px solid #1a233a;
         }
     </style>
 </head>
@@ -66,11 +69,14 @@
     <h1>FC Mobile Hub</h1>
     
     <div class="menu-grid">
-        <a href="comparison.html" class="menu-card"><span>&#x2694;</span> Player Comparison</a>
+        <a href="comparison.html" class="menu-card">
+            <span>&#x2694;&nbsp;&nbsp;</span> Player Comparison
+        </a>
         
         <div class="menu-card" onclick="document.getElementById('eventsSubmenu').style.display = (document.getElementById('eventsSubmenu').style.display === 'flex' ? 'none' : 'flex')">
-            <span>&#x2605;</span> In-Game Events
+            <span>&#x2605;&nbsp;&nbsp;</span> In-Game Events
         </div>
+        
         <div id="eventsSubmenu">
             <a href="events-captains.html" class="submenu-item">Captains</a>
         </div>
