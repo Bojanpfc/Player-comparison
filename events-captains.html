@@ -6,28 +6,24 @@
     <title>Champions Event</title>
     <style>
         :root {
-            --card-bg: rgba(18, 24, 36, 0.90);
+            --bg-color: #0b0e14;
+            --card-bg: #121824;
             --accent-blue: #3388ff;
             --text-main: #ffffff;
             --text-title: #ffffff;
         }
         body { 
-            background-image: linear-gradient(rgba(11, 14, 20, 0.85), rgba(11, 14, 20, 0.85)), url('https://i.imgur.com/0jZB8F0.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-color: #0b0e14; 
+            background-color: var(--bg-color); 
             color: var(--text-main); 
             font-family: sans-serif; 
             padding: 15px; 
             margin: 0; 
-            min-height: 100vh;
         }
 
         /* Back dugme */
         .back-btn {
             display: inline-block;
-            background: rgba(26, 35, 58, 0.8);
+            background: #1a233a;
             color: #ffffff;
             padding: 6px 12px;
             border-radius: 4px;
@@ -38,37 +34,36 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .back-btn:hover {
-            background: rgba(35, 48, 79, 0.9);
+            background: #23304f;
         }
         
         h1 { 
             color: var(--text-title); 
             text-align: center; 
             font-size: 1.1rem; 
-            margin-bottom: 10px; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            margin-bottom: 15px; 
         }
 
-        /* Champions logo između naslova i igračkih sekcija */
+        /* Champions logo - raširen preko celog ekrana (fit to screen width) */
         .champions-logo-container {
-            text-align: center;
-            margin-bottom: 20px;
+            width: 100%;
+            margin-bottom: 25px;
         }
         .champions-logo-container img {
-            max-width: 180px;
+            width: 100%;
             height: auto;
             border-radius: 6px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            display: block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
         }
 
         .ovr-section { margin-bottom: 25px; max-width: 100%; }
         .ovr-header { 
-            background: rgba(26, 35, 58, 0.9); 
+            background: #1a233a; 
             padding: 10px; 
             border-left: 4px solid #00ff88; 
             margin-bottom: 10px; 
             font-weight: bold;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
         }
 
         .grid { 
@@ -80,12 +75,11 @@
 
         .player-card { 
             background: var(--card-bg); 
-            border: 1px solid rgba(26, 35, 58, 0.8);
+            border: 1px solid #1a233a;
             padding: 8px; 
             border-radius: 6px; 
             text-align: center; 
             min-width: 0; 
-            backdrop-filter: blur(4px);
         }
         .player-card img { 
             width: 100% !important; 
@@ -94,7 +88,7 @@
             display: block;
         }
         .name { font-size: 0.75rem; font-weight: bold; margin: 5px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .cost-text { color: var(--accent-blue); font-size: 0.7rem; font-weight: bold; }
+        .cost-text { color: var(--accent-blue); font-size: 0.70rem; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -103,7 +97,7 @@
 
     <h1>Worth taking with shards in this event</h1>
     
-    <!-- Champions logo tačno gde si tražio -->
+    <!-- Champions logo raširen preko celog ekrana -->
     <div class="champions-logo-container">
         <img src="https://i.imgur.com/0jZB8F0.jpeg" alt="Champions Logo">
     </div>
