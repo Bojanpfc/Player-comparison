@@ -796,7 +796,7 @@
                 if (targetBtn) targetBtn.classList.add('active');
             }
 
-            await loadSheetData(true); // true označava da menjamo tab, pa resetujemo na poslednja 2 ako nema sačuvanih za ovaj tab
+            await loadSheetData(true); 
         }
 
         async function loadSheetData(isTabSwitch = false) {
@@ -819,7 +819,6 @@
 
                 if (playersData.length > 0) {
                     if (isTabSwitch || isNaN(selectedP1Idx) || selectedP1Idx >= playersData.length) {
-                        // Poslednja 2 dodata igrača (sa kraja niza/tabele)
                         selectedP1Idx = playersData.length >= 2 ? playersData.length - 2 : 0;
                         selectedP2Idx = playersData.length >= 1 ? playersData.length - 1 : 0;
                         saveSelection();
@@ -1165,7 +1164,6 @@
             }
         }
 
-        // Pokretanje inicijalnog taba (DEF po default-u)
         switchTab(currentTab, null);
     </script>
 </body>
