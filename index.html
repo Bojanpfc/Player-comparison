@@ -8,10 +8,8 @@
         :root {
             --bg-color: #0b0e14;
             --card-bg: #121824;
-            --sub-bg: #1a2233;
             --accent-green: #00ff88;
             --text-main: #ffffff;
-            --text-dim: #8b9bb4;
         }
         body {
             background-color: var(--bg-color);
@@ -21,7 +19,7 @@
             padding: 20px;
         }
         h1 { 
-            text-align: center; /* Naslov na sredini */
+            text-align: center !important; /* Ovo gura naslov na sredinu */
             margin-top: 10px;
             margin-bottom: 30px; 
             color: var(--accent-green);
@@ -31,50 +29,35 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            max-width: 100%;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto; /* Centriramo ceo meni blok na ekranu */
         }
         .menu-card {
             background-color: var(--card-bg);
-            padding: 14px 18px;
+            padding: 15px;
             border-radius: 10px;
             text-decoration: none;
             color: var(--text-main);
             border: 1px solid #1a233a;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            font-size: 0.95rem;
-            font-weight: 500;
+            font-size: 1rem;
             cursor: pointer;
-            width: 100%;
-            box-sizing: border-box;
         }
-        .menu-card span {
-            margin-right: 12px;
-            font-size: 1.1rem;
-        }
-        /* Stil za podmeni (Events lista) */
-        .submenu {
-            display: none;
+        #eventsSubmenu {
+            display: none; /* Skriveno po defaultu */
             flex-direction: column;
             gap: 8px;
-            padding-left: 20px;
             margin-top: 8px;
+            padding-left: 20px;
         }
         .submenu-item {
-            background-color: var(--sub-bg);
-            padding: 12px 16px;
-            border-radius: 8px;
+            color: #8b9bb4;
             text-decoration: none;
-            color: var(--text-dim);
-            display: flex;
-            align-items: center;
-            font-size: 0.9rem;
-            border: 1px solid #222d44;
-        }
-        .submenu-item:hover {
-            color: var(--text-main);
-            border-color: var(--accent-green);
+            padding: 10px;
+            background: #161d2b;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -83,35 +66,15 @@
     <h1>FC Mobile Hub</h1>
     
     <div class="menu-grid">
-        <!-- Player Comparison -->
-        <a href="comparison.html" class="menu-card">
-            <span>&#x2694;</span> Player Comparison
-        </a>
-
-        <!-- In-Game Events sa podmenijem -->
-        <div>
-            <div class="menu-card" onclick="toggleSubmenu()">
-                <span>&#x2605;</span> In-Game Events
-            </div>
-            <!-- Podmeni koji se otvara na klik -->
-            <div id="eventsSubmenu" class="submenu">
-                <a href="events-captains.html" class="submenu-item">
-                    <span>&#x25B8;</span> Captains
-                </a>
-            </div>
+        <a href="comparison.html" class="menu-card"><span>&#x2694;</span> Player Comparison</a>
+        
+        <div class="menu-card" onclick="document.getElementById('eventsSubmenu').style.display = (document.getElementById('eventsSubmenu').style.display === 'flex' ? 'none' : 'flex')">
+            <span>&#x2605;</span> In-Game Events
+        </div>
+        <div id="eventsSubmenu">
+            <a href="events-captains.html" class="submenu-item">Captains</a>
         </div>
     </div>
-
-    <script>
-        function toggleSubmenu() {
-            var submenu = document.getElementById("eventsSubmenu");
-            if (submenu.style.display === "flex") {
-                submenu.style.display = "none";
-            } else {
-                submenu.style.display = "flex";
-            }
-        }
-    </script>
 
 </body>
 </html>
