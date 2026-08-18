@@ -1,1 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FC Mobile Hub</title>
+    <style>
+        :root {
+            --bg-color: #0b0e14;
+            --card-bg: #121824;
+            --accent-green: #00ff88;
+            --text-main: #ffffff;
+            --text-dim: #8b9bb4;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+        }
+        h1 { margin-bottom: 40px; color: var(--accent-green); }
+        .menu-grid {
+            display: grid;
+            gap: 20px;
+        }
+        .menu-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: var(--text-main);
+            border: 2px solid #1a233a;
+            transition: 0.3s;
+            display: block;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .menu-card:hover {
+            border-color: var(--accent-green);
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>FC Mobile Hub</h1>
+        
+        <div class="menu-grid">
+            <a href="comparison.html" class="menu-card">📊 Player Comparison</a>
+            <a href="events.html" class="menu-card">🏆 In-Game Events</a>
+        </div>
+    </div>
+
+</body>
+</html>
 
