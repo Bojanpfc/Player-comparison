@@ -22,22 +22,6 @@
     --green-soft: rgba(0,255,117,.07);
 }
 
-[data-theme="light"] {
-    --bg-color: #e8eeeb;
-    --card-bg: #f5f8f6;
-    --card-hover: #ffffff;
-    --accent-green: #009e4b;
-    --accent-red: #c62843;
-    --group-title-color: #50605a;
-    --border-glow: rgba(0,158,75,.25);
-    --text-dim: #64736d;
-    --text-main: #102019;
-    --input-bg: #edf3ef;
-    --row-bg: #e3ebe6;
-    --shadow-color: rgba(0,0,0,.12);
-    --border-color: rgba(0,100,50,.16);
-}
-
 * { box-sizing: border-box; }
 
 body {
@@ -51,7 +35,6 @@ body {
     padding: 20px 14px 38px;
     min-height: 100vh;
     position: relative;
-    transition: background .3s, color .3s;
 }
 
 body::before {
@@ -141,30 +124,6 @@ h2::after {
     border-color: rgba(0,255,117,.5);
     color: var(--accent-green);
     transform: translateX(-2px);
-}
-
-.theme-toggle {
-    position: absolute;
-    right: 0;
-    top: 0;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 5px 18px var(--shadow-color);
-    transition: .2s ease;
-}
-
-.theme-toggle:hover {
-    color: var(--accent-green);
-    border-color: rgba(0,255,117,.5);
 }
 
 /* Tabs */
@@ -694,17 +653,12 @@ h2::after {
 </head>
 <body>
 
-    <div class="bg-logo-container">
-        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-    </div>
-
     <div class="app-content">
         <!-- Back dugme -->
         <a href="index.html" class="back-btn">&#8592; Back</a>
 
         <div class="header-container">
             <h2>Player Comparison</h2>
-            <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
         </div>
 
         <div class="tabs">
@@ -790,19 +744,6 @@ h2::after {
             { name: "Defending", keys: ["Marking", "Standing tackle", "Sliding tackle", "Awareness", "Heading", "Interceptions"] },
             { name: "Physical", keys: ["Strength", "Aggression", "Jumping", "Stamina"] }
         ];
-
-        function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const iconBtn = document.getElementById('themeIcon');
-
-            if (currentTheme === 'light') {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                iconBtn.textContent = '☀️';
-            } else {
-                document.documentElement.setAttribute('data-theme', 'light');
-                iconBtn.textContent = '🌙';
-            }
-        }
 
         function getProp(obj, keys) {
             for (let k of keys) {
