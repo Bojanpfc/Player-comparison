@@ -1,1 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LvL Rankings | FC Mobile Hub</title>
 
+    <style>
+        :root {
+            --bg: #050708;
+            --card: rgba(10, 17, 15, 0.94);
+            --row: rgba(13, 24, 20, 0.96);
+            --row-hover: rgba(17, 32, 26, 0.98);
+            --green: #00ff75;
+            --green-dark: #0b5b35;
+            --red-dark: #741b20;
+            --white: #f5f7f6;
+            --muted: #87948f;
+            --border: rgba(0, 255, 117, 0.17);
+            --line: rgba(255,255,255,.06);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(0,255,117,.075), transparent 30%),
+                radial-gradient(circle at 100% 55%, rgba(0,255,117,.03), transparent 28%),
+                #050708;
+            color: var(--white);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
+            padding: 18px 10px 35px;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 430px;
+            height: 430px;
+            top: -220px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,255,117,.055);
+            filter: blur(105px);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 760px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding: 0 3px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 15px;
+            border-radius: 11px;
+            border: 1px solid var(--border);
+            background: rgba(9,17,14,.92);
+            color: var(--white);
+            text-decoration: none;
+            font-size: .86rem;
+            font-weight: 750;
+            transition: .2s ease;
+            box-shadow: 0 7px 22px rgba(0,0,0,.28);
+        }
+
+        .back-btn:hover {
+            color: var(--green);
+            border-color: rgba(0,255,117,.55);
+            transform: translateX(-2px);
+        }
+
+        .brand {
+            color: var(--green);
+            font-size: .68rem;
+            font-weight: 850;
+            font-style: italic;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* HEADER */
+        .hero {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .hero-label {
+            color: var(--green);
+            font-size: .65rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2rem, 8vw, 2.8rem);
+            line-height: 1;
+            font-weight: 900;
+            font-style: italic;
+            letter-spacing: -1.5px;
+            text-transform: uppercase;
+        }
+
+        .title-line {
+            width: 70px;
+            height: 4px;
+            border-radius: 10px;
+            background: var(--green);
+            margin: 14px auto 0;
+            box-shadow: 0 0 15px rgba(0,255,117,.32);
+        }
+
+        /* RANKING CARD */
+        .ranking-card {
+            width: 100%;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(11,20,16,.98),
+                    rgba(7,12,11,.97)
+                );
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 11px 8px 10px;
+            box-shadow:
+                0 14px 38px rgba(0,0,0,.38),
+                inset 0 1px 0 rgba(255,255,255,.025);
+            overflow: hidden;
+        }
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            scrollbar-width: thin;
+        }
+
+        table {
+            width: 100%;
+            min-width: 560px;
+            border-collapse: separate;
+            border-spacing: 0 5px;
+            table-layout: fixed;
+        }
+
+        th {
+            color: #66736e;
+            font-size: .59rem;
+            padding: 4px 2px 7px;
+            text-transform: uppercase;
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: .7px;
+        }
+
+        th:nth-child(2) {
+            text-align: left;
+            padding-left: 7px;
+        }
+
+        td {
+            background: var(--row);
+            padding: 8px 3px;
+            text-align: center;
+            font-size: .7rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--white);
+            border-top: 1px solid rgba(255,255,255,.025);
+            border-bottom: 1px solid rgba(255,255,255,.025);
+            transition: .18s ease;
+        }
+
+        tbody tr:hover td {
+            background: var(--row-hover);
+            border-color: rgba(0,255,117,.12);
+        }
+
+        td:nth-child(2) {
+            text-align: left;
+            font-weight: 650;
+            padding-left: 7px;
+        }
+
+        th:nth-child(1), td:nth-child(1) { width: 8%; }
+        th:nth-child(2), td:nth-child(2) { width: 26%; }
+        th:nth-child(3), td:nth-child(3) { width: 9%; }
+        th:nth-child(4), td:nth-child(4) { width: 11%; }
+        th:nth-child(5), td:nth-child(5) { width: 9%; }
+        th:nth-child(6), td:nth-child(6) { width: 9%; }
+        th:nth-child(7), td:nth-child(7) { width: 28%; }
+
+        tr td:first-child {
+            border-radius: 8px 0 0 8px;
+            color: var(--green);
+            font-weight: 900;
+            font-size: .75rem;
+        }
+
+        tr td:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Highlight top 3 */
+        tbody tr:nth-child(1) td:first-child {
+            color: #f5d66b;
+        }
+
+        tbody tr:nth-child(2) td:first-child {
+            color: #c9d1d0;
+        }
+
+        tbody tr:nth-child(3) td:first-child {
+            color: #d99b62;
+        }
+
+        /* MATCH BADGES */
+        .match-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 21px;
+            border-radius: 5px;
+            font-weight: 850;
+            font-size: .59rem;
+            margin: 0 1px;
+            color: #fff !important;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+        }
+
+        .bg-green {
+            background: var(--green-dark);
+            border: 1px solid rgba(0,255,117,.25);
+        }
+
+        .bg-red {
+            background: var(--red-dark);
+            border: 1px solid rgba(255,70,70,.18);
+        }
+
+        /* FOOTER */
+        .footer {
+            margin-top: 22px;
+            padding: 15px 3px 0;
+            border-top: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #53605b;
+            font-size: .61rem;
+            letter-spacing: .7px;
+        }
+
+        .footer span {
+            color: var(--green);
+            font-weight: 800;
+        }
+
+        .loading {
+            text-align: center;
+            color: var(--muted);
+            padding: 25px 10px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 17px 7px 30px;
+            }
+
+            .top-bar {
+                padding: 0 3px;
+            }
+
+            .brand {
+                font-size: .61rem;
+                letter-spacing: 1.5px;
+            }
+
+            .ranking-card {
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="top-bar">
+        <a href="index.html" class="back-btn">
+            <span>←</span> Back
+        </a>
+
+        <div class="brand">FC Mobile Hub</div>
+    </div>
+
+    <div class="hero">
+        <div class="hero-label">Competitive Rankings</div>
+        <h1>LvL Rankings</h1>
+        <div class="title-line"></div>
+    </div>
+
+    <div class="ranking-card">
+
+        <div class="table-wrap">
+            <table id="rankingTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Player</th>
+                        <th>GP</th>
+                        <th>AVG</th>
+                        <th>MAX</th>
+                        <th>MIN</th>
+                        <th>Last 5</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td colspan="7" class="loading">Loading rankings...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <div><span>FC MOBILE HUB</span></div>
+        <div>PLAY / LEARN / IMPROVE</div>
+    </div>
+
+</div>
+
+<script>
+    const SHEET_ID = '16OTm4bC-YKAoJl7Rsw8bQLfrdYvUsbZ94Vic65KcMEY';
+    const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Ranking`;
+
+    fetch(URL)
+        .then(res => res.text())
+        .then(data => {
+
+            const json = JSON.parse(data.substr(47).slice(0, -2));
+            const tbody = document.querySelector('#rankingTable tbody');
+
+            tbody.innerHTML = '';
+
+            const validRows = json.table.rows.filter(row =>
+                row.c[0]?.v &&
+                typeof row.c[0].v === 'string' &&
+                row.c[0].v.trim() !== "" &&
+                row.c[0].v !== "Player"
+            );
+
+            validRows.forEach((row, index) => {
+
+                const player = row.c[0].v;
+                const gp = row.c[1]?.v || '';
+                const goals = row.c[2]?.v
+                    ? Number(row.c[2].v).toFixed(2)
+                    : '';
+                const max = row.c[3]?.v || '';
+                const min = row.c[4]?.v || '';
+
+                let matchesHtml = '';
+
+                for (let i = 5; i <= 9; i++) {
+
+                    const val = row.c[i]?.v;
+
+                    if (
+                        val !== undefined &&
+                        val !== null &&
+                        val !== ''
+                    ) {
+
+                        const score = Number(val);
+
+                        const badgeClass =
+                            score >= 34
+                                ? 'bg-green'
+                                : 'bg-red';
+
+                        matchesHtml +=
+                            `<span class="match-badge ${badgeClass}">
+                                ${score}
+                            </span>`;
+                    }
+                }
+
+                const tr = document.createElement('tr');
+
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${player}</td>
+                    <td>${gp}</td>
+                    <td style="font-weight:850; color:var(--green);">
+                        ${goals}
+                    </td>
+                    <td>${max}</td>
+                    <td>${min}</td>
+                    <td>${matchesHtml}</td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+
+        })
+        .catch(error => {
+
+            const tbody = document.querySelector('#rankingTable tbody');
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="loading">
+                        Unable to load rankings.
+                    </td>
+                </tr>
+            `;
+
+            console.error(error);
+        });
+</script>
+
+</body>
+</html>
