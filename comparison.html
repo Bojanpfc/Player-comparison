@@ -376,7 +376,7 @@
         .player-name-area {
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 2px;
             min-width: 0;
             flex-grow: 1;
         }
@@ -389,6 +389,12 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        .player-wr {
+            font-size: 9.5px;
+            color: var(--text-dim);
+            font-weight: 600;
         }
 
         .pros-cons-btn {
@@ -510,10 +516,19 @@
             flex-shrink: 0;
         }
 
+        /* Standardne i naglašene klase za bolje/lošije */
         .better {
             background: rgba(0, 230, 118, 0.25);
             color: #ffffff !important;
             border: 1px solid rgba(0, 230, 118, 0.55);
+        }
+
+        .better-highlight {
+            background: rgba(0, 230, 118, 0.45);
+            color: #ffffff !important;
+            border: 1px solid rgba(0, 230, 118, 0.9);
+            box-shadow: 0 0 6px rgba(0, 230, 118, 0.4);
+            font-weight: 900;
         }
 
         .worse {
@@ -526,6 +541,14 @@
             background: rgba(22, 163, 74, 0.3);
             color: #0f172a !important;
             border: 1px solid rgba(22, 163, 74, 0.6);
+        }
+
+        [data-theme="light"] .better-highlight {
+            background: rgba(22, 163, 74, 0.5);
+            color: #0f172a !important;
+            border: 1px solid rgba(22, 163, 74, 0.9);
+            box-shadow: 0 0 6px rgba(22, 163, 74, 0.4);
+            font-weight: 900;
         }
 
         [data-theme="light"] .worse {
@@ -809,7 +832,7 @@
                 const json = JSON.parse(text.substr(47).slice(0, -2));
 
                 headers = json.table.cols.map(col => col ? col.label : '');
-                playersData = json.table.rows.map(row => {
+                let rawPlayers = json.table.rows.map(row => {
                     let player = {};
                     row.c.forEach((cell, idx) => {
                         if (headers[idx]) {
@@ -819,10 +842,22 @@
                     return player;
                 });
 
+                // Sortiranje igrača od najvećeg ka najmanjem OVR-u
+                playersData = rawPlayers.sort((a, b) => {
+                    let ovrA = parseFloat(getProp(a, ['Ovr', 'OVR'])) || 0;
+                    let ovrB = parseFloat(getProp(b, ['Ovr', 'OVR'])) || 0;
+                    if (ovrB !== ovrA) {
+                        return ovrB - ovrA; // Opadajuće po OVR
+                    }
+                    let nameA = String(getProp(a, ['Name', 'Ime'])).toLowerCase();
+                    let nameB = String(getProp(b, ['Name', 'Ime'])).toLowerCase();
+                    return nameA.localeCompare(nameB);
+                });
+
                 if (playersData.length > 0) {
                     if (isTabSwitch || isNaN(selectedP1Idx) || selectedP1Idx >= playersData.length) {
-                        selectedP1Idx = playersData.length >= 2 ? playersData.length - 2 : 0;
-                        selectedP2Idx = playersData.length >= 1 ? playersData.length - 1 : 0;
+                        selectedP1Idx = playersData.length >= 2 ? 0 : 0;
+                        selectedP2Idx = playersData.length >= 2 ? 1 : 0;
                         saveSelection();
                     } else {
                         if (selectedP2Idx >= playersData.length) selectedP2Idx = playersData.length > 1 ? 1 : 0;
@@ -970,11 +1005,11 @@
             const p1 = playersData[selectedP1Idx];
             const p2 = playersData[selectedP2Idx];
 
-            document.getElementById('card1').innerHTML = buildCardHTML(p1, p2);
-            document.getElementById('card2').innerHTML = buildCardHTML(p2, p1);
+            document.getElementById('card1').innerHTML = buildCardHTML(p1, p2, selectedP1Idx);
+            document.getElementById('card2').innerHTML = buildCardHTML(p2, p1, selectedP2Idx);
         }
 
-        function buildCardHTML(player, opponent) {
+        function buildCardHTML(player, opponent, playerIdx) {
             const name = getProp(player, ['Name', 'Ime']);
             const ovr = getProp(player, ['Ovr', 'OVR']);
             const pos = getProp(player, ['Pos']);
@@ -985,10 +1020,12 @@
             const height = getProp(player, ['Height', 'Visina', 'Ht']);
             const imgUrl = getProp(player, ['Image', 'Img']);
             const shardCost = getProp(player, ['Shard cost', 'Shard Cost', 'ShardCost', 'Shards']);
+            const wr = getProp(player, ['WR', 'Work Rate', 'Workrate']);
 
             let imgHTML = imgUrl !== '-' ? `<img src="${imgUrl}" class="player-img" alt="${name}" />` : '';
             let altPosText = (altPos !== '-' && altPos !== '') ? `Alt: ${altPos}` : '';
             let heightText = (height !== '-' && height !== '') ? `${height}` : '';
+            let wrText = (wr !== '-' && wr !== '') ? `WR: ${wr}` : '';
 
             let shardHTML = '';
             if (shardCost !== '-' && shardCost !== '') {
@@ -1010,7 +1047,8 @@
                     <div class="player-bottom-row">
                         <div class="player-name-area">
                             <div class="player-name">${ovr} | ${name} (${pos !== '-' ? pos : ''})</div>
-                            <button class="pros-cons-btn" onclick="openModal('${selectedP1Idx === playersData.indexOf(player) ? 'p1' : 'p2'}', '${name.replace(/'/g, "\\'")}')">Pros & Cons</button>
+                            ${wrText ? `<div class="player-wr">${wrText}</div>` : ''}
+                            <button class="pros-cons-btn" onclick="openModal('${selectedP1Idx === playerIdx ? 'p1' : 'p2'}', '${name.replace(/'/g, "\\'")}')">Pros & Cons</button>
                         </div>
                         ${shardHTML}
                     </div>
@@ -1031,8 +1069,11 @@
                 const val2 = parseFloat(val2Raw) || 0;
                 
                 let cls = '';
-                if (val1 > val2) cls = 'better';
-                else if (val1 < val2) cls = 'worse';
+                if (val1 > val2) {
+                    cls = (val1 - val2 > 5) ? 'better-highlight' : 'better';
+                } else if (val1 < val2) {
+                    cls = 'worse';
+                }
 
                 html += `
                     <div class="stat-box-main">
@@ -1066,8 +1107,11 @@
 
                             let cls = 'equal';
                             if (hasVal1 && hasVal2 && !isNaN(num1) && !isNaN(num2)) {
-                                if (num1 > num2) cls = 'better';
-                                else if (num1 < num2) cls = 'worse';
+                                if (num1 > num2) {
+                                    cls = (num1 - num2 > 5) ? 'better-highlight' : 'better';
+                                } else if (num1 < num2) {
+                                    cls = 'worse';
+                                }
                             } else if (hasVal1 && !hasVal2) {
                                 cls = 'better';
                             } else if (!hasVal1 && hasVal2) {
