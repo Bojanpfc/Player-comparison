@@ -386,8 +386,6 @@ h2::after {
     text-overflow: ellipsis;
 }
 
-.player-wr { font-size: 8.5px; color: var(--text-dim); font-weight: 600; }
-
 .pros-cons-btn {
     background: none;
     border: none;
@@ -786,12 +784,11 @@ h2::after {
                     return player;
                 });
 
-                // Sortiranje igrača od najvećeg ka najmanjem OVR-u
                 playersData = rawPlayers.sort((a, b) => {
                     let ovrA = parseFloat(getProp(a, ['Ovr', 'OVR'])) || 0;
                     let ovrB = parseFloat(getProp(b, ['Ovr', 'OVR'])) || 0;
                     if (ovrB !== ovrA) {
-                        return ovrB - ovrA; // Opadajuće po OVR
+                        return ovrB - ovrA;
                     }
                     let nameA = String(getProp(a, ['Name', 'Ime'])).toLowerCase();
                     let nameB = String(getProp(b, ['Name', 'Ime'])).toLowerCase();
@@ -984,6 +981,7 @@ h2::after {
                         <div class="player-details-right">
                             <div class="meta-line">WF: ${wf}★</div>
                             <div class="meta-line">SM: ${sm}★</div>
+                            ${wrText ? `<div class="meta-line">${wrText}</div>` : ''}
                             ${heightText ? `<div class="meta-line">Height: ${heightText}</div>` : ''}
                             ${altPosText ? `<div class="meta-line">${altPosText}</div>` : ''}
                         </div>
@@ -991,7 +989,6 @@ h2::after {
                     <div class="player-bottom-row">
                         <div class="player-name-area">
                             <div class="player-name">${ovr} | ${name} (${pos !== '-' ? pos : ''})</div>
-                            ${wrText ? `<div class="player-wr">${wrText}</div>` : ''}
                             <button class="pros-cons-btn" onclick="openModal('${selectedP1Idx === playerIdx ? 'p1' : 'p2'}', '${name.replace(/'/g, "\\'")}')">Pros & Cons</button>
                         </div>
                         ${shardHTML}
