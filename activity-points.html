@@ -3,101 +3,440 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activity points explanation</title>
+    <title>Activity Points | FC Mobile Hub</title>
+
     <style>
         :root {
-            --bg-color: #0b0e14;
-            --accent-green: #00ff88;
-            --accent-purple: #c084fc;
-            --text-main: #ffffff;
+            --bg: #050708;
+            --card: rgba(12, 18, 17, 0.92);
+            --card-hover: rgba(17, 28, 25, 0.96);
+            --green: #00ff75;
+            --white: #f5f7f6;
+            --muted: #8c9994;
+            --border: rgba(0, 255, 117, 0.18);
+            --line: rgba(255,255,255,.07);
         }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: sans-serif;
             margin: 0;
-            padding: 20px;
-            line-height: 1.6;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(0,255,117,.08), transparent 32%),
+                radial-gradient(circle at 100% 60%, rgba(0,255,117,.035), transparent 30%),
+                #050708;
+            color: var(--white);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
+            padding: 20px 15px 45px;
+            overflow-x: hidden;
         }
-        /* Back dugme */
-        .back-btn {
-            display: inline-block;
-            background: #1a233a;
-            color: #ffffff;
-            padding: 6px 12px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 430px;
+            height: 430px;
+            top: -210px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,255,117,.06);
+            filter: blur(100px);
+            border-radius: 50%;
+            pointer-events: none;
         }
-        .back-btn:hover {
-            background: #23304f;
-        }
-        h1 { 
-            text-align: center;
-            color: var(--accent-green);
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-        }
-        .content-container {
+
+        .page {
+            width: 100%;
             max-width: 600px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
+
+        /* TOP */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--white);
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 11px;
+            border: 1px solid var(--border);
+            background: rgba(10,18,15,.9);
+            font-size: .9rem;
+            font-weight: 700;
+            transition: .2s ease;
+            box-shadow: 0 7px 22px rgba(0,0,0,.28);
+        }
+
+        .back-btn:hover {
+            color: var(--green);
+            border-color: rgba(0,255,117,.55);
+            transform: translateX(-2px);
+        }
+
+        .brand {
+            color: var(--green);
+            font-size: .72rem;
+            font-weight: 800;
+            font-style: italic;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* HEADER */
+        .hero {
+            text-align: center;
+            margin: 8px 0 28px;
+        }
+
+        .hero-label {
+            color: var(--green);
+            font-size: .68rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 9px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2rem, 9vw, 3rem);
+            line-height: 1;
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            letter-spacing: -1.5px;
+        }
+
+        .title-line {
+            width: 72px;
+            height: 4px;
+            margin: 15px auto 0;
+            border-radius: 10px;
+            background: var(--green);
+            box-shadow: 0 0 16px rgba(0,255,117,.35);
+        }
+
+        /* CONTENT */
+        .content-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .image-card {
+            padding: 7px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            background: rgba(9,15,13,.9);
+            box-shadow: 0 12px 32px rgba(0,0,0,.35);
+        }
+
         img {
+            display: block;
             width: 100%;
             border-radius: 10px;
-            margin-bottom: 25px;
-            border: 1px solid #1a233a;
+            border: 0;
         }
+
+        .section {
+            background: linear-gradient(
+                100deg,
+                rgba(13,23,19,.96),
+                rgba(8,13,12,.94)
+            );
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            padding: 18px;
+            box-shadow:
+                0 9px 26px rgba(0,0,0,.3),
+                inset 0 1px 0 rgba(255,255,255,.02);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 12px;
+            color: var(--green);
+            font-size: .82rem;
+            font-weight: 850;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+
+        .section-title::before {
+            content: "";
+            width: 3px;
+            height: 20px;
+            border-radius: 4px;
+            background: var(--green);
+            box-shadow: 0 0 10px rgba(0,255,117,.25);
+        }
+
         p {
-            text-align: left;
-            margin-bottom: 20px;
+            margin: 0;
+            color: #d5ddda;
+            font-size: .91rem;
+            line-height: 1.7;
         }
+
+        .intro {
+            border-left: 3px solid var(--green);
+            background: rgba(0,255,117,.035);
+        }
+
         b {
-            color: var(--accent-purple);
+            color: var(--green);
+            font-weight: 750;
         }
-        .subheading {
+
+        /* POINTS */
+        .points-list {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .point-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 13px;
+            border-radius: 10px;
+            background: rgba(5,10,8,.7);
+            border: 1px solid rgba(255,255,255,.055);
+        }
+
+        .point-mode {
+            color: #e8eeeb;
+            font-size: .86rem;
+            font-weight: 650;
+        }
+
+        .point-value {
+            color: var(--green);
+            font-size: .8rem;
+            font-weight: 800;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .detail-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .detail {
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .detail:last-child {
+            padding-bottom: 0;
+            border-bottom: 0;
+        }
+
+        .detail strong {
             display: block;
-            margin-top: 25px;
-            font-weight: bold;
+            margin-bottom: 3px;
+            color: var(--green);
+            font-size: .84rem;
         }
-        .subheading::before {
-            content: "◆ ";
-            color: var(--accent-purple);
+
+        .note {
+            border-color: rgba(0,255,117,.13);
+            background: rgba(0,255,117,.025);
+        }
+
+        .note-label {
+            color: var(--green);
+            font-weight: 850;
+            text-transform: uppercase;
+            font-size: .76rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 7px;
+        }
+
+        /* FOOTER */
+        .footer {
+            margin-top: 30px;
+            padding-top: 17px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            color: #58645f;
+            font-size: .63rem;
+            letter-spacing: .7px;
+        }
+
+        .footer span {
+            color: var(--green);
+            font-weight: 750;
+        }
+
+        @media (max-width: 420px) {
+            body {
+                padding: 17px 13px 35px;
+            }
+
+            .brand {
+                font-size: .62rem;
+                letter-spacing: 1.5px;
+            }
+
+            h1 {
+                font-size: 2.15rem;
+            }
+
+            .section {
+                padding: 16px;
+            }
+
+            .point-row {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .point-value {
+                text-align: left;
+            }
         }
     </style>
 </head>
+
 <body>
 
-    <div class="content-container">
-        <a href="index.html" class="back-btn">&larr; Back</a>
-        
-        <h1>Activity points explanation</h1>
-        
-        <img src="https://i.imgur.com/iV7ryMX.png" alt="Activity Points">
+<div class="page">
 
-        <p><b>WEEKLY ACTIVITY POINTS IN FC MOBILE</b></p>
-        
-        <p>In FC Mobile, players can earn a minimum of 1,800 Activity Points every week by participating in Division Rivals. These points are essential for progressing through Division Rivals rewards and various seasonal events.</p>
+    <div class="top-bar">
+        <a href="index.html" class="back-btn">
+            <span>←</span> Back
+        </a>
 
-        <span class="subheading"><b>POINTS BREAKDOWN BY MODE:</b></span>
-        <p>
-            VS Attack (VSA): 450 Max Weekly Points (Requires ~15-20 matches)<br>
-            Head to Head (H2H): 900 Max Weekly Points (Requires ~15-20 matches)<br>
-            Manager Mode: 450 Max Weekly Points (Requires ~15-20 matches)
-        </p>
-
-        <span class="subheading"><b>KEY DETAILS TO REMEMBER:</b></span>
-        <p>
-            <b>Weekly Limit:</b> Once you hit the cap for a specific mode (e.g., 900 points in H2H), you will stop earning Activity Points from that mode until the weekly reset.<br><br>
-            <b>Time Commitment:</b> To maximize your rewards, you need to play roughly 45 to 60 matches total per week across all three modes.<br><br>
-            <b>Efficiency:</b> Since Manager Mode can be set to "Auto-play," many players use it to grind their 450 points while they are away from their phones.
-        </p>
-
-        <p><b>Note</b>: The exact number of matches may vary slightly depending on your win/loss ratio, as wins generally grant more points than draws or losses.</p>
+        <div class="brand">FC Mobile Hub</div>
     </div>
+
+    <div class="hero">
+        <div class="hero-label">Division Rivals Guide</div>
+        <h1>Activity Points</h1>
+        <div class="title-line"></div>
+    </div>
+
+    <div class="content-container">
+
+        <div class="image-card">
+            <img src="https://i.imgur.com/iV7ryMX.png" alt="Activity Points">
+        </div>
+
+        <div class="section intro">
+            <div class="section-title">Weekly Activity Points</div>
+
+            <p>
+                In FC Mobile, players can earn a minimum of
+                <b>1,800 Activity Points</b> every week by participating
+                in Division Rivals. These points are essential for
+                progressing through Division Rivals rewards and various
+                seasonal events.
+            </p>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Points Breakdown</div>
+
+            <div class="points-list">
+
+                <div class="point-row">
+                    <div class="point-mode">VS Attack (VSA)</div>
+                    <div class="point-value">450 Max Weekly Points</div>
+                </div>
+
+                <div class="point-row">
+                    <div class="point-mode">Head to Head (H2H)</div>
+                    <div class="point-value">900 Max Weekly Points</div>
+                </div>
+
+                <div class="point-row">
+                    <div class="point-mode">Manager Mode</div>
+                    <div class="point-value">450 Max Weekly Points</div>
+                </div>
+
+            </div>
+
+            <p style="margin-top:13px; color:#7f8b86; font-size:.78rem;">
+                Each mode requires roughly 15–20 matches to reach its
+                maximum weekly points.
+            </p>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Key Details</div>
+
+            <div class="detail-list">
+
+                <div class="detail">
+                    <strong>Weekly Limit</strong>
+                    <p>
+                        Once you hit the cap for a specific mode
+                        (e.g., 900 points in H2H), you will stop earning
+                        Activity Points from that mode until the weekly reset.
+                    </p>
+                </div>
+
+                <div class="detail">
+                    <strong>Time Commitment</strong>
+                    <p>
+                        To maximize your rewards, you need to play roughly
+                        45 to 60 matches total per week across all three modes.
+                    </p>
+                </div>
+
+                <div class="detail">
+                    <strong>Efficiency</strong>
+                    <p>
+                        Since Manager Mode can be set to "Auto-play," many
+                        players use it to grind their 450 points while they
+                        are away from their phones.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="section note">
+            <div class="note-label">Note</div>
+
+            <p>
+                The exact number of matches may vary slightly depending on
+                your win/loss ratio, as wins generally grant more points
+                than draws or losses.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <div><span>FC MOBILE HUB</span></div>
+        <div>PLAY / LEARN / IMPROVE</div>
+    </div>
+
+</div>
 
 </body>
 </html>
