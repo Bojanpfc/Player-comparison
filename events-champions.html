@@ -3,159 +3,438 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Champions Event</title>
+    <title>Champions Event | FC Mobile Hub</title>
+
     <style>
         :root {
-            --bg-color: #0b0e14;
-            --card-bg: #121824;
-            --accent-blue: #3388ff;
-            --text-main: #ffffff;
-            --text-title: #ffffff;
-        }
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            font-family: sans-serif; 
-            padding: 15px; 
-            margin: 0; 
+            --bg: #050708;
+            --card: rgba(12, 18, 17, 0.92);
+            --card-hover: rgba(17, 28, 25, 0.96);
+            --green: #00ff75;
+            --white: #f5f7f6;
+            --muted: #8c9994;
+            --border: rgba(0, 255, 117, 0.18);
+            --line: rgba(255,255,255,.07);
         }
 
-        /* Back dugme */
-        .back-btn {
-            display: inline-block;
-            background: #1a233a;
-            color: #ffffff;
-            padding: 6px 12px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .back-btn:hover {
-            background: #23304f;
+        * {
+            box-sizing: border-box;
         }
 
-        /* Champions logo - na samom vrhu */
-        .champions-logo-container {
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(0,255,117,.08), transparent 32%),
+                radial-gradient(circle at 100% 60%, rgba(0,255,117,.035), transparent 30%),
+                #050708;
+            color: var(--white);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Helvetica, Arial, sans-serif;
+            padding: 20px 15px 45px;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 430px;
+            height: 430px;
+            top: -210px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,255,117,.06);
+            filter: blur(100px);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .page {
             width: 100%;
-            margin-bottom: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
-        .champions-logo-container img {
+
+        /* TOP */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--white);
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 11px;
+            border: 1px solid var(--border);
+            background: rgba(10,18,15,.9);
+            font-size: .9rem;
+            font-weight: 700;
+            transition: .2s ease;
+            box-shadow: 0 7px 22px rgba(0,0,0,.28);
+        }
+
+        .back-btn:hover {
+            color: var(--green);
+            border-color: rgba(0,255,117,.55);
+            transform: translateX(-2px);
+        }
+
+        .brand {
+            color: var(--green);
+            font-size: .72rem;
+            font-weight: 800;
+            font-style: italic;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* HEADER */
+        .hero {
+            text-align: center;
+            margin: 8px 0 28px;
+        }
+
+        .hero-label {
+            color: var(--green);
+            font-size: .68rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 9px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2rem, 9vw, 3rem);
+            line-height: 1;
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            letter-spacing: -1.5px;
+        }
+
+        .title-line {
+            width: 72px;
+            height: 4px;
+            margin: 15px auto 0;
+            border-radius: 10px;
+            background: var(--green);
+            box-shadow: 0 0 16px rgba(0,255,117,.35);
+        }
+
+        /* CONTENT */
+        .content-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* CHAMPIONS IMAGE */
+        .image-card {
+            padding: 7px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            background: rgba(9,15,13,.9);
+            box-shadow: 0 12px 32px rgba(0,0,0,.35);
+        }
+
+        .image-card img {
+            display: block;
+            width: 100%;
+            border-radius: 10px;
+            border: 0;
+        }
+
+        /* OVR SECTIONS */
+        .ovr-section {
+            background: linear-gradient(
+                100deg,
+                rgba(13,23,19,.96),
+                rgba(8,13,12,.94)
+            );
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            padding: 18px;
+            box-shadow:
+                0 9px 26px rgba(0,0,0,.3),
+                inset 0 1px 0 rgba(255,255,255,.02);
+        }
+
+        .ovr-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 14px;
+            color: var(--green);
+            font-size: .82rem;
+            font-weight: 850;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+
+        .ovr-header::before {
+            content: "";
+            width: 3px;
+            height: 20px;
+            border-radius: 4px;
+            background: var(--green);
+            box-shadow: 0 0 10px rgba(0,255,117,.25);
+        }
+
+        /* PLAYER GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+        }
+
+        .player-card {
+            background: rgba(5,10,8,.7);
+            border: 1px solid rgba(255,255,255,.055);
+            padding: 7px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 0;
+            transition: .2s ease;
+        }
+
+        .player-card:hover {
+            background: var(--card-hover);
+            border-color: rgba(0,255,117,.35);
+            transform: translateY(-2px);
+        }
+
+        .player-card img {
             width: 100%;
             height: auto;
-            border-radius: 6px;
-            display: block;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
-        }
-        
-        /* Naslov ispod slike */
-        h1 { 
-            color: var(--text-title); 
-            text-align: center; 
-            font-size: 1.1rem; 
-            margin-bottom: 25px; 
-        }
-
-        .ovr-section { margin-bottom: 25px; max-width: 100%; }
-        .ovr-header { 
-            background: #1a233a; 
-            padding: 10px; 
-            border-left: 4px solid #00ff88; 
-            margin-bottom: 10px; 
-            font-weight: bold;
-        }
-
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr) !important; 
-            gap: 8px !important; 
-            width: 100% !important;
-        }
-
-        .player-card { 
-            background: var(--card-bg); 
-            border: 1px solid #1a233a;
-            padding: 8px; 
-            border-radius: 6px; 
-            text-align: center; 
-            min-width: 0; 
-        }
-        .player-card img { 
-            width: 100% !important; 
-            height: auto; 
-            border-radius: 4px; 
+            border-radius: 7px;
             display: block;
         }
-        .name { font-size: 0.75rem; font-weight: bold; margin: 5px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .cost-text { color: var(--accent-blue); font-size: 0.70rem; font-weight: bold; }
-    </style>
-</head>
-<body>
 
-    <a href="index.html" class="back-btn">&#8592; Back</a>
+        .name {
+            color: #e8eeeb;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin: 7px 0 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-    <!-- Champions logo na vrhu -->
-    <div class="champions-logo-container">
-        <img src="https://i.imgur.com/0jZB8F0.jpeg" alt="Champions Logo">
-    </div>
+        .cost-text {
+            color: var(--green);
+            font-size: 0.70rem;
+            font-weight: 800;
+        }
 
-    <!-- Naslov ispod slike -->
-    <h1>Worth taking with shards in this event</h1>
+        /* FOOTER */
+        .footer {
+            margin-top: 30px;
+            padding-top: 17px;
+            border-top: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            color: #58645f;
+            font-size: .63rem;
+            letter-spacing: .7px;
+        }
 
-    <div id="content">Učitavam podatke...</div>
+        .footer span {
+            color: var(--green);
+            font-weight: 750;
+        }
 
-    <script>
-        const SHEET_ID = '14GJlmnduoo0s8-p5olA1qzmX6a0ylmoVBTshTxeEA3A'; 
-        const tabs = ['Def', 'Mid', 'Att']; 
+        /* MOBILE */
+        @media (max-width: 420px) {
 
-        async function loadPlayers() {
-            let players = [];
-            for (const tab of tabs) {
-                const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${tab}&t=${Date.now()}`);
-                const text = await res.text();
-                const data = JSON.parse(text.substr(47).slice(0, -2));
-                
-                const cols = data.table.cols;
-                let nI = -1, wI = -1, iI = -1, cI = -1, ovrI = -1;
-                cols.forEach((col, idx) => {
-                    const l = col.label?.trim().toLowerCase();
-                    if (l === 'name') nI = idx;
-                    if (l.includes('worth shard cost')) wI = idx;
-                    if (l === 'image') iI = idx;
-                    if (l.includes('shard cost')) cI = idx;
-                    if (l === 'ovr') ovrI = idx;
-                });
-
-                data.table.rows.forEach(row => {
-                    if (row.c[nI]?.v && row.c[wI]?.v?.toString().toLowerCase() === 'yes') {
-                        players.push({
-                            name: row.c[nI].v,
-                            image: iI !== -1 ? row.c[iI].v : '',
-                            cost: cI !== -1 ? row.c[cI].v : '0',
-                            ovr: ovrI !== -1 ? row.c[ovrI].v : 'N/A',
-                            numericCost: parseFloat(row.c[cI]?.v?.toString().replace(/[^0-9.]/g, '')) || 0
-                        });
-                    }
-                });
+            body {
+                padding: 17px 13px 35px;
             }
 
-            const grouped = players.reduce((acc, p) => { (acc[p.ovr] = acc[p.ovr] || []).push(p); return acc; }, {});
-            const sortedOvr = Object.keys(grouped).sort((a, b) => b - a);
-            const container = document.getElementById('content');
-            container.innerHTML = '';
+            .brand {
+                font-size: .62rem;
+                letter-spacing: 1.5px;
+            }
 
-            sortedOvr.forEach(ovr => {
-                grouped[ovr].sort((a, b) => a.numericCost - b.numericCost);
-                let html = `<div class="ovr-section"><div class="ovr-header">${ovr} OVR</div><div class="grid">`;
-                grouped[ovr].forEach(p => {
-                    html += `<div class="player-card"><img src="${p.image}"><div class="name">${p.name}</div><div class="cost-text">&#x1F9E9; ${p.cost}</div></div>`;
-                });
-                container.innerHTML += html + `</div></div>`;
+            h1 {
+                font-size: 2.15rem;
+            }
+
+            .ovr-section {
+                padding: 16px;
+            }
+
+            .grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .player-card {
+                padding: 6px;
+            }
+
+            .name {
+                font-size: .68rem;
+            }
+
+            .cost-text {
+                font-size: .65rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="top-bar">
+        <a href="index.html" class="back-btn">
+            <span>←</span> Back
+        </a>
+
+        <div class="brand">FC Mobile Hub</div>
+    </div>
+
+    <div class="hero">
+        <div class="hero-label">Champions Event</div>
+        <h1>Champions</h1>
+        <div class="title-line"></div>
+    </div>
+
+    <div class="content-container">
+
+        <div class="image-card">
+            <img src="https://i.imgur.com/0jZB8F0.jpeg" alt="Champions Logo">
+        </div>
+
+        <div id="content">Loading players...</div>
+
+    </div>
+
+    <div class="footer">
+        <div><span>FC MOBILE HUB</span></div>
+        <div>PLAY / LEARN / IMPROVE</div>
+    </div>
+
+</div>
+
+<script>
+    const SHEET_ID = '14GJlmnduoo0s8-p5olA1qzmX6a0ylmoVBTshTxeEA3A';
+    const tabs = ['Def', 'Mid', 'Att'];
+
+    async function loadPlayers() {
+        let players = [];
+
+        for (const tab of tabs) {
+
+            const res = await fetch(
+                `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${tab}&t=${Date.now()}`
+            );
+
+            const text = await res.text();
+            const data = JSON.parse(text.substr(47).slice(0, -2));
+
+            const cols = data.table.cols;
+
+            let nI = -1,
+                wI = -1,
+                iI = -1,
+                cI = -1,
+                ovrI = -1;
+
+            cols.forEach((col, idx) => {
+
+                const l = col.label?.trim().toLowerCase();
+
+                if (l === 'name') nI = idx;
+                if (l.includes('worth shard cost')) wI = idx;
+                if (l === 'image') iI = idx;
+                if (l.includes('shard cost')) cI = idx;
+                if (l === 'ovr') ovrI = idx;
+
+            });
+
+            data.table.rows.forEach(row => {
+
+                if (
+                    row.c[nI]?.v &&
+                    row.c[wI]?.v?.toString().toLowerCase() === 'yes'
+                ) {
+
+                    players.push({
+                        name: row.c[nI].v,
+                        image: iI !== -1 ? row.c[iI].v : '',
+                        cost: cI !== -1 ? row.c[cI].v : '0',
+                        ovr: ovrI !== -1 ? row.c[ovrI].v : 'N/A',
+                        numericCost:
+                            parseFloat(
+                                row.c[cI]?.v
+                                ?.toString()
+                                .replace(/[^0-9.]/g, '')
+                            ) || 0
+                    });
+
+                }
+
             });
         }
-        loadPlayers();
-    </script>
+
+        const grouped = players.reduce((acc, p) => {
+            (acc[p.ovr] = acc[p.ovr] || []).push(p);
+            return acc;
+        }, {});
+
+        const sortedOvr = Object.keys(grouped).sort((a, b) => b - a);
+
+        const container = document.getElementById('content');
+
+        container.innerHTML = '';
+
+        sortedOvr.forEach(ovr => {
+
+            grouped[ovr].sort(
+                (a, b) => a.numericCost - b.numericCost
+            );
+
+            let html = `
+                <div class="ovr-section">
+                    <div class="ovr-header">${ovr} OVR</div>
+                    <div class="grid">
+            `;
+
+            grouped[ovr].forEach(p => {
+
+                html += `
+                    <div class="player-card">
+                        <img src="${p.image}" alt="${p.name}">
+                        <div class="name">${p.name}</div>
+                        <div class="cost-text">&#x1F9E9; ${p.cost}</div>
+                    </div>
+                `;
+
+            });
+
+            html += `
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML += html;
+        });
+    }
+
+    loadPlayers();
+</script>
+
 </body>
 </html>
