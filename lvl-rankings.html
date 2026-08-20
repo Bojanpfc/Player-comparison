@@ -210,14 +210,21 @@
             padding-left: 5px;
         }
 
+        /*
+         * Kolone
+         *
+         * Last 5 je namerno šira da bi
+         * svih 5 rezultata moglo da stane.
+         */
+
         th:nth-child(1),
         td:nth-child(1) {
-            width: 7%;
+            width: 6%;
         }
 
         th:nth-child(2),
         td:nth-child(2) {
-            width: 26%;
+            width: 24%;
         }
 
         th:nth-child(3),
@@ -227,22 +234,22 @@
 
         th:nth-child(4),
         td:nth-child(4) {
-            width: 11%;
+            width: 10%;
         }
 
         th:nth-child(5),
         td:nth-child(5) {
-            width: 9%;
+            width: 8%;
         }
 
         th:nth-child(6),
         td:nth-child(6) {
-            width: 9%;
+            width: 8%;
         }
 
         th:nth-child(7),
         td:nth-child(7) {
-            width: 30%;
+            width: 36%;
         }
 
         tr td:first-child {
@@ -287,14 +294,21 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+
             width: 17px;
             height: 18px;
+
             border-radius: 4px;
+
             font-weight: 850;
             font-size: .48rem;
+
             margin: 0 0.5px;
+
             color: #fff !important;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.08);
         }
 
         .bg-green {
@@ -312,7 +326,9 @@
         .profile-overlay {
             position: fixed;
             inset: 0;
+
             background: rgba(0,0,0,.78);
+
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
 
@@ -457,7 +473,9 @@
             font-size: 2.7rem;
             line-height: 1;
             font-weight: 900;
-            text-shadow: 0 0 20px rgba(0,255,117,.18);
+
+            text-shadow:
+                0 0 20px rgba(0,255,117,.18);
         }
 
         .score-label {
@@ -486,6 +504,7 @@
             text-align: center;
 
             background: rgba(5,10,8,.72);
+
             border: 1px solid rgba(255,255,255,.055);
             border-radius: 10px;
         }
@@ -512,6 +531,7 @@
             padding: 14px;
 
             background: rgba(5,10,8,.6);
+
             border: 1px solid rgba(0,255,117,.10);
             border-radius: 11px;
         }
@@ -524,6 +544,7 @@
             margin-bottom: 12px;
 
             color: var(--green);
+
             font-size: .68rem;
             font-weight: 850;
             letter-spacing: 1.5px;
@@ -532,11 +553,16 @@
 
         .profile-section-title::before {
             content: "";
+
             width: 3px;
             height: 17px;
+
             border-radius: 4px;
+
             background: var(--green);
-            box-shadow: 0 0 9px rgba(0,255,117,.25);
+
+            box-shadow:
+                0 0 9px rgba(0,255,117,.25);
         }
 
         /* BEST / WORST */
@@ -552,6 +578,7 @@
             border-radius: 9px;
 
             background: rgba(13,24,20,.8);
+
             border: 1px solid rgba(255,255,255,.05);
         }
 
@@ -565,12 +592,14 @@
 
         .record-value {
             margin-top: 5px;
+
             color: var(--green);
+
             font-size: 1.15rem;
             font-weight: 900;
         }
 
-        /* LAST 5 */
+        /* LAST 5 IN PROFILE */
 
         .recent-matches {
             display: flex;
@@ -590,6 +619,7 @@
 
             font-size: .7rem;
             font-weight: 900;
+
             color: white;
         }
 
@@ -616,6 +646,7 @@
             justify-content: space-between;
 
             color: #53605b;
+
             font-size: .61rem;
             letter-spacing: .7px;
         }
@@ -631,7 +662,27 @@
             padding: 25px 10px;
         }
 
-        /* MOBILE */
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .match-badge {
+                width: 16px;
+                height: 18px;
+
+                font-size: .46rem;
+
+                margin-left: 1px;
+                margin-right: 1px;
+            }
+
+            th:nth-child(7),
+            td:nth-child(7) {
+                width: 36%;
+            }
+        }
 
         @media (max-width: 420px) {
 
@@ -677,6 +728,22 @@
             .record-value {
                 font-size: 1rem;
             }
+
+            .match-badge {
+                width: 15px;
+                height: 17px;
+                font-size: .43rem;
+                margin-left: 0.5px;
+                margin-right: 0.5px;
+            }
+
+            th {
+                font-size: .48rem;
+            }
+
+            td {
+                font-size: .62rem;
+            }
         }
     </style>
 </head>
@@ -685,7 +752,9 @@
 
 <div class="page">
 
-    <!-- TOP BAR -->
+    <!-- =====================================================
+         TOP BAR
+         ===================================================== -->
 
     <div class="top-bar">
 
@@ -700,7 +769,9 @@
     </div>
 
 
-    <!-- HEADER -->
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
 
     <div class="hero">
 
@@ -717,7 +788,9 @@
     </div>
 
 
-    <!-- RANKING TABLE -->
+    <!-- =====================================================
+         RANKING TABLE
+         ===================================================== -->
 
     <div class="ranking-card">
 
@@ -758,7 +831,9 @@
     </div>
 
 
-    <!-- FOOTER -->
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
 
     <div class="footer">
 
@@ -775,9 +850,9 @@
 </div>
 
 
-<!-- ===================================================== -->
-<!-- PLAYER PROFILE POPUP -->
-<!-- ===================================================== -->
+<!-- =====================================================
+     PLAYER PROFILE POPUP
+     ===================================================== -->
 
 <div class="profile-overlay" id="profileOverlay">
 
@@ -838,10 +913,9 @@
         </div>
 
 
+        <!-- BASIC STATS -->
+
         <div class="profile-body">
-
-
-            <!-- BASIC STATS -->
 
             <div class="stats-grid">
 
@@ -895,7 +969,9 @@
             </div>
 
 
-            <!-- PERFORMANCE -->
+            <!-- =================================================
+                 PERFORMANCE
+                 ================================================= -->
 
             <div class="profile-section">
 
@@ -903,9 +979,7 @@
                     Performance
                 </div>
 
-
                 <div class="record-grid">
-
 
                     <div class="record">
 
@@ -938,13 +1012,14 @@
 
                     </div>
 
-
                 </div>
 
             </div>
 
 
-            <!-- LAST 5 MATCHES -->
+            <!-- =================================================
+                 LAST 5 MATCHES
+                 ================================================= -->
 
             <div class="profile-section">
 
@@ -999,7 +1074,6 @@
 
     function openProfile(playerData) {
 
-
         /* PLAYER NAME */
 
         document.getElementById('profileName').textContent =
@@ -1011,7 +1085,6 @@
         document.getElementById('profileRank').textContent =
             '#' + playerData.rank;
 
-
         document.getElementById('profileRankBox').textContent =
             '#' + playerData.rank;
 
@@ -1021,10 +1094,8 @@
         document.getElementById('profileGP').textContent =
             playerData.gp;
 
-
         document.getElementById('profileAVG').textContent =
             playerData.avg;
-
 
         document.getElementById('profileScore').textContent =
             playerData.avg;
@@ -1034,7 +1105,6 @@
 
         document.getElementById('profileMax').textContent =
             playerData.max;
-
 
         document.getElementById('profileMin').textContent =
             playerData.min;
@@ -1047,23 +1117,19 @@
         const matchesContainer =
             document.getElementById('profileMatches');
 
-
         matchesContainer.innerHTML = '';
 
 
         playerData.matches.forEach(score => {
 
-
             const badge =
                 document.createElement('div');
-
 
             const numericScore =
                 Number(score);
 
 
             /*
-             * Trenutna logika:
              * 34+ = zeleno
              * ispod 34 = crveno
              */
@@ -1167,7 +1233,6 @@
 
         .then(data => {
 
-
             const json =
                 JSON.parse(
                     data.substr(47).slice(0, -2)
@@ -1183,7 +1248,9 @@
             tbody.innerHTML = '';
 
 
-            /* FILTER VALID PLAYERS */
+            /* =================================================
+               FILTER VALID PLAYERS
+               ================================================= */
 
             const validRows =
                 json.table.rows.filter(row =>
@@ -1199,7 +1266,9 @@
                 );
 
 
-            /* CREATE TABLE ROWS */
+            /* =================================================
+               CREATE TABLE ROWS
+               ================================================= */
 
             validRows.forEach((row, index) => {
 
@@ -1247,12 +1316,23 @@
                 let matches = [];
 
 
+                /*
+                 * Kolone 5 do 9:
+                 *
+                 * 5 = Last 5 #1
+                 * 6 = Last 5 #2
+                 * 7 = Last 5 #3
+                 * 8 = Last 5 #4
+                 * 9 = Last 5 #5
+                 *
+                 * Dakle ukupno 5 rezultata.
+                 */
+
                 for (
                     let i = 5;
                     i <= 9;
                     i++
                 ) {
-
 
                     const val =
                         row.c[i]?.v;
@@ -1263,7 +1343,6 @@
                         val !== null &&
                         val !== ''
                     ) {
-
 
                         const score =
                             Number(val);
@@ -1357,7 +1436,6 @@
                     'click',
                     function() {
 
-
                         openProfile({
 
                             player:
@@ -1383,7 +1461,6 @@
 
                         });
 
-
                     }
                 );
 
@@ -1400,7 +1477,6 @@
            ===================================================== */
 
         .catch(error => {
-
 
             const tbody =
                 document.querySelector(
