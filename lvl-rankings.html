@@ -3,307 +3,515 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>LvL Rankings | FC Mobile Hub</title>
 
     <style>
+
         :root {
             --bg: #050708;
             --card: rgba(10, 17, 15, 0.94);
             --row: rgba(13, 24, 20, 0.96);
             --row-hover: rgba(17, 32, 26, 0.98);
+
             --green: #00ff75;
             --green-dark: #0b5b35;
+
             --red-dark: #741b20;
+
             --white: #f5f7f6;
             --muted: #87948f;
+
             --border: rgba(0, 255, 117, 0.17);
             --line: rgba(255,255,255,.06);
         }
+
 
         * {
             box-sizing: border-box;
         }
 
+
         body {
             margin: 0;
             min-height: 100vh;
+
             background:
-                radial-gradient(circle at 50% 0%, rgba(0,255,117,.075), transparent 30%),
-                radial-gradient(circle at 100% 55%, rgba(0,255,117,.03), transparent 28%),
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(0,255,117,.075),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 100% 55%,
+                    rgba(0,255,117,.03),
+                    transparent 28%
+                ),
+
                 #050708;
+
             color: var(--white);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-                         Roboto, Helvetica, Arial, sans-serif;
+
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Helvetica,
+                Arial,
+                sans-serif;
+
             padding: 18px 5px 35px;
+
             overflow-x: hidden;
         }
 
+
         body::before {
             content: "";
+
             position: fixed;
+
             width: 430px;
             height: 430px;
+
             top: -220px;
             left: 50%;
+
             transform: translateX(-50%);
+
             background: rgba(0,255,117,.055);
+
             filter: blur(105px);
+
             border-radius: 50%;
+
             pointer-events: none;
         }
+
 
         .page {
             width: 100%;
             max-width: 760px;
+
             margin: 0 auto;
+
             position: relative;
             z-index: 1;
         }
 
-        /* TOP BAR */
+
+
+        /* =====================================================
+           TOP BAR
+           ===================================================== */
 
         .top-bar {
+
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
+
             margin-bottom: 25px;
+
             padding: 0 3px;
         }
 
+
         .back-btn {
+
             display: inline-flex;
+
             align-items: center;
+
             gap: 7px;
+
             padding: 10px 15px;
+
             border-radius: 11px;
+
             border: 1px solid var(--border);
+
             background: rgba(9,17,14,.92);
+
             color: var(--white);
+
             text-decoration: none;
+
             font-size: .86rem;
+
             font-weight: 750;
+
             transition: .2s ease;
-            box-shadow: 0 7px 22px rgba(0,0,0,.28);
+
+            box-shadow:
+                0 7px 22px rgba(0,0,0,.28);
         }
+
 
         .back-btn:hover {
+
             color: var(--green);
-            border-color: rgba(0,255,117,.55);
-            transform: translateX(-2px);
+
+            border-color:
+                rgba(0,255,117,.55);
+
+            transform:
+                translateX(-2px);
         }
 
+
         .brand {
+
             color: var(--green);
+
             font-size: .68rem;
+
             font-weight: 850;
+
             font-style: italic;
+
             letter-spacing: 2px;
+
             text-transform: uppercase;
         }
 
-        /* HEADER */
+
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
 
         .hero {
+
             text-align: center;
+
             margin-bottom: 24px;
         }
 
-        .hero-label {
-            color: var(--green);
-            font-size: .65rem;
-            font-weight: 800;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
+
+        /*
+         * Competitive Rankings je uklonjen.
+         */
+
 
         h1 {
+
             margin: 0;
-            font-size: clamp(2rem, 8vw, 2.8rem);
+
+            font-size:
+                clamp(2rem, 8vw, 2.8rem);
+
             line-height: 1;
+
             font-weight: 900;
+
             font-style: italic;
+
             letter-spacing: -1.5px;
+
             text-transform: uppercase;
         }
 
-        .title-line {
-            width: 70px;
-            height: 4px;
-            border-radius: 10px;
-            background: var(--green);
-            margin: 14px auto 0;
-            box-shadow: 0 0 15px rgba(0,255,117,.32);
+
+        .season-title {
+
+            margin-top: 9px;
+
+            color: var(--green);
+
+            font-size: .85rem;
+
+            font-weight: 850;
+
+            letter-spacing: 4px;
+
+            text-transform: uppercase;
+
+            font-style: italic;
         }
 
-        /* RANKING CARD */
+
+        .title-line {
+
+            width: 70px;
+
+            height: 4px;
+
+            border-radius: 10px;
+
+            background: var(--green);
+
+            margin: 14px auto 0;
+
+            box-shadow:
+                0 0 15px rgba(0,255,117,.32);
+        }
+
+
+
+        /* =====================================================
+           RANKING CARD
+           ===================================================== */
 
         .ranking-card {
+
             width: 100%;
+
             background:
                 linear-gradient(
                     135deg,
                     rgba(11,20,16,.98),
                     rgba(7,12,11,.97)
                 );
-            border: 1px solid var(--border);
+
+            border:
+                1px solid var(--border);
+
             border-radius: 15px;
+
             padding: 11px 4px 10px;
+
             box-shadow:
                 0 14px 38px rgba(0,0,0,.38),
                 inset 0 1px 0 rgba(255,255,255,.025);
+
             overflow: hidden;
         }
 
+
         .table-wrap {
+
             width: 100%;
+
             overflow-x: hidden;
         }
 
+
         table {
+
             width: 100%;
+
             border-collapse: separate;
+
             border-spacing: 0 5px;
+
             table-layout: fixed;
         }
 
+
         th {
+
             color: #66736e;
+
             font-size: .52rem;
+
             padding: 4px 1px 7px;
+
             text-transform: uppercase;
+
             text-align: center;
+
             font-weight: 800;
         }
 
+
         th:nth-child(2) {
+
             text-align: left;
+
             padding-left: 5px;
         }
 
+
         td {
+
             background: var(--row);
+
             padding: 6px 1px;
+
             text-align: center;
+
             font-size: .65rem;
+
             overflow: hidden;
+
             text-overflow: ellipsis;
+
             white-space: nowrap;
+
             color: var(--white);
-            border-top: 1px solid rgba(255,255,255,.025);
-            border-bottom: 1px solid rgba(255,255,255,.025);
+
+            border-top:
+                1px solid rgba(255,255,255,.025);
+
+            border-bottom:
+                1px solid rgba(255,255,255,.025);
+
             transition: .18s ease;
         }
 
+
         tbody tr {
+
             cursor: pointer;
         }
 
+
         tbody tr:hover td {
+
             background: var(--row-hover);
-            border-color: rgba(0,255,117,.12);
+
+            border-color:
+                rgba(0,255,117,.12);
         }
 
+
         td:nth-child(2) {
+
             text-align: left;
+
             font-weight: 650;
+
             padding-left: 5px;
         }
 
-        /*
-         * Kolone
-         *
-         * Last 5 je namerno šira da bi
-         * svih 5 rezultata moglo da stane.
-         */
+
+        /* =====================================================
+           COLUMN WIDTHS
+           ===================================================== */
 
         th:nth-child(1),
         td:nth-child(1) {
             width: 6%;
         }
 
+
         th:nth-child(2),
         td:nth-child(2) {
             width: 24%;
         }
+
 
         th:nth-child(3),
         td:nth-child(3) {
             width: 8%;
         }
 
+
         th:nth-child(4),
         td:nth-child(4) {
             width: 10%;
         }
+
 
         th:nth-child(5),
         td:nth-child(5) {
             width: 8%;
         }
 
+
         th:nth-child(6),
         td:nth-child(6) {
             width: 8%;
         }
+
 
         th:nth-child(7),
         td:nth-child(7) {
             width: 36%;
         }
 
+
+
+        /* =====================================================
+           RANK COLORS
+           ===================================================== */
+
         tr td:first-child {
-            border-radius: 8px 0 0 8px;
+
+            border-radius:
+                8px 0 0 8px;
+
             color: var(--green);
+
             font-weight: 900;
+
             font-size: .7rem;
         }
 
+
         tr td:last-child {
-            border-radius: 0 8px 8px 0;
+
+            border-radius:
+                0 8px 8px 0;
         }
 
-        /* TOP 3 */
 
         tbody tr:nth-child(1) td:first-child {
+
             color: #f5d66b;
         }
 
+
         tbody tr:nth-child(2) td:first-child {
+
             color: #c9d1d0;
         }
 
+
         tbody tr:nth-child(3) td:first-child {
+
             color: #d99b62;
         }
 
-        /* PLAYER NAME */
+
+
+        /* =====================================================
+           PLAYER NAME
+           ===================================================== */
 
         .player-name {
+
             color: var(--white);
+
             transition: .18s ease;
         }
 
+
         tbody tr:hover .player-name {
+
             color: var(--green);
         }
 
-        /* MATCH BADGES */
+
+
+        /* =====================================================
+           MATCH BADGES
+           ===================================================== */
 
         .match-badge {
+
             display: inline-flex;
+
             align-items: center;
+
             justify-content: center;
 
-            width: 17px;
+            width: 16px;
             height: 18px;
 
             border-radius: 4px;
 
             font-weight: 850;
-            font-size: .48rem;
 
-            margin: 0 0.5px;
+            font-size: .46rem;
+
+            margin:
+                0 1px;
 
             color: #fff !important;
 
@@ -311,29 +519,47 @@
                 inset 0 1px 0 rgba(255,255,255,.08);
         }
 
+
         .bg-green {
+
             background: var(--green-dark);
-            border: 1px solid rgba(0,255,117,.25);
+
+            border:
+                1px solid rgba(0,255,117,.25);
         }
+
 
         .bg-red {
+
             background: var(--red-dark);
-            border: 1px solid rgba(255,70,70,.18);
+
+            border:
+                1px solid rgba(255,70,70,.18);
         }
 
-        /* PROFILE OVERLAY */
+
+
+        /* =====================================================
+           PROFILE OVERLAY
+           ===================================================== */
 
         .profile-overlay {
+
             position: fixed;
+
             inset: 0;
 
-            background: rgba(0,0,0,.78);
+            background:
+                rgba(0,0,0,.78);
 
             backdrop-filter: blur(8px);
+
             -webkit-backdrop-filter: blur(8px);
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             padding: 18px;
@@ -341,24 +567,38 @@
             z-index: 1000;
 
             opacity: 0;
+
             visibility: hidden;
+
             pointer-events: none;
 
             transition: .25s ease;
         }
 
+
         .profile-overlay.active {
+
             opacity: 1;
+
             visibility: visible;
+
             pointer-events: auto;
         }
 
-        /* PROFILE CARD */
+
+
+        /* =====================================================
+           PROFILE CARD
+           ===================================================== */
 
         .profile-card {
+
             width: 100%;
+
             max-width: 520px;
+
             max-height: 90vh;
+
             overflow-y: auto;
 
             background:
@@ -368,30 +608,46 @@
                     rgba(5,10,8,.99)
                 );
 
-            border: 1px solid rgba(0,255,117,.28);
+            border:
+                1px solid rgba(0,255,117,.28);
+
             border-radius: 18px;
 
             box-shadow:
                 0 25px 80px rgba(0,0,0,.7),
                 0 0 40px rgba(0,255,117,.06);
 
-            transform: translateY(25px) scale(.97);
+            transform:
+                translateY(25px) scale(.97);
 
             transition: .25s ease;
         }
 
-        .profile-overlay.active .profile-card {
-            transform: translateY(0) scale(1);
+
+        .profile-overlay.active
+        .profile-card {
+
+            transform:
+                translateY(0) scale(1);
         }
 
-        /* PROFILE HEADER */
+
+
+        /* =====================================================
+           PROFILE HEADER
+           ===================================================== */
 
         .profile-header {
-            position: relative;
-            text-align: center;
-            padding: 25px 20px 20px;
 
-            border-bottom: 1px solid var(--line);
+            position: relative;
+
+            text-align: center;
+
+            padding:
+                25px 20px 20px;
+
+            border-bottom:
+                1px solid var(--line);
 
             background:
                 radial-gradient(
@@ -401,144 +657,245 @@
                 );
         }
 
+
         .close-profile {
+
             position: absolute;
+
             top: 12px;
+
             right: 12px;
 
             width: 34px;
+
             height: 34px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             border-radius: 50%;
-            border: 1px solid var(--border);
 
-            background: rgba(5,10,8,.8);
+            border:
+                1px solid var(--border);
+
+            background:
+                rgba(5,10,8,.8);
+
             color: var(--white);
 
             font-size: 20px;
+
             cursor: pointer;
 
             transition: .2s ease;
         }
 
+
         .close-profile:hover {
+
             color: var(--green);
-            border-color: var(--green);
-            transform: rotate(90deg);
+
+            border-color:
+                var(--green);
+
+            transform:
+                rotate(90deg);
         }
 
+
         .profile-label {
+
             color: var(--green);
+
             font-size: .62rem;
+
             font-weight: 850;
+
             letter-spacing: 3px;
+
             text-transform: uppercase;
+
             margin-bottom: 8px;
         }
 
+
         .profile-name {
+
             margin: 0;
+
             font-size: 2rem;
+
             font-weight: 900;
+
             font-style: italic;
+
             text-transform: uppercase;
+
             letter-spacing: -1px;
+
             word-break: break-word;
         }
 
+
         .profile-rank {
+
             margin-top: 7px;
+
             color: var(--muted);
+
             font-size: .78rem;
         }
 
+
         .profile-rank span {
+
             color: var(--green);
+
             font-weight: 850;
         }
 
-        /* BIG SCORE */
+
+
+        /* =====================================================
+           MAIN SCORE
+           ===================================================== */
 
         .profile-score {
-            padding: 20px 15px 17px;
+
+            padding:
+                20px 15px 17px;
+
             text-align: center;
         }
 
+
         .score-number {
+
             color: var(--green);
+
             font-size: 2.7rem;
+
             line-height: 1;
+
             font-weight: 900;
 
             text-shadow:
                 0 0 20px rgba(0,255,117,.18);
         }
 
+
         .score-label {
+
             margin-top: 6px;
+
             color: var(--muted);
+
             font-size: .62rem;
+
             font-weight: 800;
+
             letter-spacing: 2px;
+
             text-transform: uppercase;
         }
 
-        /* STAT GRID */
+
+
+        /* =====================================================
+           PROFILE BODY
+           ===================================================== */
 
         .profile-body {
-            padding: 0 16px 20px;
+
+            padding:
+                0 16px 20px;
         }
 
+
         .stats-grid {
+
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
             gap: 8px;
         }
 
+
         .stat-box {
-            padding: 12px 5px;
+
+            padding:
+                12px 5px;
+
             text-align: center;
 
-            background: rgba(5,10,8,.72);
+            background:
+                rgba(5,10,8,.72);
 
-            border: 1px solid rgba(255,255,255,.055);
+            border:
+                1px solid rgba(255,255,255,.055);
+
             border-radius: 10px;
         }
 
+
         .stat-value {
+
             color: var(--white);
+
             font-size: 1rem;
+
             font-weight: 850;
         }
 
+
         .stat-title {
+
             margin-top: 4px;
+
             color: var(--muted);
+
             font-size: .54rem;
+
             font-weight: 750;
+
             text-transform: uppercase;
+
             letter-spacing: .7px;
         }
 
-        /* PROFILE SECTIONS */
+
+
+        /* =====================================================
+           PROFILE SECTION
+           ===================================================== */
 
         .profile-section {
+
             margin-top: 14px;
+
             padding: 14px;
 
-            background: rgba(5,10,8,.6);
+            background:
+                rgba(5,10,8,.6);
 
-            border: 1px solid rgba(0,255,117,.10);
+            border:
+                1px solid rgba(0,255,117,.10);
+
             border-radius: 11px;
         }
 
+
         .profile-section-title {
+
             display: flex;
+
             align-items: center;
+
             gap: 8px;
 
             margin-bottom: 12px;
@@ -546,15 +903,21 @@
             color: var(--green);
 
             font-size: .68rem;
+
             font-weight: 850;
+
             letter-spacing: 1.5px;
+
             text-transform: uppercase;
         }
 
+
         .profile-section-title::before {
+
             content: "";
 
             width: 3px;
+
             height: 17px;
 
             border-radius: 4px;
@@ -565,102 +928,299 @@
                 0 0 9px rgba(0,255,117,.25);
         }
 
-        /* BEST / WORST */
+
+
+        /* =====================================================
+           BEST / WORST
+           ===================================================== */
 
         .record-grid {
+
             display: grid;
-            grid-template-columns: 1fr 1fr;
+
+            grid-template-columns:
+                1fr 1fr;
+
             gap: 8px;
         }
 
+
         .record {
+
             padding: 12px;
+
             border-radius: 9px;
 
-            background: rgba(13,24,20,.8);
+            background:
+                rgba(13,24,20,.8);
 
-            border: 1px solid rgba(255,255,255,.05);
+            border:
+                1px solid rgba(255,255,255,.05);
         }
 
+
         .record-label {
+
             color: var(--muted);
+
             font-size: .55rem;
+
             font-weight: 800;
+
             text-transform: uppercase;
+
             letter-spacing: .8px;
         }
 
+
         .record-value {
+
             margin-top: 5px;
 
             color: var(--green);
 
             font-size: 1.15rem;
+
             font-weight: 900;
         }
 
-        /* LAST 5 IN PROFILE */
+
+
+        /* =====================================================
+           LAST 5
+           ===================================================== */
 
         .recent-matches {
+
             display: flex;
+
             gap: 8px;
+
             flex-wrap: wrap;
         }
 
+
         .recent-match {
+
             min-width: 42px;
+
             height: 42px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             border-radius: 9px;
 
             font-size: .7rem;
+
             font-weight: 900;
 
             color: white;
         }
 
+
         .recent-match.win {
-            background: var(--green-dark);
-            border: 1px solid rgba(0,255,117,.28);
+
+            background:
+                var(--green-dark);
+
+            border:
+                1px solid rgba(0,255,117,.28);
         }
+
 
         .recent-match.loss {
-            background: var(--red-dark);
-            border: 1px solid rgba(255,70,70,.2);
+
+            background:
+                var(--red-dark);
+
+            border:
+                1px solid rgba(255,70,70,.2);
         }
 
-        /* FOOTER */
 
-        .footer {
-            margin-top: 22px;
-            padding: 15px 3px 0;
 
-            border-top: 1px solid var(--line);
+        /* =====================================================
+           HISTORY
+           ===================================================== */
+
+        .history-list {
 
             display: flex;
+
+            flex-direction: column;
+
+            gap: 6px;
+        }
+
+
+        .history-row {
+
+            display: flex;
+
             align-items: center;
+
+            justify-content: space-between;
+
+            padding:
+                10px 12px;
+
+            border-radius: 8px;
+
+            background:
+                rgba(13,24,20,.8);
+
+            border:
+                1px solid rgba(255,255,255,.045);
+        }
+
+
+        .history-season {
+
+            color: var(--muted);
+
+            font-size: .68rem;
+
+            font-weight: 750;
+
+            text-transform: uppercase;
+        }
+
+
+        .history-value {
+
+            color: var(--green);
+
+            font-size: .85rem;
+
+            font-weight: 900;
+        }
+
+
+        .history-value.empty {
+
+            color: #68736f;
+        }
+
+
+        .history-summary {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 8px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .history-summary-box {
+
+            padding:
+                11px;
+
+            border-radius: 9px;
+
+            background:
+                rgba(13,24,20,.8);
+
+            border:
+                1px solid rgba(0,255,117,.08);
+
+            text-align: center;
+        }
+
+
+        .history-summary-value {
+
+            color: var(--green);
+
+            font-size: 1rem;
+
+            font-weight: 900;
+        }
+
+
+        .history-summary-label {
+
+            margin-top: 4px;
+
+            color: var(--muted);
+
+            font-size: .52rem;
+
+            font-weight: 750;
+
+            text-transform: uppercase;
+
+            letter-spacing: .7px;
+        }
+
+
+        .no-history {
+
+            text-align: center;
+
+            padding: 12px 5px;
+
+            color: var(--muted);
+
+            font-size: .65rem;
+        }
+
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .footer {
+
+            margin-top: 22px;
+
+            padding:
+                15px 3px 0;
+
+            border-top:
+                1px solid var(--line);
+
+            display: flex;
+
+            align-items: center;
+
             justify-content: space-between;
 
             color: #53605b;
 
             font-size: .61rem;
+
             letter-spacing: .7px;
         }
 
+
         .footer span {
+
             color: var(--green);
+
             font-weight: 800;
         }
 
+
         .loading {
+
             text-align: center;
+
             color: var(--muted);
+
             padding: 25px 10px;
         }
+
+
 
         /* =====================================================
            MOBILE
@@ -669,88 +1229,140 @@
         @media (max-width: 600px) {
 
             .match-badge {
+
                 width: 16px;
+
                 height: 18px;
 
                 font-size: .46rem;
 
                 margin-left: 1px;
+
                 margin-right: 1px;
             }
 
+
             th:nth-child(7),
             td:nth-child(7) {
+
                 width: 36%;
             }
         }
 
+
         @media (max-width: 420px) {
 
             body {
-                padding: 17px 5px 35px;
+
+                padding:
+                    17px 5px 35px;
             }
 
+
             .brand {
+
                 font-size: .62rem;
+
                 letter-spacing: 1.5px;
             }
 
+
             .ranking-card {
+
                 border-radius: 13px;
             }
 
+
             .profile-overlay {
+
                 padding: 10px;
+
                 align-items: flex-end;
             }
 
+
             .profile-card {
+
                 max-height: 92vh;
-                border-radius: 18px 18px 12px 12px;
+
+                border-radius:
+                    18px 18px 12px 12px;
             }
 
+
             .profile-name {
+
                 font-size: 1.7rem;
             }
 
+
             .score-number {
+
                 font-size: 2.35rem;
             }
 
+
             .profile-body {
-                padding: 0 12px 15px;
+
+                padding:
+                    0 12px 15px;
             }
 
+
+            .stats-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+
             .stat-value {
+
                 font-size: .9rem;
             }
 
+
             .record-value {
+
                 font-size: 1rem;
             }
 
+
             .match-badge {
+
                 width: 15px;
+
                 height: 17px;
+
                 font-size: .43rem;
-                margin-left: 0.5px;
-                margin-right: 0.5px;
+
+                margin-left: .5px;
+
+                margin-right: .5px;
             }
 
+
             th {
+
                 font-size: .48rem;
             }
 
+
             td {
+
                 font-size: .62rem;
             }
         }
+
     </style>
 </head>
 
+
 <body>
 
+
 <div class="page">
+
 
     <!-- =====================================================
          TOP BAR
@@ -758,9 +1370,14 @@
 
     <div class="top-bar">
 
-        <a href="index.html" class="back-btn">
-            <span>←</span> Back
+        <a
+            href="index.html"
+            class="back-btn"
+        >
+            <span>←</span>
+            Back
         </a>
+
 
         <div class="brand">
             FC Mobile Hub
@@ -769,23 +1386,27 @@
     </div>
 
 
+
     <!-- =====================================================
          HEADER
          ===================================================== -->
 
     <div class="hero">
 
-        <div class="hero-label">
-            Competitive Rankings
+        <h1>
+            LVL Rankings
+        </h1>
+
+
+        <div class="season-title">
+            Season 19
         </div>
 
-        <h1>
-            LvL Rankings
-        </h1>
 
         <div class="title-line"></div>
 
     </div>
+
 
 
     <!-- =====================================================
@@ -801,22 +1422,46 @@
                 <thead>
 
                     <tr>
+
                         <th>#</th>
-                        <th>Player</th>
-                        <th>GP</th>
-                        <th>AVG</th>
-                        <th>MAX</th>
-                        <th>MIN</th>
-                        <th>Last 5</th>
+
+                        <th>
+                            Player
+                        </th>
+
+                        <th>
+                            GP
+                        </th>
+
+                        <th>
+                            AVG
+                        </th>
+
+                        <th>
+                            MAX
+                        </th>
+
+                        <th>
+                            MIN
+                        </th>
+
+                        <th>
+                            Last 5
+                        </th>
+
                     </tr>
 
                 </thead>
+
 
                 <tbody>
 
                     <tr>
 
-                        <td colspan="7" class="loading">
+                        <td
+                            colspan="7"
+                            class="loading"
+                        >
                             Loading rankings...
                         </td>
 
@@ -831,6 +1476,7 @@
     </div>
 
 
+
     <!-- =====================================================
          FOOTER
          ===================================================== -->
@@ -838,8 +1484,11 @@
     <div class="footer">
 
         <div>
-            <span>FC MOBILE HUB</span>
+            <span>
+                FC MOBILE HUB
+            </span>
         </div>
+
 
         <div>
             PLAY / LEARN / IMPROVE
@@ -850,13 +1499,21 @@
 </div>
 
 
-<!-- =====================================================
+
+<!-- =========================================================
      PLAYER PROFILE POPUP
-     ===================================================== -->
+     ========================================================= -->
 
-<div class="profile-overlay" id="profileOverlay">
+<div
+    class="profile-overlay"
+    id="profileOverlay"
+>
 
-    <div class="profile-card" id="profileCard">
+
+    <div
+        class="profile-card"
+        id="profileCard"
+    >
 
 
         <!-- PROFILE HEADER -->
@@ -871,9 +1528,11 @@
                 ×
             </button>
 
+
             <div class="profile-label">
                 Player Profile
             </div>
+
 
             <h2
                 class="profile-name"
@@ -881,6 +1540,7 @@
             >
                 Player
             </h2>
+
 
             <div class="profile-rank">
 
@@ -895,6 +1555,7 @@
         </div>
 
 
+
         <!-- MAIN SCORE -->
 
         <div class="profile-score">
@@ -906,6 +1567,7 @@
                 -
             </div>
 
+
             <div class="score-label">
                 Average Score
             </div>
@@ -913,11 +1575,14 @@
         </div>
 
 
+
         <!-- BASIC STATS -->
 
         <div class="profile-body">
 
+
             <div class="stats-grid">
+
 
                 <div class="stat-box">
 
@@ -933,6 +1598,7 @@
                     </div>
 
                 </div>
+
 
 
                 <div class="stat-box">
@@ -951,6 +1617,7 @@
                 </div>
 
 
+
                 <div class="stat-box">
 
                     <div
@@ -966,7 +1633,27 @@
 
                 </div>
 
+
+
+                <!-- NOVA STATISTIKA -->
+
+                <div class="stat-box">
+
+                    <div
+                        class="stat-value"
+                        id="profileCareerAvg"
+                    >
+                        -
+                    </div>
+
+                    <div class="stat-title">
+                        Career Avg
+                    </div>
+
+                </div>
+
             </div>
+
 
 
             <!-- =================================================
@@ -979,7 +1666,9 @@
                     Performance
                 </div>
 
+
                 <div class="record-grid">
+
 
                     <div class="record">
 
@@ -995,6 +1684,7 @@
                         </div>
 
                     </div>
+
 
 
                     <div class="record">
@@ -1017,8 +1707,9 @@
             </div>
 
 
+
             <!-- =================================================
-                 LAST 5 MATCHES
+                 LAST 5
                  ================================================= -->
 
             <div class="profile-section">
@@ -1027,9 +1718,73 @@
                     Last 5 Matches
                 </div>
 
+
                 <div
                     class="recent-matches"
                     id="profileMatches"
+                >
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 HISTORY
+                 ================================================= -->
+
+            <div class="profile-section">
+
+                <div class="profile-section-title">
+                    History
+                </div>
+
+
+                <div
+                    class="history-summary"
+                    id="historySummary"
+                >
+
+
+                    <div class="history-summary-box">
+
+                        <div
+                            class="history-summary-value"
+                            id="historySeasons"
+                        >
+                            -
+                        </div>
+
+                        <div class="history-summary-label">
+                            Seasons
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="history-summary-box">
+
+                        <div
+                            class="history-summary-value"
+                            id="historyCareerAvg"
+                        >
+                            -
+                        </div>
+
+                        <div class="history-summary-label">
+                            Career Avg
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div
+                    class="history-list"
+                    id="historyList"
                 >
                 </div>
 
@@ -1043,234 +1798,800 @@
 </div>
 
 
+
 <script>
 
-    /* =====================================================
-       GOOGLE SHEETS
-       ===================================================== */
 
-    const SHEET_ID =
-        '16OTm4bC-YKAoJl7Rsw8bQLfrdYvUsbZ94Vic65KcMEY';
+/* =========================================================
+   GOOGLE SHEETS
+   ========================================================= */
 
 
-    const URL =
-        `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Ranking`;
+/*
+ * Tvoj postojeći Ranking tab.
+ */
+
+const SHEET_ID =
+    '16OTm4bC-YKAoJl7Rsw8bQLfrdYvUsbZ94Vic65KcMEY';
 
 
-    /* =====================================================
-       POPUP ELEMENTS
-       ===================================================== */
 
-    const overlay =
-        document.getElementById('profileOverlay');
+/*
+ * Trenutni ranking.
+ */
 
-    const closeProfile =
-        document.getElementById('closeProfile');
+const RANKING_URL =
+    `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Ranking`;
 
 
-    /* =====================================================
-       OPEN PLAYER PROFILE
-       ===================================================== */
 
-    function openProfile(playerData) {
+/*
+ * History tab.
+ *
+ * U tvom Sheet-u treba da se zove:
+ *
+ * History
+ */
 
-        /* PLAYER NAME */
-
-        document.getElementById('profileName').textContent =
-            playerData.player;
-
-
-        /* RANK */
-
-        document.getElementById('profileRank').textContent =
-            '#' + playerData.rank;
-
-        document.getElementById('profileRankBox').textContent =
-            '#' + playerData.rank;
+const HISTORY_URL =
+    `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=History`;
 
 
-        /* BASIC DATA */
 
-        document.getElementById('profileGP').textContent =
-            playerData.gp;
+/* =========================================================
+   GLOBAL HISTORY DATA
+   ========================================================= */
 
-        document.getElementById('profileAVG').textContent =
-            playerData.avg;
-
-        document.getElementById('profileScore').textContent =
-            playerData.avg;
+let historyData = {};
 
 
-        /* BEST / WORST */
 
-        document.getElementById('profileMax').textContent =
-            playerData.max;
+/* =========================================================
+   PROFILE ELEMENTS
+   ========================================================= */
 
-        document.getElementById('profileMin').textContent =
-            playerData.min;
-
-
-        /* =================================================
-           LAST 5 MATCHES
-           ================================================= */
-
-        const matchesContainer =
-            document.getElementById('profileMatches');
-
-        matchesContainer.innerHTML = '';
+const overlay =
+    document.getElementById(
+        'profileOverlay'
+    );
 
 
-        playerData.matches.forEach(score => {
-
-            const badge =
-                document.createElement('div');
-
-            const numericScore =
-                Number(score);
+const closeProfile =
+    document.getElementById(
+        'closeProfile'
+    );
 
 
-            /*
-             * 34+ = zeleno
-             * ispod 34 = crveno
-             */
 
-            const isWin =
-                numericScore >= 34;
+/* =========================================================
+   NORMALIZE PLAYER NAME
+   ========================================================= */
 
+function normalizeName(name) {
 
-            badge.className =
-                'recent-match ' +
-                (isWin ? 'win' : 'loss');
+    return String(name || '')
+        .trim()
+        .toLowerCase();
 
-
-            badge.textContent =
-                score;
+}
 
 
-            matchesContainer.appendChild(
-                badge
+
+/* =========================================================
+   LOAD HISTORY
+   ========================================================= */
+
+async function loadHistory() {
+
+    try {
+
+        const response =
+            await fetch(HISTORY_URL);
+
+        const text =
+            await response.text();
+
+
+        const json =
+            JSON.parse(
+                text
+                    .substr(47)
+                    .slice(0, -2)
             );
+
+
+        const table =
+            json.table;
+
+
+        /*
+         * Google Sheets kolone:
+         *
+         * A = Player
+         * B = S18
+         * C = S17
+         * D = S16
+         * itd.
+         */
+
+
+        const columns =
+            table.cols;
+
+
+        /*
+         * Pronađi naziv svake sezone.
+         */
+
+        const seasons = [];
+
+
+        for (
+            let i = 1;
+            i < columns.length;
+            i++
+        ) {
+
+            let seasonName =
+                columns[i]?.label ||
+                columns[i]?.id ||
+                `Season ${i}`;
+
+
+            seasonName =
+                String(seasonName)
+                    .trim();
+
+
+            seasons.push({
+                index: i,
+                name: seasonName
+            });
+
+        }
+
+
+
+        /*
+         * Prođi kroz igrače.
+         */
+
+        table.rows.forEach(row => {
+
+            const playerName =
+                row.c[0]?.v;
+
+
+            if (!playerName) {
+                return;
+            }
+
+
+            const key =
+                normalizeName(
+                    playerName
+                );
+
+
+            const seasonsData = [];
+
+
+            seasons.forEach(season => {
+
+                const cell =
+                    row.c[season.index];
+
+
+                let value =
+                    cell?.v;
+
+
+                /*
+                 * Prazna ćelija = null.
+                 */
+
+                if (
+                    value === undefined ||
+                    value === null ||
+                    value === ''
+                ) {
+
+                    value = null;
+
+                }
+
+
+                /*
+                 * Ako Google vrati broj
+                 * koristimo ga normalno.
+                 */
+
+                if (value !== null) {
+
+                    const numeric =
+                        parseFloat(
+                            String(value)
+                                .replace(',', '.')
+                                .replace(
+                                    /[^0-9.-]/g,
+                                    ''
+                                )
+                        );
+
+
+                    if (!isNaN(numeric)) {
+
+                        value = numeric;
+
+                    }
+
+                }
+
+
+                seasonsData.push({
+
+                    season:
+                        season.name,
+
+                    value:
+                        value
+
+                });
+
+            });
+
+
+            historyData[key] = {
+
+                player:
+                    playerName,
+
+                seasons:
+                    seasonsData
+
+            };
 
         });
 
 
-        /* SHOW POPUP */
+    }
 
-        overlay.classList.add('active');
+    catch (error) {
+
+        console.error(
+            'History loading error:',
+            error
+        );
+
+    }
+
+}
 
 
-        /* LOCK BACKGROUND SCROLL */
 
-        document.body.style.overflow =
-            'hidden';
+/* =========================================================
+   GET CAREER AVERAGE
+   ========================================================= */
+
+function calculateCareerAverage(
+    playerHistory
+) {
+
+    if (
+        !playerHistory ||
+        !playerHistory.seasons
+    ) {
+
+        return null;
+    }
+
+
+    const values =
+        playerHistory.seasons
+            .map(item => item.value)
+            .filter(
+                value =>
+                    value !== null &&
+                    !isNaN(Number(value))
+            );
+
+
+    if (!values.length) {
+
+        return null;
+    }
+
+
+    const total =
+        values.reduce(
+            (sum, value) =>
+                sum + Number(value),
+            0
+        );
+
+
+    return (
+        total / values.length
+    ).toFixed(2);
+
+}
+
+
+
+/* =========================================================
+   OPEN PROFILE
+   ========================================================= */
+
+function openProfile(playerData) {
+
+
+    /* PLAYER NAME */
+
+    document.getElementById(
+        'profileName'
+    ).textContent =
+        playerData.player;
+
+
+
+    /* RANK */
+
+    document.getElementById(
+        'profileRank'
+    ).textContent =
+        '#' + playerData.rank;
+
+
+    document.getElementById(
+        'profileRankBox'
+    ).textContent =
+        '#' + playerData.rank;
+
+
+
+    /* BASIC DATA */
+
+    document.getElementById(
+        'profileGP'
+    ).textContent =
+        playerData.gp;
+
+
+    document.getElementById(
+        'profileAVG'
+    ).textContent =
+        playerData.avg;
+
+
+    document.getElementById(
+        'profileScore'
+    ).textContent =
+        playerData.avg;
+
+
+
+    /* BEST / WORST */
+
+    document.getElementById(
+        'profileMax'
+    ).textContent =
+        playerData.max;
+
+
+    document.getElementById(
+        'profileMin'
+    ).textContent =
+        playerData.min;
+
+
+
+    /* =====================================================
+       LAST 5 MATCHES
+       ===================================================== */
+
+    const matchesContainer =
+        document.getElementById(
+            'profileMatches'
+        );
+
+
+    matchesContainer.innerHTML =
+        '';
+
+
+
+    if (
+        playerData.matches.length
+    ) {
+
+        playerData.matches.forEach(
+            score => {
+
+                const badge =
+                    document.createElement(
+                        'div'
+                    );
+
+
+                const numericScore =
+                    Number(score);
+
+
+                /*
+                 * 34+ = green
+                 * <34 = red
+                 */
+
+                const isWin =
+                    numericScore >= 34;
+
+
+                badge.className =
+                    'recent-match ' +
+                    (
+                        isWin
+                            ? 'win'
+                            : 'loss'
+                    );
+
+
+                badge.textContent =
+                    score;
+
+
+                matchesContainer.appendChild(
+                    badge
+                );
+
+            }
+        );
+
+    }
+
+    else {
+
+        matchesContainer.innerHTML =
+            '<div class="no-history">No match data available.</div>';
 
     }
 
 
+
     /* =====================================================
-       CLOSE PROFILE
+       HISTORY
        ===================================================== */
 
-    function closePlayerProfile() {
+    const playerHistory =
+        historyData[
+            normalizeName(
+                playerData.player
+            )
+        ];
 
-        overlay.classList.remove('active');
 
-        document.body.style.overflow =
+
+    const historyList =
+        document.getElementById(
+            'historyList'
+        );
+
+
+    historyList.innerHTML =
+        '';
+
+
+
+    if (
+        playerHistory &&
+        playerHistory.seasons
+    ) {
+
+
+        /*
+         * Dostupne sezone.
+         */
+
+        const availableSeasons =
+            playerHistory.seasons.filter(
+                item =>
+                    item.value !== null
+            );
+
+
+        /*
+         * Broj sezona.
+         */
+
+        document.getElementById(
+            'historySeasons'
+        ).textContent =
+            availableSeasons.length;
+
+
+
+        /*
+         * Career AVG.
+         */
+
+        const careerAvg =
+            calculateCareerAverage(
+                playerHistory
+            );
+
+
+        document.getElementById(
+            'historyCareerAvg'
+        ).textContent =
+            careerAvg !== null
+                ? careerAvg
+                : '—';
+
+
+        document.getElementById(
+            'profileCareerAvg'
+        ).textContent =
+            careerAvg !== null
+                ? careerAvg
+                : '—';
+
+
+
+        /*
+         * Prikaz svih sezona.
+         *
+         * Ako nema vrednosti:
+         * prikazuje se —
+         */
+
+        playerHistory.seasons.forEach(
+            item => {
+
+                const row =
+                    document.createElement(
+                        'div'
+                    );
+
+
+                row.className =
+                    'history-row';
+
+
+                const valueText =
+                    item.value === null
+                        ? '—'
+                        : Number(
+                            item.value
+                          ).toFixed(2);
+
+
+                const emptyClass =
+                    item.value === null
+                        ? 'empty'
+                        : '';
+
+
+                row.innerHTML = `
+
+                    <div class="history-season">
+                        ${item.season}
+                    </div>
+
+                    <div
+                        class="history-value ${emptyClass}"
+                    >
+                        ${valueText}
+                    </div>
+
+                `;
+
+
+                historyList.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+
+    else {
+
+
+        /*
+         * Igrač nije pronađen u History tabu.
+         */
+
+        document.getElementById(
+            'historySeasons'
+        ).textContent =
+            '0';
+
+
+        document.getElementById(
+            'historyCareerAvg'
+        ).textContent =
+            '—';
+
+
+        document.getElementById(
+            'profileCareerAvg'
+        ).textContent =
+            '—';
+
+
+        historyList.innerHTML = `
+
+            <div class="no-history">
+
+                No previous season data available.
+
+            </div>
+
+        `;
+
+    }
+
+
+
+    /* =====================================================
+       SHOW POPUP
+       ===================================================== */
+
+    overlay.classList.add(
+        'active'
+    );
+
+
+    document.body.style.overflow =
+        'hidden';
+
+}
+
+
+
+/* =========================================================
+   CLOSE PROFILE
+   ========================================================= */
+
+function closePlayerProfile() {
+
+    overlay.classList.remove(
+        'active'
+    );
+
+
+    document.body.style.overflow =
+        '';
+
+}
+
+
+
+closeProfile.addEventListener(
+    'click',
+    closePlayerProfile
+);
+
+
+
+/* =========================================================
+   CLICK OUTSIDE
+   ========================================================= */
+
+overlay.addEventListener(
+    'click',
+    function(event) {
+
+        if (
+            event.target === overlay
+        ) {
+
+            closePlayerProfile();
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   ESC
+   ========================================================= */
+
+document.addEventListener(
+    'keydown',
+    function(event) {
+
+        if (
+            event.key === 'Escape'
+        ) {
+
+            closePlayerProfile();
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   LOAD RANKINGS
+   ========================================================= */
+
+async function loadRankings() {
+
+
+    try {
+
+
+        /*
+         * Učitaj History paralelno.
+         */
+
+        await loadHistory();
+
+
+
+        const response =
+            await fetch(
+                RANKING_URL
+            );
+
+
+        const text =
+            await response.text();
+
+
+        const json =
+            JSON.parse(
+                text
+                    .substr(47)
+                    .slice(0, -2)
+            );
+
+
+
+        const tbody =
+            document.querySelector(
+                '#rankingTable tbody'
+            );
+
+
+        tbody.innerHTML =
             '';
 
-    }
 
 
-    closeProfile.addEventListener(
-        'click',
-        closePlayerProfile
-    );
+        /*
+         * Validni igrači.
+         */
 
-
-    /* =====================================================
-       CLICK OUTSIDE PROFILE
-       ===================================================== */
-
-    overlay.addEventListener(
-        'click',
-        function(event) {
-
-            if (event.target === overlay) {
-
-                closePlayerProfile();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       ESC KEY
-       ===================================================== */
-
-    document.addEventListener(
-        'keydown',
-        function(event) {
-
-            if (event.key === 'Escape') {
-
-                closePlayerProfile();
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       LOAD RANKINGS
-       ===================================================== */
-
-    fetch(URL)
-
-        .then(res => res.text())
-
-        .then(data => {
-
-            const json =
-                JSON.parse(
-                    data.substr(47).slice(0, -2)
-                );
-
-
-            const tbody =
-                document.querySelector(
-                    '#rankingTable tbody'
-                );
-
-
-            tbody.innerHTML = '';
-
-
-            /* =================================================
-               FILTER VALID PLAYERS
-               ================================================= */
-
-            const validRows =
-                json.table.rows.filter(row =>
+        const validRows =
+            json.table.rows.filter(
+                row =>
 
                     row.c[0]?.v &&
 
-                    typeof row.c[0].v === 'string' &&
+                    typeof row.c[0].v ===
+                        'string' &&
 
-                    row.c[0].v.trim() !== "" &&
+                    row.c[0].v.trim() !==
+                        '' &&
 
-                    row.c[0].v !== "Player"
+                    row.c[0].v !==
+                        'Player'
+            );
 
-                );
 
 
-            /* =================================================
-               CREATE TABLE ROWS
-               ================================================= */
+        /* =================================================
+           CREATE ROWS
+           ================================================= */
 
-            validRows.forEach((row, index) => {
+        validRows.forEach(
+            (row, index) => {
 
 
                 /* PLAYER */
@@ -1279,53 +2600,59 @@
                     row.c[0].v;
 
 
-                /* GAMES PLAYED */
+
+                /* GP */
 
                 const gp =
-                    row.c[1]?.v || '';
+                    row.c[1]?.v ||
+                    '';
 
 
-                /* AVERAGE */
+
+                /* AVG */
 
                 const avg =
                     row.c[2]?.v
                         ? Number(
                             row.c[2].v
                           ).toFixed(2)
+
                         : '';
+
 
 
                 /* MAX */
 
                 const max =
-                    row.c[3]?.v || '';
+                    row.c[3]?.v ||
+                    '';
+
 
 
                 /* MIN */
 
                 const min =
-                    row.c[4]?.v || '';
+                    row.c[4]?.v ||
+                    '';
+
 
 
                 /* =================================================
                    LAST 5
                    ================================================= */
 
-                let matchesHtml = '';
+                let matchesHtml =
+                    '';
 
-                let matches = [];
+
+                let matches =
+                    [];
+
 
 
                 /*
-                 * Kolone 5 do 9:
-                 *
-                 * 5 = Last 5 #1
-                 * 6 = Last 5 #2
-                 * 7 = Last 5 #3
-                 * 8 = Last 5 #4
-                 * 9 = Last 5 #5
-                 *
-                 * Dakle ukupno 5 rezultata.
+                 * Kolone 5-9
+                 * = poslednjih 5 mečeva
                  */
 
                 for (
@@ -1334,8 +2661,10 @@
                     i++
                 ) {
 
+
                     const val =
                         row.c[i]?.v;
+
 
 
                     if (
@@ -1344,11 +2673,14 @@
                         val !== ''
                     ) {
 
+
                         const score =
                             Number(val);
 
 
-                        matches.push(score);
+                        matches.push(
+                            score
+                        );
 
 
                         const badgeClass =
@@ -1357,10 +2689,14 @@
                                 : 'bg-red';
 
 
+
                         matchesHtml += `
 
                             <span
-                                class="match-badge ${badgeClass}"
+                                class="
+                                    match-badge
+                                    ${badgeClass}
+                                "
                             >
                                 ${score}
                             </span>
@@ -1372,12 +2708,15 @@
                 }
 
 
+
                 /* =================================================
                    TABLE ROW
                    ================================================= */
 
                 const tr =
-                    document.createElement('tr');
+                    document.createElement(
+                        'tr'
+                    );
 
 
                 tr.innerHTML = `
@@ -1389,7 +2728,9 @@
 
                     <td>
 
-                        <span class="player-name">
+                        <span
+                            class="player-name"
+                        >
                             ${player}
                         </span>
 
@@ -1426,6 +2767,7 @@
                     </td>
 
                 `;
+
 
 
                 /* =================================================
@@ -1465,44 +2807,59 @@
                 );
 
 
-                tbody.appendChild(tr);
-
-            });
-
-        })
-
-
-        /* =====================================================
-           ERROR
-           ===================================================== */
-
-        .catch(error => {
-
-            const tbody =
-                document.querySelector(
-                    '#rankingTable tbody'
+                tbody.appendChild(
+                    tr
                 );
 
-
-            tbody.innerHTML = `
-
-                <tr>
-
-                    <td
-                        colspan="7"
-                        class="loading"
-                    >
-                        Unable to load rankings.
-                    </td>
-
-                </tr>
-
-            `;
+            }
+        );
 
 
-            console.error(error);
+    }
 
-        });
+
+    catch (error) {
+
+
+        console.error(
+            error
+        );
+
+
+        const tbody =
+            document.querySelector(
+                '#rankingTable tbody'
+            );
+
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    class="loading"
+                >
+
+                    Unable to load rankings.
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+loadRankings();
 
 </script>
 
