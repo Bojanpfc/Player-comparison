@@ -24,11 +24,22 @@
         body {
             margin: 0;
             min-height: 100vh;
+
             background:
-                radial-gradient(circle at 50% 10%, rgba(0, 255, 117, 0.08), transparent 32%),
-                radial-gradient(circle at 100% 60%, rgba(0, 255, 117, 0.035), transparent 30%),
+                radial-gradient(
+                    circle at 50% 10%,
+                    rgba(0, 255, 117, 0.08),
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 100% 60%,
+                    rgba(0, 255, 117, 0.035),
+                    transparent 30%
+                ),
                 #050708;
+
             color: var(--white);
+
             font-family:
                 -apple-system,
                 BlinkMacSystemFont,
@@ -41,28 +52,38 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+
             padding: 25px 16px 40px;
+
             overflow-x: hidden;
         }
 
-        /* Decorative background */
         body::before {
             content: "";
+
             position: fixed;
+
             width: 420px;
             height: 420px;
+
             top: -180px;
             left: 50%;
+
             transform: translateX(-50%);
+
             background: rgba(0, 255, 117, 0.07);
+
             filter: blur(100px);
+
             border-radius: 50%;
+
             pointer-events: none;
         }
 
         .page {
             width: 100%;
             max-width: 480px;
+
             position: relative;
             z-index: 1;
         }
@@ -73,6 +94,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+
             margin-bottom: 35px;
             padding: 0 4px;
         }
@@ -91,14 +113,21 @@
         .menu-icon {
             width: 34px;
             height: 34px;
+
             border: 1px solid rgba(255,255,255,0.12);
+
             border-radius: 9px;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             color: var(--green);
+
             font-size: 17px;
         }
+
+        /* HERO */
 
         .hero {
             text-align: center;
@@ -107,32 +136,58 @@
 
         .crown {
             color: var(--green);
+
             font-size: 27px;
+
             margin-bottom: 8px;
-            filter: drop-shadow(0 0 10px rgba(0,255,117,.35));
+
+            filter:
+                drop-shadow(
+                    0 0 10px
+                    rgba(0,255,117,.35)
+                );
         }
 
         h1 {
             margin: 0;
-            font-size: clamp(2.4rem, 11vw, 3.5rem);
+
+            font-size:
+                clamp(
+                    2.4rem,
+                    11vw,
+                    3.5rem
+                );
+
             line-height: .9;
+
             font-weight: 900;
+
             font-style: italic;
+
             letter-spacing: -2px;
+
             text-transform: uppercase;
         }
 
         h1 span {
             display: block;
+
             color: var(--green);
-            text-shadow: 0 0 25px rgba(0,255,117,.18);
+
+            text-shadow:
+                0 0 25px
+                rgba(0,255,117,.18);
         }
 
         .subtitle {
             margin-top: 16px;
+
             color: var(--muted);
+
             font-size: .72rem;
+
             letter-spacing: 4px;
+
             text-transform: uppercase;
         }
 
@@ -140,24 +195,33 @@
 
         .menu-grid {
             display: flex;
+
             flex-direction: column;
+
             gap: 11px;
+
             width: 100%;
         }
 
         .menu-card,
         .submenu-trigger {
+
             position: relative;
+
             min-height: 63px;
+
             width: 100%;
 
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
             padding: 14px 17px;
 
             color: var(--white);
+
             text-decoration: none;
 
             background:
@@ -168,11 +232,13 @@
                 );
 
             border: 1px solid var(--border);
+
             border-radius: 11px;
 
             box-shadow:
                 0 8px 25px rgba(0,0,0,.35),
-                inset 0 1px 0 rgba(255,255,255,.025);
+                inset 0 1px 0
+                rgba(255,255,255,.025);
 
             cursor: pointer;
 
@@ -183,25 +249,36 @@
                 background .2s ease;
         }
 
-        /* Green line on left */
-
         .menu-card::before,
         .submenu-trigger::before {
+
             content: "";
+
             position: absolute;
+
             left: 0;
+
             top: 13px;
+
             bottom: 13px;
+
             width: 3px;
-            border-radius: 0 4px 4px 0;
+
+            border-radius:
+                0 4px 4px 0;
+
             background: var(--green);
+
             opacity: .65;
         }
 
         .menu-card:hover,
         .submenu-trigger:hover {
+
             transform: translateX(3px);
-            border-color: rgba(0,255,117,.55);
+
+            border-color:
+                rgba(0,255,117,.55);
 
             background:
                 linear-gradient(
@@ -212,7 +289,8 @@
 
             box-shadow:
                 0 10px 30px rgba(0,0,0,.4),
-                0 0 20px rgba(0,255,117,.06);
+                0 0 20px
+                rgba(0,255,117,.06);
         }
 
         .menu-card:active,
@@ -222,16 +300,21 @@
 
         .card-left {
             display: flex;
+
             align-items: center;
+
             gap: 14px;
+
             min-width: 0;
         }
 
         .icon {
+
             width: 34px;
             height: 34px;
 
             display: flex;
+
             align-items: center;
             justify-content: center;
 
@@ -239,116 +322,206 @@
 
             color: var(--green);
 
-            background: rgba(0,255,117,.055);
-            border: 1px solid rgba(0,255,117,.11);
+            background:
+                rgba(0,255,117,.055);
+
+            border:
+                1px solid
+                rgba(0,255,117,.11);
 
             font-size: 17px;
+
             flex-shrink: 0;
         }
 
         .menu-title {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 3px;
+
+            min-width: 0;
         }
 
         .menu-title strong {
+
             font-size: .91rem;
+
             font-weight: 650;
         }
 
         .menu-title small {
+
             color: #66746f;
+
             font-size: .67rem;
         }
 
         .arrow {
+
             color: #62706b;
+
             font-size: 1.15rem;
+
             transition: .2s ease;
+
             margin-left: 10px;
         }
 
         .menu-card:hover .arrow,
         .submenu-trigger:hover .arrow {
+
             color: var(--green);
-            transform: translateX(4px);
+
+            transform:
+                translateX(4px);
         }
 
-        /* SUBMENU */
+        /* SUBMENUS */
 
         .submenu-container {
             width: 100%;
         }
 
-        #eventsSubmenu {
+        #eventsSubmenu,
+        #lvlResultsSubmenu {
+
             display: none;
+
             flex-direction: column;
+
             gap: 7px;
+
             margin-top: 7px;
+
             padding-left: 17px;
         }
 
         .submenu-item {
+
             min-height: 51px;
 
             color: var(--muted);
+
             text-decoration: none;
 
             padding: 10px 14px;
 
-            background: rgba(8, 13, 12, .9);
-            border: 1px solid rgba(255,255,255,.06);
+            background:
+                rgba(8, 13, 12, .9);
+
+            border:
+                1px solid
+                rgba(255,255,255,.06);
+
             border-radius: 9px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
             transition: .2s ease;
         }
 
         .submenu-item:hover {
+
             color: white;
-            border-color: var(--green);
-            transform: translateX(3px);
+
+            border-color:
+                var(--green);
+
+            transform:
+                translateX(3px);
+        }
+
+        .submenu-item .icon {
+
+            width: 30px;
+            height: 30px;
+
+            font-size: 14px;
+        }
+
+        /* LOADING */
+
+        .loading-seasons {
+
+            min-height: 51px;
+
+            display: flex;
+
+            align-items: center;
+
+            padding: 10px 14px;
+
+            color: #66746f;
+
+            font-size: .72rem;
+
+            background:
+                rgba(8, 13, 12, .9);
+
+            border:
+                1px solid
+                rgba(255,255,255,.06);
+
+            border-radius: 9px;
         }
 
         /* FOOTER */
 
         .footer {
+
             margin-top: 42px;
+
             padding-top: 18px;
 
             width: 100%;
 
-            border-top: 1px solid rgba(255,255,255,.06);
+            border-top:
+                1px solid
+                rgba(255,255,255,.06);
 
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
             color: #53605b;
+
             font-size: .62rem;
+
             letter-spacing: .5px;
         }
 
         .footer-brand {
+
             color: var(--green);
+
             font-weight: 700;
         }
 
         .socials {
+
             display: flex;
+
             gap: 13px;
         }
 
         .socials span {
+
             color: #66736e;
+
             transition: .2s ease;
         }
 
         .socials span:hover {
+
             color: var(--green);
         }
 
@@ -357,36 +530,46 @@
         @media (max-width: 400px) {
 
             body {
-                padding: 20px 13px 30px;
+
+                padding:
+                    20px 13px 30px;
             }
 
             .top-bar {
+
                 margin-bottom: 28px;
             }
 
             .hero {
+
                 margin-bottom: 27px;
             }
 
             h1 {
+
                 font-size: 2.45rem;
             }
 
             .subtitle {
+
                 font-size: .62rem;
+
                 letter-spacing: 3px;
             }
 
             .menu-card,
             .submenu-trigger {
+
                 min-height: 60px;
             }
 
             .menu-title small {
+
                 display: none;
             }
 
             .icon {
+
                 width: 32px;
                 height: 32px;
             }
@@ -399,6 +582,7 @@
 <div class="page">
 
     <!-- TOP BAR -->
+
     <div class="top-bar">
 
         <div class="logo">
@@ -413,9 +597,12 @@
 
 
     <!-- HERO -->
+
     <div class="hero">
 
-        <div class="crown">♛</div>
+        <div class="crown">
+            ♛
+        </div>
 
         <h1>
             FC MOBILE
@@ -430,63 +617,109 @@
 
 
     <!-- MENU -->
+
     <div class="menu-grid">
 
+
         <!-- PLAYER COMPARISON -->
-        <a href="comparison.html" class="menu-card">
+
+        <a
+            href="comparison.html"
+            class="menu-card"
+        >
 
             <div class="card-left">
 
-                <span class="icon">⚔</span>
+                <span class="icon">
+                    ⚔
+                </span>
 
                 <div class="menu-title">
-                    <strong>Player Comparison</strong>
-                    <small>Compare players and stats</small>
+
+                    <strong>
+                        Player Comparison
+                    </strong>
+
+                    <small>
+                        Compare players and stats
+                    </small>
+
                 </div>
 
             </div>
 
-            <span class="arrow">›</span>
+            <span class="arrow">
+                ›
+            </span>
 
         </a>
 
 
-        <!-- EVENTS -->
+        <!-- IN-GAME EVENTS -->
+
         <div class="submenu-container">
 
-            <div class="submenu-trigger" onclick="toggleSubmenu()">
+            <div
+                class="submenu-trigger"
+                onclick="toggleEventsSubmenu()"
+            >
 
                 <div class="card-left">
 
-                    <span class="icon">★</span>
+                    <span class="icon">
+                        ★
+                    </span>
 
                     <div class="menu-title">
-                        <strong>In-Game Events</strong>
-                        <small>Explore current events</small>
+
+                        <strong>
+                            In-Game Events
+                        </strong>
+
+                        <small>
+                            Explore current events
+                        </small>
+
                     </div>
 
                 </div>
 
-                <span class="arrow" id="submenuArrow">›</span>
+                <span
+                    class="arrow"
+                    id="submenuArrow"
+                >
+                    ›
+                </span>
 
             </div>
 
 
             <div id="eventsSubmenu">
 
-                <a href="events-champions.html" class="submenu-item">
+                <a
+                    href="events-champions.html"
+                    class="submenu-item"
+                >
 
                     <div class="card-left">
 
-                        <span class="icon">◆</span>
+                        <span class="icon">
+                            ◆
+                        </span>
 
                         <div class="menu-title">
-                            <strong>Champions</strong>
+
+                            <strong>
+                                Champions
+                            </strong>
+
                         </div>
 
                     </div>
 
-                    <span class="arrow">›</span>
+                    <span class="arrow">
+                        ›
+                    </span>
 
                 </a>
 
@@ -496,76 +729,179 @@
 
 
         <!-- ACTIVITY POINTS -->
-        <a href="activity-points.html" class="menu-card">
+
+        <a
+            href="activity-points.html"
+            class="menu-card"
+        >
 
             <div class="card-left">
 
-                <span class="icon">▣</span>
+                <span class="icon">
+                    ▣
+                </span>
 
                 <div class="menu-title">
-                    <strong>Activity Points</strong>
-                    <small>Learn how activity points work</small>
+
+                    <strong>
+                        Activity Points
+                    </strong>
+
+                    <small>
+                        Learn how activity points work
+                    </small>
+
                 </div>
 
             </div>
 
-            <span class="arrow">›</span>
+            <span class="arrow">
+                ›
+            </span>
 
         </a>
 
 
         <!-- VSA -->
-        <a href="vsa-school.html" class="menu-card">
+
+        <a
+            href="vsa-school.html"
+            class="menu-card"
+        >
 
             <div class="card-left">
 
-                <span class="icon">⚽</span>
+                <span class="icon">
+                    ⚽
+                </span>
 
                 <div class="menu-title">
-                    <strong>VSA School</strong>
-                    <small>Tips and guides for VSA</small>
+
+                    <strong>
+                        VSA School
+                    </strong>
+
+                    <small>
+                        Tips and guides for VSA
+                    </small>
+
                 </div>
 
             </div>
 
-            <span class="arrow">›</span>
+            <span class="arrow">
+                ›
+            </span>
 
         </a>
 
 
-        <!-- LVL -->
-        <a href="lvl-rankings.html" class="menu-card">
+        <!-- LVL RANKINGS -->
+
+        <a
+            href="lvl-rankings.html"
+            class="menu-card"
+        >
 
             <div class="card-left">
 
-                <span class="icon">♛</span>
+                <span class="icon">
+                    ♛
+                </span>
 
                 <div class="menu-title">
-                    <strong>LvL Rankings</strong>
-                    <small>See the top LvL players</small>
+
+                    <strong>
+                        LvL Rankings
+                    </strong>
+
+                    <small>
+                        See the top LvL players
+                    </small>
+
                 </div>
 
             </div>
 
-            <span class="arrow">›</span>
+            <span class="arrow">
+                ›
+            </span>
 
         </a>
+
+
+        <!-- LVL RESULTS -->
+
+        <div class="submenu-container">
+
+            <div
+                class="submenu-trigger"
+                onclick="toggleLvlResults()"
+            >
+
+                <div class="card-left">
+
+                    <span class="icon">
+                        ▤
+                    </span>
+
+                    <div class="menu-title">
+
+                        <strong>
+                            LvL Results
+                        </strong>
+
+                        <small>
+                            Season results and match history
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <span
+                    class="arrow"
+                    id="lvlResultsArrow"
+                >
+                    ›
+                </span>
+
+            </div>
+
+
+            <div id="lvlResultsSubmenu">
+
+                <div class="loading-seasons">
+                    Loading seasons...
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
 
     <!-- FOOTER -->
+
     <div class="footer">
 
         <div>
-            <span class="footer-brand">FC MOBILE HUB</span>
+
+            <span class="footer-brand">
+                FC MOBILE HUB
+            </span>
+
             &nbsp; • &nbsp; 2026
+
         </div>
 
         <div class="socials">
+
             <span>●</span>
             <span>●</span>
             <span>●</span>
+
         </div>
 
     </div>
@@ -575,24 +911,416 @@
 
 <script>
 
-function toggleSubmenu() {
+/* =====================================================
+   GOOGLE SHEETS
+   ===================================================== */
 
-    const submenu = document.getElementById("eventsSubmenu");
-    const arrow = document.getElementById("submenuArrow");
+const SHEET_ID =
+    "14GJlmnduoo0s8-p5olA1qzmX6a0ylmoVBTshTxeEA3A";
+
+const RESULTS_SHEET =
+    "lvl-results";
+
+
+/* =====================================================
+   EVENTS SUBMENU
+   ===================================================== */
+
+function toggleEventsSubmenu() {
+
+    const submenu =
+        document.getElementById(
+            "eventsSubmenu"
+        );
+
+    const arrow =
+        document.getElementById(
+            "submenuArrow"
+        );
 
     if (submenu.style.display === "flex") {
 
         submenu.style.display = "none";
-        arrow.style.transform = "rotate(0deg)";
+
+        arrow.style.transform =
+            "rotate(0deg)";
 
     } else {
 
         submenu.style.display = "flex";
-        arrow.style.transform = "rotate(90deg)";
 
+        arrow.style.transform =
+            "rotate(90deg)";
+    }
+}
+
+
+/* =====================================================
+   LVL RESULTS SUBMENU
+   ===================================================== */
+
+function toggleLvlResults() {
+
+    const submenu =
+        document.getElementById(
+            "lvlResultsSubmenu"
+        );
+
+    const arrow =
+        document.getElementById(
+            "lvlResultsArrow"
+        );
+
+    if (submenu.style.display === "flex") {
+
+        submenu.style.display = "none";
+
+        arrow.style.transform =
+            "rotate(0deg)";
+
+    } else {
+
+        submenu.style.display = "flex";
+
+        arrow.style.transform =
+            "rotate(90deg)";
+    }
+}
+
+
+/* =====================================================
+   CSV PARSER
+   ===================================================== */
+
+function parseCSV(text) {
+
+    const rows = [];
+
+    let row = [];
+
+    let value = "";
+
+    let insideQuotes = false;
+
+
+    for (let i = 0; i < text.length; i++) {
+
+        const char = text[i];
+
+        const next = text[i + 1];
+
+
+        if (char === '"' && insideQuotes && next === '"') {
+
+            value += '"';
+
+            i++;
+
+            continue;
+        }
+
+
+        if (char === '"') {
+
+            insideQuotes =
+                !insideQuotes;
+
+            continue;
+        }
+
+
+        if (char === "," && !insideQuotes) {
+
+            row.push(value);
+
+            value = "";
+
+            continue;
+        }
+
+
+        if (
+            (char === "\n" || char === "\r") &&
+            !insideQuotes
+        ) {
+
+            if (char === "\r" && next === "\n") {
+                i++;
+            }
+
+            row.push(value);
+
+            value = "";
+
+            if (row.some(cell => cell.trim() !== "")) {
+                rows.push(row);
+            }
+
+            row = [];
+
+            continue;
+        }
+
+
+        value += char;
     }
 
+
+    if (value !== "" || row.length > 0) {
+
+        row.push(value);
+
+        if (row.some(cell => cell.trim() !== "")) {
+            rows.push(row);
+        }
+    }
+
+
+    return rows;
 }
+
+
+/* =====================================================
+   LOAD SEASONS
+   ===================================================== */
+
+async function loadLvlSeasons() {
+
+    const container =
+        document.getElementById(
+            "lvlResultsSubmenu"
+        );
+
+
+    try {
+
+        /*
+         * Google Sheets CSV endpoint.
+         *
+         * IMPORTANT:
+         * Sheet name mora biti tačan:
+         * lvl-results
+         */
+
+        const url =
+            "https://docs.google.com/spreadsheets/d/" +
+            SHEET_ID +
+            "/gviz/tq?tqx=out:csv&sheet=" +
+            encodeURIComponent(RESULTS_SHEET) +
+            "&cache=" +
+            Date.now();
+
+
+        const response =
+            await fetch(url);
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Google Sheets returned " +
+                response.status
+            );
+        }
+
+
+        const csv =
+            await response.text();
+
+
+        console.log(
+            "Google Sheets CSV:",
+            csv
+        );
+
+
+        const rows =
+            parseCSV(csv);
+
+
+        console.log(
+            "Parsed rows:",
+            rows
+        );
+
+
+        const seasons = [];
+
+
+        /*
+         * TRAŽIMO "Season 19", "Season 20" itd.
+         *
+         * Ne gledamo samo prvu kolonu.
+         *
+         * Pregledamo SVE ćelije.
+         *
+         * Tako će raditi čak i ako
+         * Google Sheets promeni način
+         * prikazivanja praznih redova.
+         */
+
+        rows.forEach(row => {
+
+            row.forEach(cell => {
+
+                const text =
+                    String(cell || "")
+                    .trim();
+
+
+                const match =
+                    text.match(
+                        /^Season\s*(\d+)$/i
+                    );
+
+
+                if (match) {
+
+                    const number =
+                        parseInt(
+                            match[1],
+                            10
+                        );
+
+
+                    if (
+                        !seasons.includes(
+                            number
+                        )
+                    ) {
+
+                        seasons.push(
+                            number
+                        );
+                    }
+                }
+
+            });
+
+        });
+
+
+        /*
+         * VEĆA SEZONA PRVA
+         *
+         * Season 20
+         * Season 19
+         * Season 18
+         */
+
+        seasons.sort(
+            (a, b) => b - a
+        );
+
+
+        console.log(
+            "Found seasons:",
+            seasons
+        );
+
+
+        container.innerHTML = "";
+
+
+        /*
+         * AKO NIŠTA NIJE PRONAĐENO
+         */
+
+        if (seasons.length === 0) {
+
+            container.innerHTML = `
+
+                <div class="loading-seasons">
+
+                    No seasons found
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        /*
+         * NAPRAVI SEASON DUGMAD
+         */
+
+        seasons.forEach(season => {
+
+            const link =
+                document.createElement(
+                    "a"
+                );
+
+
+            link.className =
+                "submenu-item";
+
+
+            link.href =
+                "lvl-results.html?season=" +
+                season;
+
+
+            link.innerHTML = `
+
+                <div class="card-left">
+
+                    <span class="icon">
+                        ◈
+                    </span>
+
+                    <div class="menu-title">
+
+                        <strong>
+                            Season ${season}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <span class="arrow">
+                    ›
+                </span>
+
+            `;
+
+
+            container.appendChild(
+                link
+            );
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "LVL RESULTS ERROR:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="loading-seasons">
+
+                Unable to load seasons
+
+            </div>
+
+        `;
+    }
+}
+
+
+/* =====================================================
+   START
+   ===================================================== */
+
+loadLvlSeasons();
 
 </script>
 
