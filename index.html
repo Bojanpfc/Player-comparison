@@ -1,44 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>FC Mobile Hub</title>
 
+
 <style>
 
+/* =========================================================
+   ROOT
+========================================================= */
+
 :root {
+
     --bg: #050708;
+
     --card: rgba(12, 18, 17, 0.88);
+
     --card-hover: rgba(17, 28, 25, 0.96);
+
     --green: #00ff75;
+
     --green-soft: #00d964;
+
     --white: #f5f7f6;
+
     --muted: #8c9994;
+
     --border: rgba(0, 255, 117, 0.18);
+
 }
+
+
+/* =========================================================
+   GLOBAL
+========================================================= */
 
 * {
+
     box-sizing: border-box;
+
 }
 
+
 body {
+
     margin: 0;
+
     min-height: 100vh;
 
     background:
+
         radial-gradient(
             circle at 50% 10%,
             rgba(0, 255, 117, 0.08),
             transparent 32%
         ),
+
         radial-gradient(
             circle at 100% 60%,
             rgba(0, 255, 117, 0.035),
             transparent 30%
         ),
+
         #050708;
 
     color: var(--white);
@@ -53,23 +82,30 @@ body {
         sans-serif;
 
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
 
     padding: 25px 16px 40px;
 
     overflow-x: hidden;
+
 }
 
+
 body::before {
+
     content: "";
 
     position: fixed;
 
     width: 420px;
+
     height: 420px;
 
     top: -180px;
+
     left: 50%;
 
     transform: translateX(-50%);
@@ -81,33 +117,51 @@ body::before {
     border-radius: 50%;
 
     pointer-events: none;
+
 }
 
+
+body.modal-open {
+
+    overflow: hidden;
+
+}
+
+
 .page {
+
     width: 100%;
+
     max-width: 480px;
 
     position: relative;
+
     z-index: 1;
+
 }
 
 
-/* =========================
+/* =========================================================
    HEADER
-========================= */
+========================================================= */
 
 .top-bar {
+
     display: flex;
 
     justify-content: space-between;
+
     align-items: center;
 
     margin-bottom: 35px;
 
     padding: 0 4px;
+
 }
 
+
 .logo {
+
     font-size: 1rem;
 
     font-weight: 900;
@@ -115,14 +169,21 @@ body::before {
     font-style: italic;
 
     letter-spacing: -0.5px;
+
 }
+
 
 .logo span {
+
     color: var(--green);
+
 }
 
+
 .menu-icon {
+
     width: 34px;
+
     height: 34px;
 
     border: 1px solid rgba(255,255,255,0.12);
@@ -130,26 +191,33 @@ body::before {
     border-radius: 9px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     color: var(--green);
 
     font-size: 17px;
+
 }
 
 
-/* =========================
+/* =========================================================
    HERO
-========================= */
+========================================================= */
 
 .hero {
+
     text-align: center;
 
     margin-bottom: 34px;
+
 }
 
+
 .crown {
+
     color: var(--green);
 
     font-size: 27px;
@@ -160,9 +228,12 @@ body::before {
         drop-shadow(
             0 0 10px rgba(0,255,117,.35)
         );
+
 }
 
+
 h1 {
+
     margin: 0;
 
     font-size:
@@ -181,18 +252,24 @@ h1 {
     letter-spacing: -2px;
 
     text-transform: uppercase;
+
 }
 
+
 h1 span {
+
     display: block;
 
     color: var(--green);
 
     text-shadow:
         0 0 25px rgba(0,255,117,.18);
+
 }
 
+
 .subtitle {
+
     margin-top: 16px;
 
     color: var(--muted);
@@ -202,14 +279,16 @@ h1 span {
     letter-spacing: 4px;
 
     text-transform: uppercase;
+
 }
 
 
-/* =========================
+/* =========================================================
    MENU
-========================= */
+========================================================= */
 
 .menu-grid {
+
     display: flex;
 
     flex-direction: column;
@@ -217,7 +296,9 @@ h1 span {
     gap: 11px;
 
     width: 100%;
+
 }
+
 
 .menu-card,
 .submenu-trigger {
@@ -241,6 +322,7 @@ h1 span {
     text-decoration: none;
 
     background:
+
         linear-gradient(
             100deg,
             rgba(15, 24, 21, .96),
@@ -252,17 +334,25 @@ h1 span {
     border-radius: 11px;
 
     box-shadow:
+
         0 8px 25px rgba(0,0,0,.35),
+
         inset 0 1px 0 rgba(255,255,255,.025);
 
     cursor: pointer;
 
     transition:
+
         transform .2s ease,
+
         border-color .2s ease,
+
         box-shadow .2s ease,
+
         background .2s ease;
+
 }
+
 
 .menu-card::before,
 .submenu-trigger::before {
@@ -272,7 +362,9 @@ h1 span {
     position: absolute;
 
     left: 0;
+
     top: 13px;
+
     bottom: 13px;
 
     width: 3px;
@@ -284,7 +376,9 @@ h1 span {
         var(--green);
 
     opacity: .65;
+
 }
+
 
 .menu-card:hover,
 .submenu-trigger:hover {
@@ -295,6 +389,7 @@ h1 span {
         rgba(0,255,117,.55);
 
     background:
+
         linear-gradient(
             100deg,
             rgba(13, 34, 24, .98),
@@ -302,14 +397,21 @@ h1 span {
         );
 
     box-shadow:
+
         0 10px 30px rgba(0,0,0,.4),
+
         0 0 20px rgba(0,255,117,.06);
+
 }
+
 
 .menu-card:active,
 .submenu-trigger:active {
+
     transform: scale(.985);
+
 }
+
 
 .card-left {
 
@@ -320,16 +422,20 @@ h1 span {
     gap: 14px;
 
     min-width: 0;
+
 }
+
 
 .icon {
 
     width: 34px;
+
     height: 34px;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     border-radius: 9px;
@@ -345,7 +451,9 @@ h1 span {
     font-size: 17px;
 
     flex-shrink: 0;
+
 }
+
 
 .menu-title {
 
@@ -354,21 +462,27 @@ h1 span {
     flex-direction: column;
 
     gap: 3px;
+
 }
+
 
 .menu-title strong {
 
     font-size: .91rem;
 
     font-weight: 650;
+
 }
+
 
 .menu-title small {
 
     color: #66746f;
 
     font-size: .67rem;
+
 }
+
 
 .arrow {
 
@@ -379,7 +493,9 @@ h1 span {
     transition: .2s ease;
 
     margin-left: 10px;
+
 }
+
 
 .menu-card:hover .arrow,
 .submenu-trigger:hover .arrow {
@@ -387,16 +503,20 @@ h1 span {
     color: var(--green);
 
     transform: translateX(4px);
+
 }
 
 
-/* =========================
+/* =========================================================
    SUBMENUS
-========================= */
+========================================================= */
 
 .submenu-container {
+
     width: 100%;
+
 }
+
 
 #eventsSubmenu,
 #lvlResultsSubmenu {
@@ -410,7 +530,9 @@ h1 span {
     margin-top: 7px;
 
     padding-left: 17px;
+
 }
+
 
 .submenu-item {
 
@@ -437,7 +559,11 @@ h1 span {
     justify-content: space-between;
 
     transition: .2s ease;
+
+    cursor: pointer;
+
 }
+
 
 .submenu-item:hover {
 
@@ -448,20 +574,24 @@ h1 span {
 
     transform:
         translateX(3px);
+
 }
+
 
 .submenu-item .icon {
 
     width: 30px;
+
     height: 30px;
 
     font-size: 14px;
+
 }
 
 
-/* =========================
+/* =========================================================
    LOADING
-========================= */
+========================================================= */
 
 .loading-seasons {
 
@@ -484,12 +614,13 @@ h1 span {
         1px solid rgba(255,255,255,.06);
 
     border-radius: 9px;
+
 }
 
 
-/* =========================
+/* =========================================================
    FOOTER
-========================= */
+========================================================= */
 
 .footer {
 
@@ -513,80 +644,659 @@ h1 span {
     font-size: .62rem;
 
     letter-spacing: .5px;
+
 }
+
 
 .footer-brand {
 
     color: var(--green);
 
     font-weight: 700;
+
 }
+
 
 .socials {
 
     display: flex;
 
     gap: 13px;
+
 }
+
 
 .socials span {
 
     color: #66736e;
 
     transition: .2s ease;
+
 }
+
 
 .socials span:hover {
 
     color: var(--green);
+
 }
 
 
-/* =========================
+/* =========================================================
+   MODAL BACKGROUND
+========================================================= */
+
+.results-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 16px;
+
+    background:
+        rgba(0,0,0,.78);
+
+    backdrop-filter:
+        blur(8px);
+
+    -webkit-backdrop-filter:
+        blur(8px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity .2s ease,
+        visibility .2s ease;
+
+}
+
+
+.results-modal.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+}
+
+
+/* =========================================================
+   MODAL BOX
+========================================================= */
+
+.results-modal-box {
+
+    width: 100%;
+
+    max-width: 480px;
+
+    max-height: 90vh;
+
+    overflow: hidden;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(13,22,18,.98),
+            rgba(5,9,8,.99)
+        );
+
+    border:
+        1px solid rgba(0,255,117,.22);
+
+    border-radius: 16px;
+
+    box-shadow:
+
+        0 30px 80px rgba(0,0,0,.7),
+
+        0 0 40px rgba(0,255,117,.06);
+
+    transform:
+        translateY(20px)
+        scale(.97);
+
+    transition:
+        transform .2s ease;
+
+}
+
+
+.results-modal.show
+.results-modal-box {
+
+    transform:
+        translateY(0)
+        scale(1);
+
+}
+
+
+/* =========================================================
+   MODAL HEADER
+========================================================= */
+
+.modal-header {
+
+    position: relative;
+
+    padding:
+        18px 50px 10px 18px;
+
+}
+
+
+.modal-season-title {
+
+    margin: 0;
+
+    font-size: 1.35rem;
+
+    font-weight: 900;
+
+    color: white;
+
+}
+
+
+.modal-subtitle {
+
+    margin-top: 3px;
+
+    color: #66746f;
+
+    font-size: .65rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: 2px;
+
+}
+
+
+.modal-close {
+
+    position: absolute;
+
+    top: 13px;
+
+    right: 13px;
+
+    width: 35px;
+
+    height: 35px;
+
+    border-radius: 9px;
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
+    background:
+        rgba(255,255,255,.035);
+
+    color: #8b9792;
+
+    font-size: 19px;
+
+    cursor: pointer;
+
+}
+
+
+.modal-close:hover {
+
+    color: var(--green);
+
+    border-color:
+        rgba(0,255,117,.35);
+
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.modal-stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 7px;
+
+    padding:
+        0 18px 14px;
+
+}
+
+
+.modal-stat {
+
+    text-align: center;
+
+    padding: 9px 5px;
+
+    background:
+        rgba(255,255,255,.025);
+
+    border:
+        1px solid rgba(255,255,255,.06);
+
+    border-radius: 9px;
+
+}
+
+
+.modal-stat-value {
+
+    color: var(--green);
+
+    font-size: .95rem;
+
+    font-weight: 900;
+
+}
+
+
+.modal-stat-label {
+
+    margin-top: 2px;
+
+    color: #59655f;
+
+    font-size: .52rem;
+
+    letter-spacing: .6px;
+
+    text-transform: uppercase;
+
+}
+
+
+/* =========================================================
+   RESULTS CONTAINER
+========================================================= */
+
+.results-container {
+
+    padding:
+        0 14px 14px;
+
+    max-height:
+        calc(90vh - 175px);
+
+    overflow-y: auto;
+
+}
+
+
+.results-container::-webkit-scrollbar {
+
+    width: 4px;
+
+}
+
+
+.results-container::-webkit-scrollbar-track {
+
+    background:
+        transparent;
+
+}
+
+
+.results-container::-webkit-scrollbar-thumb {
+
+    background:
+        rgba(0,255,117,.25);
+
+    border-radius: 10px;
+
+}
+
+
+/* =========================================================
+   RESULT CARD
+========================================================= */
+
+.result-card {
+
+    background:
+        rgba(255,255,255,.025);
+
+    border:
+        1px solid rgba(255,255,255,.065);
+
+    border-radius: 11px;
+
+    padding: 12px;
+
+    margin-bottom: 8px;
+
+}
+
+
+.result-card:last-child {
+
+    margin-bottom: 0;
+
+}
+
+
+.result-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 9px;
+
+}
+
+
+.result-number {
+
+    color: #59655f;
+
+    font-size: .52rem;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+
+}
+
+
+.result-status {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 25px;
+
+    height: 25px;
+
+    border-radius: 7px;
+
+    font-size: .72rem;
+
+    font-weight: 900;
+
+}
+
+
+.result-status.win {
+
+    color: var(--green);
+
+    background:
+        rgba(0,255,117,.09);
+
+    border:
+        1px solid rgba(0,255,117,.2);
+
+}
+
+
+.result-status.loss {
+
+    color: #ff5c5c;
+
+    background:
+        rgba(255,70,70,.08);
+
+    border:
+        1px solid rgba(255,70,70,.18);
+
+}
+
+
+.result-status.draw {
+
+    color: #ffc857;
+
+    background:
+        rgba(255,200,87,.08);
+
+    border:
+        1px solid rgba(255,200,87,.18);
+
+}
+
+
+.teams {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr auto 1fr;
+
+    gap: 8px;
+
+    align-items: center;
+
+}
+
+
+.team {
+
+    font-size: .76rem;
+
+    font-weight: 700;
+
+    word-break: break-word;
+
+}
+
+
+.team.home {
+
+    text-align: left;
+
+}
+
+
+.team.away {
+
+    text-align: right;
+
+}
+
+
+.score {
+
+    color: white;
+
+    font-size: .9rem;
+
+    font-weight: 900;
+
+    white-space: nowrap;
+
+}
+
+
+.result-details {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 6px;
+
+    margin-top: 11px;
+
+    padding-top: 9px;
+
+    border-top:
+        1px solid rgba(255,255,255,.05);
+
+}
+
+
+.detail {
+
+    text-align: center;
+
+}
+
+
+.detail-label {
+
+    color: #59655f;
+
+    font-size: .48rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: .5px;
+
+}
+
+
+.detail-value {
+
+    margin-top: 3px;
+
+    color: #cbd2cf;
+
+    font-size: .65rem;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
+   NO RESULTS
+========================================================= */
+
+.no-results {
+
+    padding: 30px 15px;
+
+    text-align: center;
+
+    color: #66746f;
+
+    font-size: .75rem;
+
+}
+
+
+/* =========================================================
    MOBILE
-========================= */
+========================================================= */
 
 @media (max-width: 400px) {
 
     body {
+
         padding:
             20px 13px 30px;
+
     }
+
 
     .top-bar {
+
         margin-bottom: 28px;
+
     }
+
 
     .hero {
+
         margin-bottom: 27px;
+
     }
 
+
     h1 {
+
         font-size: 2.45rem;
+
     }
+
 
     .subtitle {
 
         font-size: .62rem;
 
         letter-spacing: 3px;
+
     }
+
 
     .menu-card,
     .submenu-trigger {
 
         min-height: 60px;
+
     }
 
+
     .menu-title small {
+
         display: none;
+
     }
+
 
     .icon {
 
         width: 32px;
+
         height: 32px;
+
     }
+
+
+    .results-modal {
+
+        padding: 10px;
+
+    }
+
+
+    .results-modal-box {
+
+        max-height: 94vh;
+
+    }
+
+
+    .results-container {
+
+        max-height:
+            calc(94vh - 175px);
+
+    }
+
 }
 
 </style>
@@ -596,6 +1306,7 @@ h1 span {
 
 <body>
 
+
 <div class="page">
 
 
@@ -604,15 +1315,19 @@ h1 span {
     <div class="top-bar">
 
         <div class="logo">
+
             FC <span>MOBILE</span>
+
         </div>
 
+
         <div class="menu-icon">
+
             ☰
+
         </div>
 
     </div>
-
 
 
     <!-- HERO -->
@@ -620,20 +1335,28 @@ h1 span {
     <div class="hero">
 
         <div class="crown">
+
             ♛
+
         </div>
 
+
         <h1>
+
             FC MOBILE
+
             <span>HUB</span>
+
         </h1>
 
+
         <div class="subtitle">
+
             Play / Learn / Improve
+
         </div>
 
     </div>
-
 
 
     <!-- MENU -->
@@ -651,29 +1374,39 @@ h1 span {
             <div class="card-left">
 
                 <span class="icon">
+
                     ⚔
+
                 </span>
+
 
                 <div class="menu-title">
 
                     <strong>
+
                         Player Comparison
+
                     </strong>
 
+
                     <small>
+
                         Compare players and stats
+
                     </small>
 
                 </div>
 
             </div>
 
+
             <span class="arrow">
+
                 ›
+
             </span>
 
         </a>
-
 
 
         <!-- IN-GAME EVENTS -->
@@ -688,28 +1421,39 @@ h1 span {
                 <div class="card-left">
 
                     <span class="icon">
+
                         ★
+
                     </span>
+
 
                     <div class="menu-title">
 
                         <strong>
+
                             In-Game Events
+
                         </strong>
 
+
                         <small>
+
                             Explore current events
+
                         </small>
 
                     </div>
 
                 </div>
 
+
                 <span
                     class="arrow"
                     id="submenuArrow"
                 >
+
                     ›
+
                 </span>
 
             </div>
@@ -725,21 +1469,29 @@ h1 span {
                     <div class="card-left">
 
                         <span class="icon">
+
                             ◆
+
                         </span>
+
 
                         <div class="menu-title">
 
                             <strong>
+
                                 Champions
+
                             </strong>
 
                         </div>
 
                     </div>
 
+
                     <span class="arrow">
+
                         ›
+
                     </span>
 
                 </a>
@@ -747,7 +1499,6 @@ h1 span {
             </div>
 
         </div>
-
 
 
         <!-- ACTIVITY POINTS -->
@@ -760,29 +1511,39 @@ h1 span {
             <div class="card-left">
 
                 <span class="icon">
+
                     ▣
+
                 </span>
+
 
                 <div class="menu-title">
 
                     <strong>
+
                         Activity Points
+
                     </strong>
 
+
                     <small>
+
                         Learn how activity points work
+
                     </small>
 
                 </div>
 
             </div>
 
+
             <span class="arrow">
+
                 ›
+
             </span>
 
         </a>
-
 
 
         <!-- VSA -->
@@ -795,29 +1556,39 @@ h1 span {
             <div class="card-left">
 
                 <span class="icon">
+
                     ⚽
+
                 </span>
+
 
                 <div class="menu-title">
 
                     <strong>
+
                         VSA School
+
                     </strong>
 
+
                     <small>
+
                         Tips and guides for VSA
+
                     </small>
 
                 </div>
 
             </div>
 
+
             <span class="arrow">
+
                 ›
+
             </span>
 
         </a>
-
 
 
         <!-- LVL RANKINGS -->
@@ -830,29 +1601,39 @@ h1 span {
             <div class="card-left">
 
                 <span class="icon">
+
                     ♛
+
                 </span>
+
 
                 <div class="menu-title">
 
                     <strong>
+
                         LvL Rankings
+
                     </strong>
 
+
                     <small>
+
                         See the top LvL players
+
                     </small>
 
                 </div>
 
             </div>
 
+
             <span class="arrow">
+
                 ›
+
             </span>
 
         </a>
-
 
 
         <!-- LVL RESULTS -->
@@ -867,48 +1648,57 @@ h1 span {
                 <div class="card-left">
 
                     <span class="icon">
+
                         ▤
+
                     </span>
+
 
                     <div class="menu-title">
 
                         <strong>
+
                             LvL Results
+
                         </strong>
 
+
                         <small>
+
                             Season results and match history
+
                         </small>
 
                     </div>
 
                 </div>
 
+
                 <span
                     class="arrow"
                     id="lvlResultsArrow"
                 >
+
                     ›
+
                 </span>
 
             </div>
 
 
-            <!-- SEASONS -->
-
             <div id="lvlResultsSubmenu">
 
                 <div class="loading-seasons">
+
                     Loading seasons...
+
                 </div>
 
             </div>
 
         </div>
 
-
     </div>
-
 
 
     <!-- FOOTER -->
@@ -918,7 +1708,9 @@ h1 span {
         <div>
 
             <span class="footer-brand">
+
                 FC MOBILE HUB
+
             </span>
 
             &nbsp; • &nbsp; 2026
@@ -929,7 +1721,9 @@ h1 span {
         <div class="socials">
 
             <span>●</span>
+
             <span>●</span>
+
             <span>●</span>
 
         </div>
@@ -938,6 +1732,142 @@ h1 span {
 
 </div>
 
+
+<!-- =======================================================
+     RESULTS POPUP
+======================================================= -->
+
+<div
+    id="resultsModal"
+    class="results-modal"
+    onclick="closeModalOutside(event)"
+>
+
+
+    <div
+        class="results-modal-box"
+        onclick="event.stopPropagation()"
+    >
+
+
+        <!-- MODAL HEADER -->
+
+        <div class="modal-header">
+
+
+            <h2
+                id="modalSeasonTitle"
+                class="modal-season-title"
+            >
+
+                Season
+
+            </h2>
+
+
+            <div class="modal-subtitle">
+
+                LvL Match Results
+
+            </div>
+
+
+            <button
+                class="modal-close"
+                onclick="closeResultsModal()"
+            >
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="modal-stats">
+
+
+            <div class="modal-stat">
+
+                <div
+                    id="statMatches"
+                    class="modal-stat-value"
+                >
+
+                    0
+
+                </div>
+
+
+                <div class="modal-stat-label">
+
+                    Matches
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-stat">
+
+                <div
+                    id="statWins"
+                    class="modal-stat-value"
+                >
+
+                    0
+
+                </div>
+
+
+                <div class="modal-stat-label">
+
+                    Wins
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-stat">
+
+                <div
+                    id="statLosses"
+                    class="modal-stat-value"
+                >
+
+                    0
+
+                </div>
+
+
+                <div class="modal-stat-label">
+
+                    Losses
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- RESULTS -->
+
+        <div
+            id="resultsContainer"
+            class="results-container"
+        >
+
+        </div>
+
+
+    </div>
+
+</div>
 
 
 <script>
@@ -952,10 +1882,6 @@ const SHEET_ID =
 "16OTm4bC-YKAoJl7Rsw8bQLfrdYvUsbZ94Vic65KcMEY";
 
 
-/*
-   OVO JE GID TVOG "LVL Results" TABA
-*/
-
 const SHEET_GID =
 "1372574030";
 
@@ -966,10 +1892,12 @@ const SHEET_GID =
 
 function toggleEventsSubmenu() {
 
+
     const submenu =
         document.getElementById(
             "eventsSubmenu"
         );
+
 
     const arrow =
         document.getElementById(
@@ -981,18 +1909,27 @@ function toggleEventsSubmenu() {
         submenu.style.display === "flex"
     ) {
 
-        submenu.style.display = "none";
+
+        submenu.style.display =
+            "none";
+
 
         arrow.style.transform =
             "rotate(0deg)";
 
+
     } else {
 
-        submenu.style.display = "flex";
+
+        submenu.style.display =
+            "flex";
+
 
         arrow.style.transform =
             "rotate(90deg)";
+
     }
+
 }
 
 
@@ -1002,10 +1939,12 @@ function toggleEventsSubmenu() {
 
 function toggleLvlResults() {
 
+
     const submenu =
         document.getElementById(
             "lvlResultsSubmenu"
         );
+
 
     const arrow =
         document.getElementById(
@@ -1017,26 +1956,585 @@ function toggleLvlResults() {
         submenu.style.display === "flex"
     ) {
 
-        submenu.style.display = "none";
+
+        submenu.style.display =
+            "none";
+
 
         arrow.style.transform =
             "rotate(0deg)";
 
+
     } else {
 
-        submenu.style.display = "flex";
+
+        submenu.style.display =
+            "flex";
+
 
         arrow.style.transform =
             "rotate(90deg)";
+
     }
+
 }
 
 
 /* =========================================================
-   LOAD LVL SEASON
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(value) {
+
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================================
+   GET RESULT STATUS
+========================================================= */
+
+function getResultStatus(result) {
+
+
+    const value =
+        String(
+            result || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    /*
+     * Ako je već W
+     */
+
+    if (
+        value === "w" ||
+        value === "win" ||
+        value.includes("win")
+    ) {
+
+        return {
+
+            letter: "W",
+
+            className: "win"
+
+        };
+
+    }
+
+
+    /*
+     * Ako je već L
+     */
+
+    if (
+        value === "l" ||
+        value === "loss" ||
+        value === "lose" ||
+        value.includes("loss")
+    ) {
+
+        return {
+
+            letter: "L",
+
+            className: "loss"
+
+        };
+
+    }
+
+
+    /*
+     * Ako je Draw
+     */
+
+    if (
+        value === "d" ||
+        value === "draw" ||
+        value.includes("draw")
+    ) {
+
+        return {
+
+            letter: "D",
+
+            className: "draw"
+
+        };
+
+    }
+
+
+    /*
+     * Pokušaj da pronađemo rezultat
+     * tipa:
+     *
+     * 1085-1037
+     *
+     * 1085 : 1037
+     */
+
+    const scoreMatch =
+        value.match(
+            /(\d+(?:\.\d+)?)\s*[-:]\s*(\d+(?:\.\d+)?)/
+        );
+
+
+    if (
+        scoreMatch
+    ) {
+
+
+        const first =
+            parseFloat(
+                scoreMatch[1]
+            );
+
+
+        const second =
+            parseFloat(
+                scoreMatch[2]
+            );
+
+
+        if (
+            first > second
+        ) {
+
+            return {
+
+                letter: "W",
+
+                className: "win"
+
+            };
+
+        }
+
+
+        if (
+            first < second
+        ) {
+
+            return {
+
+                letter: "L",
+
+                className: "loss"
+
+            };
+
+        }
+
+
+        return {
+
+            letter: "D",
+
+            className: "draw"
+
+        };
+
+    }
+
+
+    /*
+     * Ako ništa nije pronađeno,
+     * pokušaj da proverimo broj.
+     */
+
+    return {
+
+        letter: "-",
+
+        className: ""
+
+    };
+
+}
+
+
+/* =========================================================
+   CONVERT GOOGLE VALUE
+========================================================= */
+
+function getCellValue(
+    row,
+    index
+) {
+
+
+    if (
+        !row ||
+        !row.c ||
+        !row.c[index]
+    ) {
+
+        return "";
+
+    }
+
+
+    const cell =
+        row.c[index];
+
+
+    if (
+        cell.v !== undefined &&
+        cell.v !== null
+    ) {
+
+        return String(
+            cell.v
+        ).trim();
+
+    }
+
+
+    if (
+        cell.f !== undefined &&
+        cell.f !== null
+    ) {
+
+        return String(
+            cell.f
+        ).trim();
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =========================================================
+   LOAD GOOGLE SHEET
+========================================================= */
+
+async function loadGoogleSheet() {
+
+
+    const url =
+
+        "https://docs.google.com/spreadsheets/d/" +
+
+        SHEET_ID +
+
+        "/gviz/tq?gid=" +
+
+        SHEET_GID +
+
+        "&tqx=out:json&cache=" +
+
+        Date.now();
+
+
+    const response =
+        await fetch(
+            url
+        );
+
+
+    if (
+        !response.ok
+    ) {
+
+        throw new Error(
+            "Google Sheets request failed: " +
+            response.status
+        );
+
+    }
+
+
+    const text =
+        await response.text();
+
+
+    const start =
+        text.indexOf("{");
+
+
+    const end =
+        text.lastIndexOf("}");
+
+
+    if (
+        start === -1 ||
+        end === -1
+    ) {
+
+        throw new Error(
+            "Google did not return valid JSON."
+        );
+
+    }
+
+
+    const jsonText =
+        text.substring(
+            start,
+            end + 1
+        );
+
+
+    return JSON.parse(
+        jsonText
+    );
+
+}
+
+
+/* =========================================================
+   FIND SEASONS
+========================================================= */
+
+function findSeasons(
+    data
+) {
+
+
+    const seasons =
+        {};
+
+
+    const columns =
+        data.table &&
+        data.table.cols
+            ? data.table.cols
+            : [];
+
+
+    const rows =
+        data.table &&
+        data.table.rows
+            ? data.table.rows
+            : [];
+
+
+    /*
+     * -----------------------------------------------------
+     * 1. PROVERI NAZIVE KOLONA
+     * -----------------------------------------------------
+     */
+
+    columns.forEach(
+        (
+            column,
+            index
+        ) => {
+
+
+            if (
+                !column
+            ) {
+
+                return;
+
+            }
+
+
+            const label =
+                String(
+                    column.label || ""
+                )
+                .trim();
+
+
+            const match =
+                label.match(
+                    /Season\s*(\d+)/i
+                );
+
+
+            if (
+                match
+            ) {
+
+
+                const season =
+                    parseInt(
+                        match[1],
+                        10
+                    );
+
+
+                seasons[season] = {
+
+                    season:
+
+                        season,
+
+                    columnIndex:
+
+                        index
+
+                };
+
+            }
+
+        }
+    );
+
+
+    /*
+     * -----------------------------------------------------
+     * 2. PROVERI PRVU KOLONU
+     * -----------------------------------------------------
+     */
+
+    rows.forEach(
+        (row) => {
+
+
+            if (
+                !row ||
+                !row.c
+            ) {
+
+                return;
+
+            }
+
+
+            row.c.forEach(
+                (
+                    cell,
+                    index
+                ) => {
+
+
+                    if (
+                        !cell
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const value =
+                        String(
+                            cell.v ||
+                            cell.f ||
+                            ""
+                        )
+                        .trim();
+
+
+                    const match =
+                        value.match(
+                            /^Season\s*(\d+)$/i
+                        );
+
+
+                    if (
+                        match
+                    ) {
+
+
+                        const season =
+                            parseInt(
+                                match[1],
+                                10
+                            );
+
+
+                        if (
+                            !seasons[season]
+                        ) {
+
+                            seasons[season] = {
+
+                                season:
+
+                                    season,
+
+                                rowIndex:
+
+                                    rows.indexOf(
+                                        row
+                                    ),
+
+                                columnIndex:
+
+                                    index
+
+                            };
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    return Object
+        .values(seasons)
+        .sort(
+            (
+                a,
+                b
+            ) =>
+                b.season -
+                a.season
+        );
+
+}
+
+
+/* =========================================================
+   LOAD LVL SEASONS
 ========================================================= */
 
 async function loadLvlSeasons() {
+
 
     const container =
         document.getElementById(
@@ -1046,285 +2544,37 @@ async function loadLvlSeasons() {
 
     try {
 
-        /*
-         * KORISTIMO GID DIREKTNO.
-         *
-         * Ovo je važno jer je prethodni kod
-         * pokušavao da pronađe pogrešan sheet.
-         */
-
-        const url =
-            "https://docs.google.com/spreadsheets/d/" +
-            SHEET_ID +
-            "/gviz/tq?gid=" +
-            SHEET_GID +
-            "&tqx=out:json&cache=" +
-            Date.now();
-
-
-        const response =
-            await fetch(url);
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Google Sheets request failed: " +
-                response.status
-            );
-
-        }
-
-
-        const text =
-            await response.text();
-
-
-        console.log(
-            "GOOGLE SHEETS RAW RESPONSE:",
-            text
-        );
-
-
-        /*
-         * Pronađi pravi JSON.
-         *
-         * Google vraća:
-         *
-         * google.visualization.Query.setResponse({...});
-         */
-
-        const start =
-            text.indexOf("{");
-
-        const end =
-            text.lastIndexOf("}");
-
-
-        if (
-            start === -1 ||
-            end === -1
-        ) {
-
-            throw new Error(
-                "Google nije vratio validan JSON."
-            );
-
-        }
-
-
-        const jsonText =
-            text.substring(
-                start,
-                end + 1
-            );
-
 
         const data =
-            JSON.parse(jsonText);
+            await loadGoogleSheet();
 
 
-        /*
-         * Provera
-         */
+        console.log(
+            "GOOGLE SHEETS DATA:",
+            data
+        );
 
-        if (
-            !data.table ||
-            !data.table.cols
-        ) {
 
-            throw new Error(
-                "Tabela nije pronađena."
+        const seasons =
+            findSeasons(
+                data
             );
 
-        }
-
-
-        const columns =
-            data.table.cols;
-
-
-        const rows =
-            data.table.rows || [];
-
 
         console.log(
-            "KOLONE:",
-            columns
+            "FOUND SEASONS:",
+            seasons
         );
 
 
-        console.log(
-            "REDOVI:",
-            rows
-        );
+        container.innerHTML =
+            "";
 
-
-        /*
-         * =====================================================
-         * OVO JE GLAVNA ISPRAVKA
-         * =====================================================
-         *
-         * Kod tebe Google vraća:
-         *
-         * kolona A = Season 19
-         * kolona B = vs
-         * kolona C = Result
-         * ...
-         *
-         * Dakle "Season 19" se nalazi u:
-         *
-         * data.table.cols[0].label
-         *
-         * a NE u rows.
-         */
-
-
-        const seasons = [];
-
-
-        columns.forEach(
-            (column) => {
-
-                if (
-                    !column ||
-                    !column.label
-                ) {
-                    return;
-                }
-
-
-                const label =
-                    column.label
-                        .toString()
-                        .trim();
-
-
-                /*
-                 * Ako imamo:
-                 *
-                 * Season 19
-                 *
-                 * uzmi broj 19.
-                 */
-
-                const match =
-                    label.match(
-                        /^Season\s+(\d+)$/i
-                    );
-
-
-                if (match) {
-
-                    const season =
-                        parseInt(
-                            match[1],
-                            10
-                        );
-
-
-                    if (
-                        !seasons.includes(
-                            season
-                        )
-                    ) {
-
-                        seasons.push(
-                            season
-                        );
-
-                    }
-
-                }
-
-            }
-        );
-
-
-        /*
-         * Dodatna provera:
-         *
-         * Ako se nekada Season 20
-         * bude nalazio kao vrednost
-         * u prvoj koloni, podržavamo
-         * i taj način.
-         */
-
-        rows.forEach(
-            (row) => {
-
-                if (
-                    !row ||
-                    !row.c ||
-                    !row.c[0] ||
-                    row.c[0].v == null
-                ) {
-                    return;
-                }
-
-
-                const value =
-                    row.c[0].v
-                        .toString()
-                        .trim();
-
-
-                const match =
-                    value.match(
-                        /^Season\s+(\d+)$/i
-                    );
-
-
-                if (match) {
-
-                    const season =
-                        parseInt(
-                            match[1],
-                            10
-                        );
-
-
-                    if (
-                        !seasons.includes(
-                            season
-                        )
-                    ) {
-
-                        seasons.push(
-                            season
-                        );
-
-                    }
-
-                }
-
-            }
-        );
-
-
-        /*
-         * Najveća sezona prva.
-         */
-
-        seasons.sort(
-            (a, b) => b - a
-        );
-
-
-        /*
-         * Očisti loading.
-         */
-
-        container.innerHTML = "";
-
-
-        /*
-         * Ako nema sezona.
-         */
 
         if (
             seasons.length === 0
         ) {
+
 
             container.innerHTML = `
 
@@ -1336,20 +2586,19 @@ async function loadLvlSeasons() {
 
             `;
 
+
             return;
+
         }
 
 
-        /*
-         * Napravi dugmad.
-         */
-
         seasons.forEach(
-            (season) => {
+            (seasonInfo) => {
+
 
                 const link =
                     document.createElement(
-                        "a"
+                        "div"
                     );
 
 
@@ -1357,40 +2606,49 @@ async function loadLvlSeasons() {
                     "submenu-item";
 
 
-                /*
-                 * Klik vodi na:
-                 *
-                 * lvl-results.html?season=19
-                 */
-
-                link.href =
-                    "lvl-results.html?season=" +
-                    season;
-
-
                 link.innerHTML = `
 
                     <div class="card-left">
 
                         <span class="icon">
+
                             ◈
+
                         </span>
+
 
                         <div class="menu-title">
 
                             <strong>
-                                Season ${season}
+
+                                Season ${seasonInfo.season}
+
                             </strong>
 
                         </div>
 
                     </div>
 
+
                     <span class="arrow">
+
                         ›
+
                     </span>
 
                 `;
+
+
+                link.addEventListener(
+                    "click",
+                    () => {
+
+                        loadSeasonResults(
+                            seasonInfo.season
+                        );
+
+                    }
+                );
 
 
                 container.appendChild(
@@ -1401,7 +2659,9 @@ async function loadLvlSeasons() {
         );
 
 
-    } catch (error) {
+    }
+    catch (error) {
+
 
         console.error(
             "LvL seasons error:",
@@ -1425,13 +2685,1074 @@ async function loadLvlSeasons() {
 
 
 /* =========================================================
+   LOAD SEASON RESULTS
+========================================================= */
+
+async function loadSeasonResults(
+    season
+) {
+
+
+    try {
+
+
+        const data =
+            await loadGoogleSheet();
+
+
+        const table =
+            data.table;
+
+
+        const columns =
+            table.cols || [];
+
+
+        const rows =
+            table.rows || [];
+
+
+        /*
+         * -----------------------------------------------------
+         * PRONAĐI KOLONU SEZONE
+         * -----------------------------------------------------
+         */
+
+        let seasonColumn =
+            -1;
+
+
+        columns.forEach(
+            (
+                column,
+                index
+            ) => {
+
+
+                const label =
+                    String(
+                        column.label || ""
+                    )
+                    .trim();
+
+
+                const match =
+                    label.match(
+                        /^Season\s*(\d+)$/i
+                    );
+
+
+                if (
+                    match &&
+                    parseInt(
+                        match[1],
+                        10
+                    ) === season
+                ) {
+
+                    seasonColumn =
+                        index;
+
+                }
+
+            }
+        );
+
+
+        /*
+         * -----------------------------------------------------
+         * AKO SEZONA NIJE KOLONA,
+         * PROVERI DA LI POSTOJI U PRVOJ KOLONI
+         * -----------------------------------------------------
+         */
+
+        if (
+            seasonColumn === -1
+        ) {
+
+
+            const seasonText =
+                "Season " +
+                season;
+
+
+            rows.forEach(
+                (row) => {
+
+
+                    if (
+                        !row ||
+                        !row.c
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    row.c.forEach(
+                        (
+                            cell,
+                            index
+                        ) => {
+
+
+                            const value =
+                                String(
+                                    cell &&
+                                    (
+                                        cell.v ??
+                                        cell.f ??
+                                        ""
+                                    )
+                                )
+                                .trim();
+
+
+                            if (
+                                value ===
+                                seasonText
+                            ) {
+
+                                seasonColumn =
+                                    index;
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+
+
+        /*
+         * -----------------------------------------------------
+         * NEMA SEZONE
+         * -----------------------------------------------------
+         */
+
+        if (
+            seasonColumn === -1
+        ) {
+
+            alert(
+                "Season " +
+                season +
+                " was not found in Google Sheets."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * -----------------------------------------------------
+         * ODREDI KOLONE
+         * -----------------------------------------------------
+         *
+         * Kod podržava najčešće nazive:
+         *
+         * Player / Team
+         * Opponent / Vs
+         * Result / Score
+         * Average
+         * Best Score
+         * Played
+         *
+         */
+
+        let playerColumn = -1;
+
+        let opponentColumn = -1;
+
+        let resultColumn = -1;
+
+        let averageColumn = -1;
+
+        let bestScoreColumn = -1;
+
+        let playedColumn = -1;
+
+
+        columns.forEach(
+            (
+                column,
+                index
+            ) => {
+
+
+                const label =
+                    String(
+                        column.label || ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
+
+                if (
+                    label === "player" ||
+                    label === "team" ||
+                    label === "club"
+                ) {
+
+                    if (
+                        playerColumn === -1
+                    ) {
+
+                        playerColumn =
+                            index;
+
+                    }
+
+                }
+
+
+                if (
+                    label === "opponent" ||
+                    label === "vs" ||
+                    label === "opponent team"
+                ) {
+
+                    if (
+                        opponentColumn === -1
+                    ) {
+
+                        opponentColumn =
+                            index;
+
+                    }
+
+                }
+
+
+                if (
+                    label === "result" ||
+                    label === "score"
+                ) {
+
+                    if (
+                        resultColumn === -1
+                    ) {
+
+                        resultColumn =
+                            index;
+
+                    }
+
+                }
+
+
+                if (
+                    label === "average" ||
+                    label === "avg"
+                ) {
+
+                    if (
+                        averageColumn === -1
+                    ) {
+
+                        averageColumn =
+                            index;
+
+                    }
+
+                }
+
+
+                if (
+                    label === "best score" ||
+                    label === "best"
+                ) {
+
+                    if (
+                        bestScoreColumn === -1
+                    ) {
+
+                        bestScoreColumn =
+                            index;
+
+                    }
+
+                }
+
+
+                if (
+                    label === "played" ||
+                    label === "date"
+                ) {
+
+                    if (
+                        playedColumn === -1
+                    ) {
+
+                        playedColumn =
+                            index;
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        /*
+         * -----------------------------------------------------
+         * AKO NEMA NASLOVA, KORISTI PODRAZUMEVANI RASPORED
+         * -----------------------------------------------------
+         *
+         * Season | Player | Opponent | Result | Average | ...
+         */
+
+        if (
+            playerColumn === -1
+        ) {
+
+            playerColumn =
+                seasonColumn + 1;
+
+        }
+
+
+        if (
+            opponentColumn === -1
+        ) {
+
+            opponentColumn =
+                seasonColumn + 2;
+
+        }
+
+
+        if (
+            resultColumn === -1
+        ) {
+
+            resultColumn =
+                seasonColumn + 3;
+
+        }
+
+
+        if (
+            averageColumn === -1
+        ) {
+
+            averageColumn =
+                seasonColumn + 4;
+
+        }
+
+
+        /*
+         * -----------------------------------------------------
+         * ČITANJE REDOVA
+         * -----------------------------------------------------
+         */
+
+        const matches = [];
+
+
+        rows.forEach(
+            (
+                row,
+                rowIndex
+            ) => {
+
+
+                if (
+                    !row ||
+                    !row.c
+                ) {
+
+                    return;
+
+                }
+
+
+                const seasonValue =
+                    getCellValue(
+                        row,
+                        seasonColumn
+                    );
+
+
+                /*
+                 * Ako je sezona upisana
+                 * kao posebna vrednost
+                 */
+
+                if (
+                    seasonValue &&
+                    seasonValue
+                        .toLowerCase() !==
+                        ("season " + season)
+                        .toLowerCase()
+                ) {
+
+
+                    /*
+                     * Ako je kolona Season 19
+                     * onda je normalno da je
+                     * prazna u redovima.
+                     */
+
+                }
+
+
+                /*
+                 * Podaci
+                 */
+
+                const player =
+                    getCellValue(
+                        row,
+                        playerColumn
+                    );
+
+
+                const opponent =
+                    getCellValue(
+                        row,
+                        opponentColumn
+                    );
+
+
+                const result =
+                    getCellValue(
+                        row,
+                        resultColumn
+                    );
+
+
+                const average =
+                    getCellValue(
+                        row,
+                        averageColumn
+                    );
+
+
+                const bestScore =
+                    bestScoreColumn !== -1
+                        ? getCellValue(
+                            row,
+                            bestScoreColumn
+                        )
+                        : "";
+
+
+                const played =
+                    playedColumn !== -1
+                        ? getCellValue(
+                            row,
+                            playedColumn
+                        )
+                        : "";
+
+
+                /*
+                 * Ignoriši potpuno prazne redove
+                 */
+
+                if (
+                    !player &&
+                    !opponent &&
+                    !result &&
+                    !average
+                ) {
+
+                    return;
+
+                }
+
+
+                /*
+                 * Ako je ovo header ili
+                 * Season red, preskoči
+                 */
+
+                if (
+                    player
+                        .toLowerCase()
+                        .match(
+                            /^(player|team|club)$/i
+                        )
+                ) {
+
+                    return;
+
+                }
+
+
+                matches.push({
+
+                    team:
+                        player,
+
+                    opponent:
+                        opponent,
+
+                    result:
+                        result,
+
+                    average:
+                        average,
+
+                    bestScore:
+                        bestScore,
+
+                    played:
+                        played,
+
+                    rowIndex:
+                        rowIndex
+
+                });
+
+            }
+        );
+
+
+        /*
+         * -----------------------------------------------------
+         * PRIKAŽI POPUP
+         * -----------------------------------------------------
+         */
+
+        openSeasonResults(
+            season,
+            matches
+        );
+
+
+    }
+    catch (error) {
+
+
+        console.error(
+            "Season results error:",
+            error
+        );
+
+
+        alert(
+            "Unable to load Season " +
+            season +
+            " results."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   OPEN SEASON RESULTS
+========================================================= */
+
+function openSeasonResults(
+    season,
+    matches
+) {
+
+
+    const modal =
+        document.getElementById(
+            "resultsModal"
+        );
+
+
+    const title =
+        document.getElementById(
+            "modalSeasonTitle"
+        );
+
+
+    const container =
+        document.getElementById(
+            "resultsContainer"
+        );
+
+
+    const statMatches =
+        document.getElementById(
+            "statMatches"
+        );
+
+
+    const statWins =
+        document.getElementById(
+            "statWins"
+        );
+
+
+    const statLosses =
+        document.getElementById(
+            "statLosses"
+        );
+
+
+    /*
+     * -----------------------------------------------------
+     * NASLOV
+     * -----------------------------------------------------
+     */
+
+    title.textContent =
+        "Season " +
+        season;
+
+
+    /*
+     * -----------------------------------------------------
+     * STATISTIKA
+     * -----------------------------------------------------
+     */
+
+    let wins = 0;
+
+    let losses = 0;
+
+    let draws = 0;
+
+
+    matches.forEach(
+        (match) => {
+
+
+            const status =
+                getResultStatus(
+                    match.result
+                );
+
+
+            if (
+                status.letter === "W"
+            ) {
+
+                wins++;
+
+            }
+
+
+            else if (
+                status.letter === "L"
+            ) {
+
+                losses++;
+
+            }
+
+
+            else if (
+                status.letter === "D"
+            ) {
+
+                draws++;
+
+            }
+
+        }
+    );
+
+
+    const totalMatches =
+        wins +
+        losses +
+        draws;
+
+
+    statMatches.textContent =
+        totalMatches;
+
+
+    statWins.textContent =
+        wins;
+
+
+    statLosses.textContent =
+        losses;
+
+
+    /*
+     * -----------------------------------------------------
+     * OČISTI
+     * -----------------------------------------------------
+     */
+
+    container.innerHTML =
+        "";
+
+
+    /*
+     * -----------------------------------------------------
+     * NAJNOVIJI PRVI
+     * -----------------------------------------------------
+     *
+     * Poslednji red iz Google Sheet-a
+     * ide prvi u popup.
+     */
+
+    const newestFirst =
+        [...matches].reverse();
+
+
+    /*
+     * -----------------------------------------------------
+     * NEMA REZULTATA
+     * -----------------------------------------------------
+     */
+
+    if (
+        newestFirst.length === 0
+    ) {
+
+
+        container.innerHTML = `
+
+            <div class="no-results">
+
+                No results for this season.
+
+            </div>
+
+        `;
+
+    }
+
+
+    /*
+     * -----------------------------------------------------
+     * REZULTATI
+     * -----------------------------------------------------
+     */
+
+    else {
+
+
+        newestFirst.forEach(
+            (
+                match,
+                index
+            ) => {
+
+
+                const status =
+                    getResultStatus(
+                        match.result
+                    );
+
+
+                /*
+                 * AVERAGE NA 2 DECIMALE
+                 */
+
+                let averageDisplay =
+                    "-";
+
+
+                if (
+                    match.average !== ""
+                ) {
+
+
+                    const averageNumber =
+                        parseFloat(
+                            String(
+                                match.average
+                            )
+                            .replace(
+                                ",",
+                                "."
+                            )
+                        );
+
+
+                    if (
+                        !isNaN(
+                            averageNumber
+                        )
+                    ) {
+
+
+                        averageDisplay =
+                            averageNumber
+                                .toFixed(2);
+
+                    }
+
+
+                    else {
+
+
+                        averageDisplay =
+                            match.average;
+
+                    }
+
+                }
+
+
+                /*
+                 * ------------------------------------------------
+                 * CARD
+                 * ------------------------------------------------
+                 */
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "result-card";
+
+
+                card.innerHTML = `
+
+                    <div class="result-top">
+
+
+                        <span class="result-number">
+
+                            MATCH ${matches.length - index}
+
+                        </span>
+
+
+                        <span
+                            class="
+                                result-status
+                                ${status.className}
+                            "
+                        >
+
+                            ${status.letter}
+
+                        </span>
+
+
+                    </div>
+
+
+                    <div class="teams">
+
+
+                        <div class="team home">
+
+                            ${escapeHtml(
+                                match.team
+                            )}
+
+                        </div>
+
+
+                        <div class="score">
+
+                            ${escapeHtml(
+                                match.result
+                            )}
+
+                        </div>
+
+
+                        <div class="team away">
+
+                            ${escapeHtml(
+                                match.opponent
+                            )}
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="result-details">
+
+
+                        <div class="detail">
+
+
+                            <div class="detail-label">
+
+                                Played
+
+                            </div>
+
+
+                            <div class="detail-value">
+
+                                ${escapeHtml(
+                                    match.played ||
+                                    "-"
+                                )}
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="detail">
+
+
+                            <div class="detail-label">
+
+                                Average
+
+                            </div>
+
+
+                            <div class="detail-value">
+
+                                ${escapeHtml(
+                                    averageDisplay
+                                )}
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="detail">
+
+
+                            <div class="detail-label">
+
+                                Best Score
+
+                            </div>
+
+
+                            <div class="detail-value">
+
+                                ${escapeHtml(
+                                    match.bestScore ||
+                                    "-"
+                                )}
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+
+    /*
+     * -----------------------------------------------------
+     * OTVORI POPUP
+     * -----------------------------------------------------
+     */
+
+    modal.classList.add(
+        "show"
+    );
+
+
+    document.body.classList.add(
+        "modal-open"
+    );
+
+}
+
+
+/* =========================================================
+   CLOSE MODAL
+========================================================= */
+
+function closeResultsModal() {
+
+
+    const modal =
+        document.getElementById(
+            "resultsModal"
+        );
+
+
+    modal.classList.remove(
+        "show"
+    );
+
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+
+}
+
+
+/* =========================================================
+   CLOSE BY CLICKING OUTSIDE
+========================================================= */
+
+function closeModalOutside(
+    event
+) {
+
+
+    if (
+        event.target.id ===
+        "resultsModal"
+    ) {
+
+        closeResultsModal();
+
+    }
+
+}
+
+
+/* =========================================================
+   CLOSE WITH ESC
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    (event) => {
+
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeResultsModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
    START
 ========================================================= */
 
 loadLvlSeasons();
 
-
 </script>
 
+
 </body>
+
 </html>
