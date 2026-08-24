@@ -102,6 +102,7 @@
         }
 
 
+
         /* =====================================================
            TOP BAR
            ===================================================== */
@@ -1116,8 +1117,6 @@
 
             padding: 12px;
 
-            margin-bottom: 7px;
-
             border-radius: 10px;
 
             background:
@@ -1133,11 +1132,6 @@
             box-shadow:
                 inset 0 1px 0 rgba(255,255,255,.03),
                 0 7px 20px rgba(0,0,0,.2);
-        }
-
-
-        .achievement:last-child {
-            margin-bottom: 0;
         }
 
 
@@ -1852,7 +1846,7 @@
 
 
 /*
- * Your Google Sheet ID.
+ * Tvoj Google Sheet ID.
  */
 
 const SHEET_ID =
@@ -1861,7 +1855,7 @@ const SHEET_ID =
 
 
 /*
- * Current season.
+ * Trenutna sezona.
  */
 
 const CURRENT_SEASON =
@@ -2005,11 +1999,11 @@ async function loadHistory() {
 
 
         /*
-         * First column is Player.
+         * Prva kolona je Player.
          *
-         * All other columns are seasons.
+         * Sve ostale kolone su sezone.
          *
-         * Example:
+         * Primer:
          *
          * Player | Season 18 | Season 17
          */
@@ -2046,7 +2040,7 @@ async function loadHistory() {
 
 
         /*
-         * Load every player.
+         * Učitaj svakog igrača.
          */
 
         table.rows.forEach(row => {
@@ -2124,8 +2118,65 @@ async function loadHistory() {
 
 
 /* =========================================================
+   GET HISTORY VALUES
+   ========================================================= */
+
+function getHistoryValues(
+    playerHistory
+) {
+
+    if (
+        !playerHistory ||
+        !playerHistory.seasons
+    ) {
+
+        return [];
+
+    }
+
+
+    return playerHistory.seasons
+
+        .map(
+            item =>
+                item.value
+        )
+
+        .filter(
+            value =>
+                value !== null &&
+                !isNaN(Number(value))
+        )
+
+        .map(
+            value =>
+                Number(value)
+        );
+
+}
+
+
+
+/* =========================================================
    CALCULATE CAREER AVG
    ========================================================= */
+
+/*
+ * VAŽNO:
+ *
+ * Career Avg sada uključuje:
+ *
+ * 1. trenutnu Season 19
+ * 2. sve prethodne sezone iz History taba
+ *
+ * Ako kasnije dodaš Season 19 u History
+ * i pređeš na Season 20, kod će uključiti:
+ *
+ * Season 20 + Season 19 + Season 18...
+ *
+ * Ali neće duplirati Season 19 ako je već
+ * slučajno upisana u History.
+ */
 
 function calculateCareerAverage(
     currentAverage,
@@ -2136,7 +2187,7 @@ function calculateCareerAverage(
 
 
     /*
-     * Current season.
+     * Trenutna sezona.
      */
 
     const current =
@@ -2158,7 +2209,7 @@ function calculateCareerAverage(
 
 
     /*
-     * Previous seasons.
+     * Prethodne sezone.
      */
 
     if (
@@ -2191,6 +2242,10 @@ function calculateCareerAverage(
     }
 
 
+
+    /*
+     * Ako nema podataka.
+     */
 
     if (!values.length) {
 
@@ -2260,7 +2315,7 @@ function calculateBestSeason(
 
 
     /*
-     * History seasons.
+     * History.
      */
 
     if (
@@ -2315,299 +2370,6 @@ function calculateBestSeason(
 
                 : best
     );
-
-}
-
-
-
-/* =========================================================
-   GET PREVIOUS SEASON
-   ========================================================= */
-
-function getPreviousSeasonName() {
-
-    const currentMatch =
-        CURRENT_SEASON.match(
-            /(\d+)/
-        );
-
-
-    if (!currentMatch) {
-
-        return null;
-
-    }
-
-
-    const currentNumber =
-        Number(
-            currentMatch[1]
-        );
-
-
-    return `Season ${currentNumber - 1}`;
-
-}
-
-
-
-/* =========================================================
-   GET SEASON WINNERS
-   ========================================================= */
-
-/*
- * A Season Winner is determined from
- * the History tab.
- *
- * The player with the highest average
- * in the previous season wins that season.
- *
- * This works even though History currently
- * contains only season averages.
- */
-
-function getSeasonWinners() {
-
-    const winners = {};
-
-
-    const previousSeason =
-        getPreviousSeasonName();
-
-
-    if (!previousSeason) {
-
-        return winners;
-
-    }
-
-
-
-    Object.keys(historyData).forEach(
-        key => {
-
-            const playerHistory =
-                historyData[key];
-
-
-            if (
-                !playerHistory ||
-                !playerHistory.seasons
-            ) {
-
-                return;
-
-            }
-
-
-            playerHistory.seasons.forEach(
-                item => {
-
-                    if (
-                        normalizeName(
-                            item.season
-                        ) ===
-                        normalizeName(
-                            previousSeason
-                        ) &&
-                        item.value !== null
-                    ) {
-
-                        const value =
-                            Number(
-                                item.value
-                            );
-
-
-                        if (
-                            !winners[
-                                previousSeason
-                            ] ||
-                            value >
-                            winners[
-                                previousSeason
-                            ].value
-                        ) {
-
-                            winners[
-                                previousSeason
-                            ] = {
-
-                                player:
-                                    playerHistory.player,
-
-                                value:
-                                    value
-
-                            };
-
-                        }
-
-                    }
-
-                }
-            );
-
-        }
-    );
-
-
-    return winners;
-
-}
-
-
-
-/* =========================================================
-   GET WIN COUNT
-   ========================================================= */
-
-function getSeasonWinCount(
-    playerName
-) {
-
-    const key =
-        normalizeName(
-            playerName
-        );
-
-
-    let count = 0;
-
-
-    /*
-     * Count all seasons where
-     * this player is the highest AVG.
-     */
-
-    Object.keys(historyData).forEach(
-        historyKey => {
-
-            const playerHistory =
-                historyData[
-                    historyKey
-                ];
-
-
-            if (
-                !playerHistory ||
-                !playerHistory.seasons
-            ) {
-
-                return;
-
-            }
-
-
-            playerHistory.seasons.forEach(
-                item => {
-
-                    if (
-                        item.value === null
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    const seasonName =
-                        item.season;
-
-
-                    let bestPlayer =
-                        null;
-
-                    let bestValue =
-                        -Infinity;
-
-
-
-                    Object.keys(historyData)
-                        .forEach(
-                            otherKey => {
-
-                                const other =
-                                    historyData[
-                                        otherKey
-                                    ];
-
-
-                                if (
-                                    !other ||
-                                    !other.seasons
-                                ) {
-
-                                    return;
-
-                                }
-
-
-                                const seasonData =
-                                    other.seasons.find(
-                                        season =>
-                                            normalizeName(
-                                                season.season
-                                            ) ===
-                                            normalizeName(
-                                                seasonName
-                                            )
-                                    );
-
-
-                                if (
-                                    seasonData &&
-                                    seasonData.value !== null
-                                ) {
-
-                                    const value =
-                                        Number(
-                                            seasonData.value
-                                        );
-
-
-                                    if (
-                                        value >
-                                        bestValue
-                                    ) {
-
-                                        bestValue =
-                                            value;
-
-                                        bestPlayer =
-                                            other.player;
-
-                                    }
-
-                                }
-
-                            }
-                        );
-
-
-
-                    if (
-                        bestPlayer &&
-                        normalizeName(
-                            bestPlayer
-                        ) === key &&
-                        normalizeName(
-                            playerHistory.player
-                        ) === key
-                    ) {
-
-                        count++;
-
-                    }
-
-                }
-            );
-
-        }
-    );
-
-
-    return count;
 
 }
 
@@ -2708,7 +2470,7 @@ function openProfile(
     /*
      * Career Avg:
      *
-     * Current + History
+     * CURRENT + HISTORY
      */
 
     const careerAvg =
@@ -2746,37 +2508,10 @@ function openProfile(
         );
 
 
-
-    /* =====================================================
-       CURRENT SEASON RESULT DATA
-       ===================================================== */
-
-    const currentSeasonScores =
-        playerData.seasonScores || [];
-
-
-
-    const greenScores =
-        currentSeasonScores.filter(
-            score =>
-                Number(score) >= 34
-        );
-
-
-    const redScores =
-        currentSeasonScores.filter(
-            score =>
-                Number(score) < 34
-        );
-
-
-
-    const greenCount =
-        greenScores.length;
-
-
-    const redCount =
-        redScores.length;
+    /*
+     * Ako imamo najbolju sezonu,
+     * dodaj achievement kasnije.
+     */
 
 
 
@@ -2864,9 +2599,11 @@ function openProfile(
 
 
 
-    /* =====================================================
-       40+ GOALS CLUB
-       ===================================================== */
+    /*
+     * 40+ GOALS CLUB
+     *
+     * MAX >= 40
+     */
 
     const maxScore =
         parseNumber(
@@ -2899,264 +2636,9 @@ function openProfile(
 
 
 
-    /* =====================================================
-       SEASON WINNER
-       ===================================================== */
-
-    const seasonWinners =
-        getSeasonWinners();
-
-
-    const previousSeason =
-        getPreviousSeasonName();
-
-
-    const previousWinner =
-        seasonWinners[
-            previousSeason
-        ];
-
-
-    if (
-        previousWinner &&
-        normalizeName(
-            previousWinner.player
-        ) ===
-        normalizeName(
-            playerData.player
-        )
-    ) {
-
-        achievements.push({
-
-            icon:
-                '🥇',
-
-            name:
-                'Season Winner',
-
-            description:
-                `Won ${previousSeason} with the highest average.`,
-
-            value:
-                Number(
-                    previousWinner.value
-                ).toFixed(2)
-
-        });
-
-    }
-
-
-
-    /* =====================================================
-       GREEN MACHINE
-       ===================================================== */
-
-    if (
-        greenCount >= 20
-    ) {
-
-        achievements.push({
-
-            icon:
-                '⚡',
-
-            name:
-                'Green Machine',
-
-            description:
-                'Recorded 20 or more green scores in the current season.',
-
-            value:
-                greenCount
-
-        });
-
-    }
-
-
-
-    /* =====================================================
-       NO RED SCORES
-       ===================================================== */
-
-    if (
-        currentSeasonScores.length > 0 &&
-        redCount === 0
-    ) {
-
-        achievements.push({
-
-            icon:
-                '🛡️',
-
-            name:
-                'No Red Scores',
-
-            description:
-                'Finished the current season without a single red score.',
-
-            value:
-                '0 RED'
-
-        });
-
-    }
-
-
-
-    /* =====================================================
-       ELITE SEASON
-       ===================================================== */
-
-    let eliteSeason =
-        null;
-
-
-    const allSeasonAverages = [];
-
-
-
     /*
-     * Current season.
+     * BEST SEASON
      */
-
-    const currentAverage =
-        parseNumber(
-            playerData.avg
-        );
-
-
-    if (
-        currentAverage !== null
-    ) {
-
-        allSeasonAverages.push({
-
-            season:
-                CURRENT_SEASON,
-
-            value:
-                currentAverage
-
-        });
-
-    }
-
-
-
-    /*
-     * Previous seasons.
-     */
-
-    if (
-        playerHistory &&
-        playerHistory.seasons
-    ) {
-
-        playerHistory.seasons.forEach(
-            item => {
-
-                if (
-                    item.value !== null
-                ) {
-
-                    allSeasonAverages.push({
-
-                        season:
-                            item.season,
-
-                        value:
-                            Number(
-                                item.value
-                            )
-
-                    });
-
-                }
-
-            }
-        );
-
-    }
-
-
-
-    /*
-     * Find any 37+ season.
-     */
-
-    eliteSeason =
-        allSeasonAverages.find(
-            item =>
-                item.value >= 37
-        );
-
-
-    if (
-        eliteSeason
-    ) {
-
-        achievements.push({
-
-            icon:
-                '⭐',
-
-            name:
-                'Elite Season',
-
-            description:
-                `${eliteSeason.season} with a 37+ average.`,
-
-            value:
-                Number(
-                    eliteSeason.value
-                ).toFixed(2)
-
-        });
-
-    }
-
-
-
-    /* =====================================================
-       CAREER LEGEND
-       ===================================================== */
-
-    const seasonWinCount =
-        getSeasonWinCount(
-            playerData.player
-        );
-
-
-    if (
-        seasonWinCount >= 5
-    ) {
-
-        achievements.push({
-
-            icon:
-                '👑',
-
-            name:
-                'Career Legend',
-
-            description:
-                'Won 5 or more seasons during your career.',
-
-            value:
-                seasonWinCount
-
-        });
-
-    }
-
-
-
-    /* =====================================================
-       BEST SEASON
-       ===================================================== */
 
     if (
         bestSeason !== null
@@ -3165,7 +2647,7 @@ function openProfile(
         achievements.push({
 
             icon:
-                '📈',
+                '⭐',
 
             name:
                 'Best Season',
@@ -3184,9 +2666,9 @@ function openProfile(
 
 
 
-    /* =====================================================
-       NO ACHIEVEMENTS
-       ===================================================== */
+    /*
+     * Ako nema achievement-a.
+     */
 
     if (!achievements.length) {
 
@@ -3286,8 +2768,12 @@ function openProfile(
 
 
         /*
-         * Count seasons that actually
-         * contain a value.
+         * Broj prethodnih sezona
+         * koje stvarno imaju podatak.
+         *
+         * Current Season nije uračunat
+         * ovde jer je već prikazana
+         * kao Current Avg.
          */
 
         const availableSeasons =
@@ -3305,7 +2791,7 @@ function openProfile(
 
 
         /*
-         * Display every season.
+         * Prikaži svaku sezonu.
          */
 
         playerHistory.seasons.forEach(
@@ -3484,7 +2970,8 @@ async function loadRankings() {
 
 
         /*
-         * Load History first.
+         * History i Ranking se učitavaju
+         * zajedno.
          */
 
         await loadHistory();
@@ -3523,7 +3010,7 @@ async function loadRankings() {
 
 
         /*
-         * Valid players.
+         * Validni igrači.
          */
 
         const validRows =
@@ -3597,11 +3084,11 @@ async function loadRankings() {
 
 
                 /* =================================================
-                   CURRENT SEASON SCORES
+                   LAST 5
                    ================================================= */
 
-                let seasonScores =
-                    [];
+                let matchesHtml =
+                    '';
 
 
                 let matches =
@@ -3610,12 +3097,8 @@ async function loadRankings() {
 
 
                 /*
-                 * Columns 5-9 are the
-                 * currently displayed last 5.
-                 *
-                 * These are also used for
-                 * current-season achievement
-                 * calculations.
+                 * Kolone 5-9 =
+                 * poslednjih 5 mečeva.
                  */
 
                 for (
@@ -3643,27 +3126,6 @@ async function loadRankings() {
                         );
 
 
-                        seasonScores.push(
-                            score
-                        );
-
-                    }
-
-                }
-
-
-
-                /* =================================================
-                   TABLE MATCH BADGES
-                   ================================================= */
-
-                let matchesHtml =
-                    '';
-
-
-                matches.forEach(
-                    score => {
-
                         const badgeClass =
                             score >= 34
                                 ? 'bg-green'
@@ -3684,7 +3146,8 @@ async function loadRankings() {
                         `;
 
                     }
-                );
+
+                }
 
 
 
@@ -3778,10 +3241,7 @@ async function loadRankings() {
                                 min,
 
                             matches:
-                                matches,
-
-                            seasonScores:
-                                seasonScores
+                                matches
 
                         });
 
