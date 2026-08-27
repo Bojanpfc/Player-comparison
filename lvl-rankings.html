@@ -1221,6 +1221,90 @@
 
 
         /* =====================================================
+           INPUTS
+           ===================================================== */
+
+        .inputs-list {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 6px;
+        }
+
+
+        .input-row {
+            display: grid;
+
+            grid-template-columns:
+                1fr auto;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding:
+                11px 12px;
+
+            border-radius: 9px;
+
+            background:
+                rgba(13,24,20,.8);
+
+            border:
+                1px solid rgba(255,255,255,.045);
+        }
+
+
+        .input-date {
+            color: var(--muted);
+
+            font-size: .62rem;
+
+            font-weight: 750;
+
+            line-height: 1.4;
+        }
+
+
+        .input-time {
+            color: #65716d;
+
+            font-size: .57rem;
+
+            margin-top: 2px;
+        }
+
+
+        .input-score {
+            min-width: 42px;
+
+            height: 36px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background:
+                var(--green-dark);
+
+            border:
+                1px solid rgba(0,255,117,.25);
+
+            color: #ffffff;
+
+            font-size: .72rem;
+
+            font-weight: 900;
+        }
+
+
+
+        /* =====================================================
            FOOTER
            ===================================================== */
 
@@ -1372,6 +1456,13 @@
             td {
                 font-size: .62rem;
             }
+
+
+            .input-row {
+                padding:
+                    10px;
+            }
+
         }
 
     </style>
@@ -1829,6 +1920,32 @@
             </div>
 
 
+
+            <!-- =================================================
+                 INPUTS
+                 ================================================= -->
+
+            <div class="profile-section">
+
+                <div class="profile-section-title">
+                    Inputs
+                </div>
+
+
+                <div
+                    class="inputs-list"
+                    id="inputsList"
+                >
+
+                    <div class="no-history">
+                        Loading inputs...
+                    </div>
+
+                </div>
+
+            </div>
+
+
         </div>
 
     </div>
@@ -1881,11 +1998,22 @@ const HISTORY_URL =
 
 
 
+/*
+ * Results tab.
+ */
+
+const RESULTS_URL =
+    `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Results`;
+
+
+
 /* =========================================================
    GLOBAL DATA
    ========================================================= */
 
 let historyData = {};
+
+let resultsData = {};
 
 
 
@@ -1998,16 +2126,6 @@ async function loadHistory() {
         const seasons = [];
 
 
-        /*
-         * Prva kolona je Player.
-         *
-         * Sve ostale kolone su sezone.
-         *
-         * Primer:
-         *
-         * Player | Season 18 | Season 17
-         */
-
         for (
             let i = 1;
             i < columns.length;
@@ -2038,10 +2156,6 @@ async function loadHistory() {
         }
 
 
-
-        /*
-         * Učitaj svakog igrača.
-         */
 
         table.rows.forEach(row => {
 
@@ -2118,6 +2232,456 @@ async function loadHistory() {
 
 
 /* =========================================================
+   LOAD RESULTS
+   ========================================================= */
+
+async function loadResults() {
+
+    try {
+
+        const response =
+            await fetch(
+                RESULTS_URL +
+                '&t=' +
+                Date.now()
+            );
+
+
+        const text =
+            await response.text();
+
+
+        const json =
+            JSON.parse(
+                text
+                    .substr(47)
+                    .slice(0, -2)
+            );
+
+
+        const table =
+            json.table;
+
+
+        resultsData = {};
+
+
+
+        /*
+         * Results columns:
+         *
+         * A = Timestamp
+         * B = Player
+         * C = Matchday
+         * D = Goals Scored
+         *
+         * Matchday se namerno ignoriše.
+         */
+
+        table.rows.forEach(row => {
+
+            const timestamp =
+                row.c[0]?.f ||
+                row.c[0]?.v ||
+                '';
+
+
+            const player =
+                row.c[1]?.v ||
+                '';
+
+
+            const goals =
+                row.c[3]?.v;
+
+
+
+            if (!player) {
+                return;
+            }
+
+
+            const key =
+                normalizeName(
+                    player
+                );
+
+
+            if (!resultsData[key]) {
+
+                resultsData[key] = [];
+
+            }
+
+
+            resultsData[key].push({
+
+                timestamp:
+                    timestamp,
+
+                goals:
+                    goals !== undefined &&
+                    goals !== null &&
+                    goals !== ''
+                        ? goals
+                        : '—'
+
+            });
+
+        });
+
+
+
+        /*
+         * Najnoviji unos prvi.
+         */
+
+        Object.keys(resultsData).forEach(
+            key => {
+
+                resultsData[key].reverse();
+
+            }
+        );
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            'Results loading error:',
+            error
+        );
+
+    }
+
+}
+
+
+
+/* =========================================================
+   FORMAT TIMESTAMP
+   ========================================================= */
+
+function formatResultTimestamp(
+    timestamp
+) {
+
+    if (!timestamp) {
+
+        return {
+            date: 'Unknown date',
+            time: ''
+        };
+
+    }
+
+
+    let text =
+        String(timestamp)
+            .trim();
+
+
+    /*
+     * Ako Google vrati:
+     *
+     * 27.08.2026. 17:51:26
+     */
+
+    const match =
+        text.match(
+            /^(\d{1,2})[./-](\d{1,2})[./-](\d{2,4})[.\s]+(.+)$/
+        );
+
+
+    if (match) {
+
+        let day =
+            match[1];
+
+        let month =
+            match[2];
+
+        let year =
+            match[3];
+
+        let time =
+            match[4];
+
+
+        if (year.length === 2) {
+
+            year =
+                '20' +
+                year;
+
+        }
+
+
+        return {
+
+            date:
+                `${day.padStart(2,'0')}/${month.padStart(2,'0')}/${year}`,
+
+            time:
+                time
+
+        };
+
+    }
+
+
+
+    /*
+     * Ako je Google vratio Date(...)
+     */
+
+    const googleDate =
+        text.match(
+            /^Date\((\d+),(\d+),(\d+),(\d+),(\d+),(\d+)\)$/
+        );
+
+
+    if (googleDate) {
+
+        const year =
+            Number(
+                googleDate[1]
+            );
+
+
+        const month =
+            String(
+                Number(
+                    googleDate[2]
+                ) + 1
+            ).padStart(2,'0');
+
+
+        const day =
+            String(
+                googleDate[3]
+            ).padStart(2,'0');
+
+
+        const hour =
+            String(
+                googleDate[4]
+            ).padStart(2,'0');
+
+
+        const minute =
+            String(
+                googleDate[5]
+            ).padStart(2,'0');
+
+
+        const second =
+            String(
+                googleDate[6]
+            ).padStart(2,'0');
+
+
+        return {
+
+            date:
+                `${day}/${month}/${year}`,
+
+            time:
+                `${hour}:${minute}:${second}`
+
+        };
+
+    }
+
+
+
+    /*
+     * Ako je timestamp u drugom formatu,
+     * pokušaj Date parser.
+     */
+
+    const parsed =
+        new Date(text);
+
+
+    if (
+        !isNaN(
+            parsed.getTime()
+        )
+    ) {
+
+        const day =
+            String(
+                parsed.getDate()
+            ).padStart(2,'0');
+
+
+        const month =
+            String(
+                parsed.getMonth() + 1
+            ).padStart(2,'0');
+
+
+        const year =
+            parsed.getFullYear();
+
+
+        const hour =
+            String(
+                parsed.getHours()
+            ).padStart(2,'0');
+
+
+        const minute =
+            String(
+                parsed.getMinutes()
+            ).padStart(2,'0');
+
+
+        const second =
+            String(
+                parsed.getSeconds()
+            ).padStart(2,'0');
+
+
+        return {
+
+            date:
+                `${day}/${month}/${year}`,
+
+            time:
+                `${hour}:${minute}:${second}`
+
+        };
+
+    }
+
+
+
+    return {
+
+        date:
+            text,
+
+        time:
+            ''
+
+    };
+
+}
+
+
+
+/* =========================================================
+   DISPLAY INPUTS
+   ========================================================= */
+
+function displayInputs(
+    playerName
+) {
+
+    const container =
+        document.getElementById(
+            'inputsList'
+        );
+
+
+    container.innerHTML =
+        '';
+
+
+    const key =
+        normalizeName(
+            playerName
+        );
+
+
+    const playerResults =
+        resultsData[key] ||
+        [];
+
+
+
+    if (!playerResults.length) {
+
+        container.innerHTML = `
+
+            <div class="no-history">
+
+                No inputs available.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+
+    playerResults.forEach(
+        result => {
+
+            const formatted =
+                formatResultTimestamp(
+                    result.timestamp
+                );
+
+
+            const row =
+                document.createElement(
+                    'div'
+                );
+
+
+            row.className =
+                'input-row';
+
+
+            row.innerHTML = `
+
+                <div>
+
+                    <div
+                        class="input-date"
+                    >
+                        ${formatted.date}
+                    </div>
+
+
+                    <div
+                        class="input-time"
+                    >
+                        ${formatted.time}
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="input-score"
+                >
+                    ${result.goals}
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
    GET HISTORY VALUES
    ========================================================= */
 
@@ -2161,23 +2725,6 @@ function getHistoryValues(
    CALCULATE CAREER AVG
    ========================================================= */
 
-/*
- * VAŽNO:
- *
- * Career Avg sada uključuje:
- *
- * 1. trenutnu Season 19
- * 2. sve prethodne sezone iz History taba
- *
- * Ako kasnije dodaš Season 19 u History
- * i pređeš na Season 20, kod će uključiti:
- *
- * Season 20 + Season 19 + Season 18...
- *
- * Ali neće duplirati Season 19 ako je već
- * slučajno upisana u History.
- */
-
 function calculateCareerAverage(
     currentAverage,
     playerHistory
@@ -2185,10 +2732,6 @@ function calculateCareerAverage(
 
     const values = [];
 
-
-    /*
-     * Trenutna sezona.
-     */
 
     const current =
         parseNumber(
@@ -2206,11 +2749,6 @@ function calculateCareerAverage(
 
     }
 
-
-
-    /*
-     * Prethodne sezone.
-     */
 
     if (
         playerHistory &&
@@ -2242,17 +2780,11 @@ function calculateCareerAverage(
     }
 
 
-
-    /*
-     * Ako nema podataka.
-     */
-
     if (!values.length) {
 
         return null;
 
     }
-
 
 
     const total =
@@ -2286,10 +2818,6 @@ function calculateBestSeason(
     const seasons = [];
 
 
-    /*
-     * Current season.
-     */
-
     const current =
         parseNumber(
             currentAverage
@@ -2312,11 +2840,6 @@ function calculateBestSeason(
 
     }
 
-
-
-    /*
-     * History.
-     */
 
     if (
         playerHistory &&
@@ -2348,7 +2871,6 @@ function calculateBestSeason(
         );
 
     }
-
 
 
     if (!seasons.length) {
@@ -2384,9 +2906,7 @@ function openProfile(
 ) {
 
 
-    /* =====================================================
-       PLAYER NAME
-       ===================================================== */
+    /* PLAYER NAME */
 
     document.getElementById(
         'profileName'
@@ -2395,9 +2915,7 @@ function openProfile(
 
 
 
-    /* =====================================================
-       RANK
-       ===================================================== */
+    /* RANK */
 
     document.getElementById(
         'profileRank'
@@ -2414,9 +2932,7 @@ function openProfile(
 
 
 
-    /* =====================================================
-       CURRENT DATA
-       ===================================================== */
+    /* CURRENT DATA */
 
     document.getElementById(
         'profileGP'
@@ -2437,9 +2953,7 @@ function openProfile(
 
 
 
-    /* =====================================================
-       BEST / WORST
-       ===================================================== */
+    /* BEST / WORST */
 
     document.getElementById(
         'profileMax'
@@ -2454,9 +2968,7 @@ function openProfile(
 
 
 
-    /* =====================================================
-       HISTORY
-       ===================================================== */
+    /* HISTORY */
 
     const playerHistory =
         historyData[
@@ -2466,12 +2978,6 @@ function openProfile(
         ];
 
 
-
-    /*
-     * Career Avg:
-     *
-     * CURRENT + HISTORY
-     */
 
     const careerAvg =
         calculateCareerAverage(
@@ -2497,9 +3003,7 @@ function openProfile(
 
 
 
-    /* =====================================================
-       BEST SEASON
-       ===================================================== */
+    /* BEST SEASON */
 
     const bestSeason =
         calculateBestSeason(
@@ -2508,16 +3012,8 @@ function openProfile(
         );
 
 
-    /*
-     * Ako imamo najbolju sezonu,
-     * dodaj achievement kasnije.
-     */
 
-
-
-    /* =====================================================
-       LAST 5
-       ===================================================== */
+    /* LAST 5 */
 
     const matchesContainer =
         document.getElementById(
@@ -2599,11 +3095,7 @@ function openProfile(
 
 
 
-    /*
-     * 40+ GOALS CLUB
-     *
-     * MAX >= 40
-     */
+    /* 40+ GOALS CLUB */
 
     const maxScore =
         parseNumber(
@@ -2636,9 +3128,7 @@ function openProfile(
 
 
 
-    /*
-     * BEST SEASON
-     */
+    /* BEST SEASON */
 
     if (
         bestSeason !== null
@@ -2665,10 +3155,6 @@ function openProfile(
     }
 
 
-
-    /*
-     * Ako nema achievement-a.
-     */
 
     if (!achievements.length) {
 
@@ -2760,21 +3246,10 @@ function openProfile(
         '';
 
 
-
     if (
         playerHistory &&
         playerHistory.seasons
     ) {
-
-
-        /*
-         * Broj prethodnih sezona
-         * koje stvarno imaju podatak.
-         *
-         * Current Season nije uračunat
-         * ovde jer je već prikazana
-         * kao Current Avg.
-         */
 
         const availableSeasons =
             playerHistory.seasons.filter(
@@ -2788,11 +3263,6 @@ function openProfile(
         ).textContent =
             availableSeasons.length;
 
-
-
-        /*
-         * Prikaži svaku sezonu.
-         */
 
         playerHistory.seasons.forEach(
             item => {
@@ -2857,7 +3327,6 @@ function openProfile(
 
     else {
 
-
         document.getElementById(
             'historySeasons'
         ).textContent =
@@ -2875,6 +3344,16 @@ function openProfile(
         `;
 
     }
+
+
+
+    /* =====================================================
+       INPUTS
+       ===================================================== */
+
+    displayInputs(
+        playerData.player
+    );
 
 
 
@@ -2970,11 +3449,17 @@ async function loadRankings() {
 
 
         /*
-         * History i Ranking se učitavaju
-         * zajedno.
+         * Učitavamo History,
+         * Results i Ranking.
          */
 
-        await loadHistory();
+        await Promise.all([
+
+            loadHistory(),
+
+            loadResults()
+
+        ]);
 
 
 
@@ -3009,9 +3494,7 @@ async function loadRankings() {
 
 
 
-        /*
-         * Validni igrači.
-         */
+        /* VALID PLAYERS */
 
         const validRows =
             json.table.rows.filter(
@@ -3083,9 +3566,7 @@ async function loadRankings() {
 
 
 
-                /* =================================================
-                   LAST 5
-                   ================================================= */
+                /* LAST 5 */
 
                 let matchesHtml =
                     '';
@@ -3095,11 +3576,6 @@ async function loadRankings() {
                     [];
 
 
-
-                /*
-                 * Kolone 5-9 =
-                 * poslednjih 5 mečeva.
-                 */
 
                 for (
                     let i = 5;
@@ -3151,9 +3627,7 @@ async function loadRankings() {
 
 
 
-                /* =================================================
-                   TABLE ROW
-                   ================================================= */
+                /* TABLE ROW */
 
                 const tr =
                     document.createElement(
@@ -3212,9 +3686,7 @@ async function loadRankings() {
 
 
 
-                /* =================================================
-                   CLICK PLAYER
-                   ================================================= */
+                /* CLICK PLAYER */
 
                 tr.addEventListener(
                     'click',
