@@ -1768,7 +1768,6 @@ h1 span {
 
         <div class="modal-header">
 
-
             <h2
                 id="modalSeasonTitle"
                 class="modal-season-title"
@@ -1801,7 +1800,6 @@ h1 span {
         <!-- STATS -->
 
         <div class="modal-stats">
-
 
             <div class="modal-stat">
 
@@ -1865,7 +1863,6 @@ h1 span {
 
             </div>
 
-
         </div>
 
 
@@ -1910,12 +1907,10 @@ function toggleEventsSubmenu() {
             "eventsSubmenu"
         );
 
-
     const arrow =
         document.getElementById(
             "submenuArrow"
         );
-
 
     if (
         submenu.style.display === "flex"
@@ -1924,7 +1919,6 @@ function toggleEventsSubmenu() {
         submenu.style.display =
             "none";
 
-
         arrow.style.transform =
             "rotate(0deg)";
 
@@ -1932,7 +1926,6 @@ function toggleEventsSubmenu() {
 
         submenu.style.display =
             "flex";
-
 
         arrow.style.transform =
             "rotate(90deg)";
@@ -1953,12 +1946,10 @@ function toggleLvlResults() {
             "lvlResultsSubmenu"
         );
 
-
     const arrow =
         document.getElementById(
             "lvlResultsArrow"
         );
-
 
     if (
         submenu.style.display === "flex"
@@ -1967,7 +1958,6 @@ function toggleLvlResults() {
         submenu.style.display =
             "none";
 
-
         arrow.style.transform =
             "rotate(0deg)";
 
@@ -1975,7 +1965,6 @@ function toggleLvlResults() {
 
         submenu.style.display =
             "flex";
-
 
         arrow.style.transform =
             "rotate(90deg)";
@@ -1999,7 +1988,6 @@ function escapeHtml(value) {
         return "";
 
     }
-
 
     return String(value)
 
@@ -2045,6 +2033,8 @@ function getResultStatus(result) {
         .toLowerCase();
 
 
+    /* W */
+
     if (
         value === "w" ||
         value === "win" ||
@@ -2061,6 +2051,8 @@ function getResultStatus(result) {
 
     }
 
+
+    /* L */
 
     if (
         value === "l" ||
@@ -2080,6 +2072,8 @@ function getResultStatus(result) {
     }
 
 
+    /* DRAW */
+
     if (
         value === "d" ||
         value === "draw" ||
@@ -2097,6 +2091,12 @@ function getResultStatus(result) {
     }
 
 
+    /*
+     * Rezultat tipa:
+     * 1085-1037
+     * 1085 : 1037
+     */
+
     const scoreMatch =
         value.match(
             /(\d+(?:\.\d+)?)\s*[-:]\s*(\d+(?:\.\d+)?)/
@@ -2111,7 +2111,6 @@ function getResultStatus(result) {
             parseFloat(
                 scoreMatch[1]
             );
-
 
         const second =
             parseFloat(
@@ -2172,7 +2171,7 @@ function getResultStatus(result) {
 
 
 /* =========================================================
-   CONVERT GOOGLE VALUE
+   GOOGLE CELL VALUE
 ========================================================= */
 
 function getCellValue(
@@ -2302,20 +2301,32 @@ async function loadGoogleSheet() {
 
 
 /* =========================================================
-   FIND SEASONS
+   FIND SEASON ROWS
 ========================================================= */
 
-function findSeasons(data) {
+/*
+ * Tvoj Google Sheet izgleda ovako:
+ *
+ * Row 1:
+ * Season 19 | vs | Result | Played | Average | Best score
+ *
+ * Row 2:
+ * Goats | Vip Asireti | 1085-1037 | 31 | 35.00 | ...
+ *
+ * ...
+ *
+ * Row 17:
+ * Season 20
+ *
+ * Row 18:
+ * Goats | Invictus | 1119-1055 | ...
+ *
+ *
+ * Zbog toga sada tražimo SEASON PO REDOVIMA,
+ * a ne po kolonama.
+ */
 
-    const seasons = {};
-
-
-    const columns =
-        data.table &&
-        data.table.cols
-            ? data.table.cols
-            : [];
-
+function findSeasonRows(data) {
 
     const rows =
         data.table &&
@@ -2324,70 +2335,8 @@ function findSeasons(data) {
             : [];
 
 
-    /*
-     * -----------------------------------------------------
-     * PROVERI NAZIVE KOLONA
-     * -----------------------------------------------------
-     */
+    const seasons = [];
 
-    columns.forEach(
-        (
-            column,
-            index
-        ) => {
-
-            if (!column) {
-                return;
-            }
-
-
-            const label =
-                String(
-                    column.label || ""
-                )
-                .trim();
-
-
-            const match =
-                label.match(
-                    /^Season\s*(\d+)$/i
-                );
-
-
-            if (match) {
-
-                const season =
-                    parseInt(
-                        match[1],
-                        10
-                    );
-
-
-                seasons[season] = {
-
-                    season: season,
-
-                    columnIndex: index
-
-                };
-
-            }
-
-        }
-    );
-
-
-    /*
-     * -----------------------------------------------------
-     * PROVERI REDOVE
-     * -----------------------------------------------------
-     *
-     * Season 19
-     * rezultati...
-     *
-     * Season 20
-     * rezultati...
-     */
 
     rows.forEach(
         (
@@ -2405,76 +2354,60 @@ function findSeasons(data) {
             }
 
 
-            row.c.forEach(
-                (
-                    cell,
-                    index
-                ) => {
+            for (
+                let columnIndex = 0;
+                columnIndex < row.c.length;
+                columnIndex++
+            ) {
 
-                    if (!cell) {
-                        return;
-                    }
-
-
-                    const value =
-                        String(
-                            cell.v ??
-                            cell.f ??
-                            ""
-                        )
-                        .trim();
+                const value =
+                    getCellValue(
+                        row,
+                        columnIndex
+                    );
 
 
-                    const match =
-                        value.match(
-                            /^Season\s*(\d+)$/i
-                        );
+                const match =
+                    value.match(
+                        /^Season\s*(\d+)$/i
+                    );
 
 
-                    if (match) {
+                if (
+                    match
+                ) {
 
-                        const season =
+                    seasons.push({
+
+                        season:
                             parseInt(
                                 match[1],
                                 10
-                            );
+                            ),
 
+                        rowIndex:
+                            rowIndex
 
-                        if (
-                            !seasons[season]
-                        ) {
+                    });
 
-                            seasons[season] = {
-
-                                season: season,
-
-                                rowIndex: rowIndex,
-
-                                columnIndex: index
-
-                            };
-
-                        }
-
-                    }
+                    break;
 
                 }
-            );
+
+            }
 
         }
     );
 
 
-    return Object
-        .values(seasons)
-        .sort(
-            (
-                a,
-                b
-            ) =>
-                b.season -
-                a.season
-        );
+    return seasons.sort(
+        (
+            a,
+            b
+        ) =>
+            b.season -
+            a.season
+    );
 
 }
 
@@ -2504,7 +2437,7 @@ async function loadLvlSeasons() {
 
 
         const seasons =
-            findSeasons(
+            findSeasonRows(
                 data
             );
 
@@ -2533,14 +2466,15 @@ async function loadLvlSeasons() {
 
             `;
 
-
             return;
 
         }
 
 
         seasons.forEach(
-            (seasonInfo) => {
+            (
+                seasonInfo
+            ) => {
 
                 const link =
                     document.createElement(
@@ -2630,10 +2564,12 @@ async function loadLvlSeasons() {
 
 
 /* =========================================================
-   LOAD SEASON RESULTS
+   LOAD ONE SEASON
 ========================================================= */
 
-async function loadSeasonResults(season) {
+async function loadSeasonResults(
+    season
+) {
 
     try {
 
@@ -2651,56 +2587,12 @@ async function loadSeasonResults(season) {
 
         /*
          * -----------------------------------------------------
-         * KOLONE U GOOGLE SHEET-U
+         * PRONAĐI RED GDE POČINJE SEASON
          * -----------------------------------------------------
-         *
-         * A = Player
-         * B = Opponent
-         * C = Result
-         * D = Played
-         * E = Average
-         * F = Best score
          */
 
-        const playerColumn = 0;
-
-        const opponentColumn = 1;
-
-        const resultColumn = 2;
-
-        const playedColumn = 3;
-
-        const averageColumn = 4;
-
-        const bestScoreColumn = 5;
-
-
-        /*
-         * -----------------------------------------------------
-         * AKTIVNA SEZONA
-         * -----------------------------------------------------
-         *
-         * Primer:
-         *
-         * Season 19
-         * rezultat
-         * rezultat
-         * rezultat
-         *
-         * Season 20
-         * rezultat
-         *
-         * Season 21
-         * rezultat
-         *
-         * Svaki put kada naiđemo na
-         * "Season X", menjamo aktivnu sezonu.
-         */
-
-        let currentSeason = null;
-
-
-        const matches = [];
+        let seasonStartRow =
+            -1;
 
 
         rows.forEach(
@@ -2708,6 +2600,15 @@ async function loadSeasonResults(season) {
                 row,
                 rowIndex
             ) => {
+
+                if (
+                    seasonStartRow !== -1
+                ) {
+
+                    return;
+
+                }
+
 
                 if (
                     !row ||
@@ -2719,178 +2620,387 @@ async function loadSeasonResults(season) {
                 }
 
 
-                /*
-                 * Prva ćelija
-                 */
+                for (
+                    let i = 0;
+                    i < row.c.length;
+                    i++
+                ) {
 
-                const firstCell =
+                    const value =
+                        getCellValue(
+                            row,
+                            i
+                        );
+
+
+                    const match =
+                        value.match(
+                            /^Season\s*(\d+)$/i
+                        );
+
+
+                    if (
+                        match &&
+                        parseInt(
+                            match[1],
+                            10
+                        ) === season
+                    ) {
+
+                        seasonStartRow =
+                            rowIndex;
+
+                        break;
+
+                    }
+
+                }
+
+            }
+        );
+
+
+        /*
+         * -----------------------------------------------------
+         * SEASON NIJE PRONAĐEN
+         * -----------------------------------------------------
+         */
+
+        if (
+            seasonStartRow === -1
+        ) {
+
+            alert(
+                "Season " +
+                season +
+                " was not found in Google Sheets."
+            );
+
+            return;
+
+        }
+
+
+        /*
+         * -----------------------------------------------------
+         * PRONAĐI SLEDEĆU SEASON
+         * -----------------------------------------------------
+         *
+         * Season 19:
+         *
+         * Season 19 row
+         * result
+         * result
+         * result
+         * ...
+         *
+         * Season 20 row
+         *
+         * Sve do Season 20 ne pripada Season 19.
+         */
+
+        let seasonEndRow =
+            rows.length;
+
+
+        for (
+            let rowIndex =
+                seasonStartRow + 1;
+
+            rowIndex < rows.length;
+
+            rowIndex++
+        ) {
+
+            const row =
+                rows[rowIndex];
+
+
+            if (
+                !row ||
+                !row.c
+            ) {
+
+                continue;
+
+            }
+
+
+            let foundNextSeason =
+                false;
+
+
+            for (
+                let i = 0;
+                i < row.c.length;
+                i++
+            ) {
+
+                const value =
                     getCellValue(
                         row,
-                        0
+                        i
                     );
 
 
-                /*
-                 * Proveri da li je red
-                 * Season 19 / Season 20...
-                 */
-
-                const seasonMatch =
-                    firstCell.match(
+                const match =
+                    value.match(
                         /^Season\s*(\d+)$/i
                     );
 
 
                 if (
-                    seasonMatch
+                    match
                 ) {
 
-                    currentSeason =
+                    const foundSeason =
                         parseInt(
-                            seasonMatch[1],
+                            match[1],
                             10
                         );
 
 
-                    /*
-                     * Ovo je samo marker sezone,
-                     * nije rezultat.
-                     */
+                    if (
+                        foundSeason !== season
+                    ) {
 
-                    return;
+                        seasonEndRow =
+                            rowIndex;
 
-                }
+                        foundNextSeason =
+                            true;
 
+                        break;
 
-                /*
-                 * Ako još nema sezone,
-                 * ignoriši red.
-                 */
-
-                if (
-                    currentSeason === null
-                ) {
-
-                    return;
+                    }
 
                 }
-
-
-                /*
-                 * Ako je red druge sezone,
-                 * ignoriši ga.
-                 */
-
-                if (
-                    currentSeason !== season
-                ) {
-
-                    return;
-
-                }
-
-
-                /*
-                 * ------------------------------------------------
-                 * UČITAJ REZULTAT
-                 * ------------------------------------------------
-                 */
-
-                const player =
-                    getCellValue(
-                        row,
-                        playerColumn
-                    );
-
-
-                const opponent =
-                    getCellValue(
-                        row,
-                        opponentColumn
-                    );
-
-
-                const result =
-                    getCellValue(
-                        row,
-                        resultColumn
-                    );
-
-
-                const played =
-                    getCellValue(
-                        row,
-                        playedColumn
-                    );
-
-
-                const average =
-                    getCellValue(
-                        row,
-                        averageColumn
-                    );
-
-
-                const bestScore =
-                    getCellValue(
-                        row,
-                        bestScoreColumn
-                    );
-
-
-                /*
-                 * Preskoči potpuno prazan red
-                 */
-
-                if (
-                    !player &&
-                    !opponent &&
-                    !result
-                ) {
-
-                    return;
-
-                }
-
-
-                /*
-                 * Preskoči header
-                 */
-
-                if (
-                    player.toLowerCase() === "player" ||
-                    player.toLowerCase() === "team" ||
-                    player.toLowerCase() === "club"
-                ) {
-
-                    return;
-
-                }
-
-
-                /*
-                 * Dodaj rezultat
-                 */
-
-                matches.push({
-
-                    team: player,
-
-                    opponent: opponent,
-
-                    result: result,
-
-                    played: played,
-
-                    average: average,
-
-                    bestScore: bestScore,
-
-                    rowIndex: rowIndex
-
-                });
 
             }
+
+
+            if (
+                foundNextSeason
+            ) {
+
+                break;
+
+            }
+
+        }
+
+
+        /*
+         * -----------------------------------------------------
+         * KOLONE
+         * -----------------------------------------------------
+         *
+         * A = Player
+         * B = Opponent
+         * C = Result
+         * D = Played
+         * E = Average
+         * F = Best Score
+         */
+
+        const playerColumn =
+            0;
+
+
+        const opponentColumn =
+            1;
+
+
+        const resultColumn =
+            2;
+
+
+        const playedColumn =
+            3;
+
+
+        const averageColumn =
+            4;
+
+
+        const bestScoreColumn =
+            5;
+
+
+        /*
+         * -----------------------------------------------------
+         * ČITAJ SAMO REDOVE OVE SEZONE
+         * -----------------------------------------------------
+         */
+
+        const matches = [];
+
+
+        for (
+            let rowIndex =
+                seasonStartRow + 1;
+
+            rowIndex < seasonEndRow;
+
+            rowIndex++
+        ) {
+
+            const row =
+                rows[rowIndex];
+
+
+            if (
+                !row ||
+                !row.c
+            ) {
+
+                continue;
+
+            }
+
+
+            const player =
+                getCellValue(
+                    row,
+                    playerColumn
+                );
+
+
+            const opponent =
+                getCellValue(
+                    row,
+                    opponentColumn
+                );
+
+
+            const result =
+                getCellValue(
+                    row,
+                    resultColumn
+                );
+
+
+            const played =
+                getCellValue(
+                    row,
+                    playedColumn
+                );
+
+
+            const average =
+                getCellValue(
+                    row,
+                    averageColumn
+                );
+
+
+            const bestScore =
+                getCellValue(
+                    row,
+                    bestScoreColumn
+                );
+
+
+            /*
+             * Preskoči potpuno prazne redove
+             */
+
+            if (
+                !player &&
+                !opponent &&
+                !result
+            ) {
+
+                continue;
+
+            }
+
+
+            /*
+             * Preskoči header
+             */
+
+            if (
+                player.toLowerCase() ===
+                "player"
+            ) {
+
+                continue;
+
+            }
+
+
+            /*
+             * Ako nema protivnika ili rezultata,
+             * nije rezultat.
+             */
+
+            if (
+                !opponent &&
+                !result
+            ) {
+
+                continue;
+
+            }
+
+
+            matches.push({
+
+                /*
+                 * Ime iz Google Sheets-a
+                 * se više NE prikazuje kao domaćin.
+                 *
+                 * Domaćin je uvek Goats.
+                 */
+
+                team:
+                    "Goats",
+
+
+                opponent:
+                    opponent,
+
+
+                result:
+                    result,
+
+
+                played:
+                    played,
+
+
+                average:
+                    average,
+
+
+                bestScore:
+                    bestScore,
+
+
+                rowIndex:
+                    rowIndex
+
+            });
+
+        }
+
+
+        console.log(
+            "Season " +
+            season +
+            " rows:",
+            seasonStartRow,
+            "to",
+            seasonEndRow
+        );
+
+
+        console.log(
+            "Season " +
+            season +
+            " matches:",
+            matches
         );
 
 
@@ -2996,7 +3106,9 @@ function openSeasonResults(
 
 
     matches.forEach(
-        (match) => {
+        (
+            match
+        ) => {
 
             const status =
                 getResultStatus(
@@ -3032,10 +3144,13 @@ function openSeasonResults(
     );
 
 
+    /*
+     * Svaki stvarni rezultat
+     * je jedan match.
+     */
+
     const totalMatches =
-        wins +
-        losses +
-        draws;
+        matches.length;
 
 
     statMatches.textContent =
@@ -3052,7 +3167,7 @@ function openSeasonResults(
 
     /*
      * -----------------------------------------------------
-     * OČISTI REZULTATE
+     * OČISTI STARE REZULTATE
      * -----------------------------------------------------
      */
 
@@ -3062,7 +3177,7 @@ function openSeasonResults(
 
     /*
      * -----------------------------------------------------
-     * NAJNOVIJI PRVI
+     * NAJNOVIJI REZULTAT PRVI
      * -----------------------------------------------------
      */
 
@@ -3114,9 +3229,7 @@ function openSeasonResults(
 
 
                 /*
-                 * ------------------------------------------------
                  * AVERAGE
-                 * ------------------------------------------------
                  */
 
                 let averageDisplay =
@@ -3181,7 +3294,6 @@ function openSeasonResults(
 
                     <div class="result-top">
 
-
                         <span class="result-number">
 
                             MATCH ${matches.length - index}
@@ -3200,12 +3312,10 @@ function openSeasonResults(
 
                         </span>
 
-
                     </div>
 
 
                     <div class="teams">
-
 
                         <div class="team home">
 
@@ -3233,7 +3343,6 @@ function openSeasonResults(
 
                         </div>
 
-
                     </div>
 
 
@@ -3241,7 +3350,6 @@ function openSeasonResults(
 
 
                         <div class="detail">
-
 
                             <div class="detail-label">
 
@@ -3259,12 +3367,10 @@ function openSeasonResults(
 
                             </div>
 
-
                         </div>
 
 
                         <div class="detail">
-
 
                             <div class="detail-label">
 
@@ -3281,12 +3387,10 @@ function openSeasonResults(
 
                             </div>
 
-
                         </div>
 
 
                         <div class="detail">
-
 
                             <div class="detail-label">
 
@@ -3303,7 +3407,6 @@ function openSeasonResults(
                                 )}
 
                             </div>
-
 
                         </div>
 
@@ -3366,7 +3469,7 @@ function closeResultsModal() {
 
 
 /* =========================================================
-   CLOSE BY CLICKING OUTSIDE
+   CLOSE OUTSIDE
 ========================================================= */
 
 function closeModalOutside(
@@ -3386,12 +3489,14 @@ function closeModalOutside(
 
 
 /* =========================================================
-   CLOSE WITH ESC
+   CLOSE ESC
 ========================================================= */
 
 document.addEventListener(
     "keydown",
-    (event) => {
+    (
+        event
+    ) => {
 
         if (
             event.key === "Escape"
